@@ -1,0 +1,2454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Consórcio Canopus — planeje sua conquista sem juros de financiamento</title>
+<meta name="description" content="Simule crédito de imóvel, carro, moto, pesados ou serviços com o Consórcio Canopus. Veja parcela, prazo, custo total e compare com financiamento antes de falar com alguém.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   TOKENS
+   Direção: "carta de navegação". Canopus é a estrela que
+   navegadores usam para achar o rumo — a página trata a compra
+   como uma rota traçada, não como uma promessa.
+   ============================================================ */
+:root{
+  --noite:#080F26;
+  --casco:#0E1837;
+  --casco-2:#16224A;
+  --linha:#26325C;
+  --estrela:#F2B441;
+  --estrela-fraca:#8A6A21;
+  --agua:#5FD3C4;
+  --juros:#E2685C;
+  --marfim:#EDEAE1;
+  --marfim-2:#FBFAF6;
+  --texto-fraco:#A3ADCB;
+  --display:"Bricolage Grotesque",system-ui,sans-serif;
+  --corpo:"Instrument Sans",system-ui,sans-serif;
+  --dado:"IBM Plex Mono",ui-monospace,monospace;
+  --r:14px;
+  --max:1140px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:#080F26;color-scheme:dark}
+body{
+  margin:0;background:#080F26;color:var(--marfim);
+  font-family:var(--corpo);font-size:16px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto}}
+img{max-width:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3,h4{font-family:var(--display);font-weight:800;line-height:1.02;letter-spacing:-.025em;margin:0}
+h1{font-size:clamp(2.15rem,6.2vw,4.1rem)}
+h2{font-size:clamp(1.7rem,4vw,2.7rem)}
+h3{font-size:clamp(1.1rem,2.2vw,1.42rem);font-weight:700;letter-spacing:-.015em}
+p{margin:0 0 1rem}
+a{color:var(--estrela)}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+.eyebrow{
+  font-family:var(--dado);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--estrela);display:flex;align-items:center;gap:.6rem;margin-bottom:1rem;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:var(--estrela-fraca)}
+.sec{padding:76px 0;position:relative;background:#080F26}
+.sec--luz{
+  background:var(--marfim-2);color:#171B2B;
+  /* rebind dos tokens: tudo que herda cor "clara" vira escuro dentro da seção clara */
+  --marfim:#171B2B;
+  --texto-fraco:#4E5468;
+  --linha:#D9D4C4;
+  --estrela:#8A6A21;
+}
+.sec--luz .eyebrow{color:#8A6A21}
+.sec--luz .eyebrow::before{background:#C9C3B2}
+.sec--luz .btn{background:#F2B441;color:#241A00}
+.sec--luz .btn--ghost{background:transparent;color:#171B2B;border:1px solid #C9C3B2}
+.sec--luz .resposta{border-left-color:#C79226}
+.sec--luz strong,.sec--luz b{color:#171B2B}
+.sub{color:var(--texto-fraco);max-width:60ch}
+.sec--luz .sub{color:#4B5268}
+
+/* ---------- topo ---------- */
+.topo{
+  position:sticky;top:0;z-index:60;background:#080F26;background:rgba(8,15,38,.94);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--linha);
+}
+.topo .wrap{display:flex;align-items:center;gap:16px;height:60px}
+.marca{font-family:var(--display);font-weight:800;letter-spacing:-.03em;font-size:1.15rem;display:flex;align-items:center;gap:.5rem}
+.marca i{
+  width:9px;height:9px;background:var(--estrela);border-radius:50%;display:inline-block;
+  box-shadow:0 0 0 4px rgba(242,180,65,.16),0 0 18px 4px rgba(242,180,65,.55);
+}
+.vendedor{
+  margin-left:auto;display:flex;align-items:center;gap:10px;font-size:.82rem;color:var(--texto-fraco);
+}
+.vendedor b{color:var(--marfim);font-weight:600}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:.5rem;
+  border:0;border-radius:999px;padding:.85rem 1.5rem;font-weight:600;cursor:pointer;
+  background:var(--estrela);color:#241A00;text-decoration:none;transition:transform .12s ease,box-shadow .2s ease;
+  box-shadow:0 8px 26px -12px rgba(242,180,65,.9);
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 12px 30px -12px rgba(242,180,65,.95)}
+.btn:active{transform:translateY(0)}
+.btn--sm{padding:.55rem 1rem;font-size:.85rem}
+.btn--ghost{background:transparent;color:var(--marfim);border:1px solid var(--linha);box-shadow:none}
+.btn--ghost:hover{border-color:var(--estrela)}
+.btn--zap{background:#1F9D5B;color:#fff;box-shadow:none}
+:focus-visible{outline:2px solid var(--agua);outline-offset:3px}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding:56px 0 40px;overflow:hidden;background:#080F26}
+.ceu{position:absolute;inset:0;pointer-events:none;opacity:.75}
+.hero .wrap{position:relative;z-index:2}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:44px;align-items:start}
+.h1-linha{display:block}
+.h1-linha em{font-style:normal;color:var(--estrela)}
+.promessa{margin:1.2rem 0 1.6rem;font-size:1.06rem;color:var(--texto-fraco);max-width:44ch}
+.selos{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
+.selo{
+  font-family:var(--dado);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--linha);border-radius:999px;padding:.42rem .8rem;color:var(--texto-fraco);
+}
+.selo b{color:var(--marfim);font-weight:500}
+
+/* ---------- painel de simulação ---------- */
+.painel{
+  background:linear-gradient(180deg,var(--casco) 0%,#0B1330 100%);
+  border:1px solid var(--linha);border-radius:20px;padding:22px;position:relative;
+  box-shadow:0 40px 80px -50px #000;
+}
+.painel h4{font-family:var(--dado);font-weight:500;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--texto-fraco);margin:0 0 12px}
+.segs{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.seg{
+  border:1px solid var(--linha);background:#0B1231;border-radius:11px;padding:.7rem .3rem;
+  display:flex;flex-direction:column;align-items:center;gap:.3rem;cursor:pointer;
+  font-size:.72rem;color:var(--texto-fraco);transition:.15s;
+}
+.seg svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.5}
+.seg:hover{border-color:#3A4880;color:var(--marfim)}
+.seg[aria-pressed="true"]{background:rgba(242,180,65,.12);border-color:var(--estrela);color:var(--estrela)}
+.campo{margin-top:18px}
+.campo label{display:block;font-size:.82rem;color:var(--texto-fraco);margin-bottom:.4rem}
+.valor-box{display:flex;align-items:baseline;gap:.4rem;border-bottom:1px solid var(--linha);padding-bottom:.4rem}
+.valor-box span{font-family:var(--dado);color:var(--texto-fraco)}
+.valor-box input{
+  background:transparent;border:0;font-family:var(--display);font-weight:800;
+  font-size:clamp(1.9rem,5vw,2.5rem);letter-spacing:-.03em;width:100%;padding:0;
+}
+.valor-box input:focus{outline:none}
+input[type=range]{width:100%;margin-top:14px;accent-color:var(--estrela);height:22px}
+.faixa{display:flex;justify-content:space-between;font-family:var(--dado);font-size:.7rem;color:var(--texto-fraco);margin-top:2px}
+.acao{margin-top:18px;display:flex;flex-direction:column;gap:8px}
+.acao .btn{width:100%;padding:1rem}
+.nota-min{font-size:.74rem;color:var(--texto-fraco);text-align:center;margin:0}
+
+/* ---------- planos ---------- */
+.planos{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:26px}
+.plano{
+  border:1px solid var(--linha);border-radius:var(--r);background:var(--casco);
+  padding:20px;display:flex;flex-direction:column;gap:.55rem;cursor:pointer;transition:.16s;text-align:left;
+}
+.plano:hover{border-color:#3A4880;transform:translateY(-2px)}
+.plano[aria-pressed="true"]{border-color:var(--estrela);background:#141F45;box-shadow:inset 0 0 0 1px var(--estrela)}
+.plano .tag{font-family:var(--dado);font-size:.66rem;letter-spacing:.16em;text-transform:uppercase;color:var(--estrela)}
+.plano .parc{font-family:var(--display);font-size:2rem;font-weight:800;letter-spacing:-.03em}
+.plano .parc small{font-size:.85rem;font-weight:500;color:var(--texto-fraco);letter-spacing:0}
+.plano ul{list-style:none;margin:.4rem 0 0;padding:0;display:grid;gap:.35rem;font-size:.85rem;color:var(--texto-fraco)}
+.plano li{display:flex;justify-content:space-between;gap:1rem;border-bottom:1px dashed rgba(255,255,255,.07);padding-bottom:.3rem}
+.plano li b{color:var(--marfim);font-family:var(--dado);font-weight:500}
+
+/* ---------- rota (assinatura) ---------- */
+.rota{
+  margin-top:26px;border:1px solid var(--linha);border-radius:var(--r);
+  background:radial-gradient(120% 140% at 80% 0%,#132049 0%,#0A1130 60%);padding:22px;
+}
+.rota-topo{display:flex;flex-wrap:wrap;gap:14px;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+.legenda{display:flex;flex-wrap:wrap;gap:14px;font-size:.78rem;color:var(--texto-fraco)}
+.legenda i{width:16px;height:3px;border-radius:2px;display:inline-block;margin-right:.4rem;vertical-align:middle}
+.rota svg{width:100%;height:auto;display:block}
+.janela-nota{font-size:.78rem;color:var(--texto-fraco);margin:.6rem 0 0;max-width:70ch}
+
+/* ---------- genéricos ---------- */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{border:1px solid var(--linha);border-radius:var(--r);background:var(--casco);padding:20px}
+.sec--luz .card{border-color:#E2DED2;background:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}
+.chip{
+  border:1px solid var(--linha);background:transparent;border-radius:999px;padding:.6rem 1rem;
+  cursor:pointer;font-size:.9rem;transition:.15s;color:inherit;
+}
+.chip:hover{border-color:var(--estrela)}
+.chip[aria-pressed="true"]{background:var(--estrela);border-color:var(--estrela);color:#241A00;font-weight:600}
+.sec--luz .chip{border-color:#D8D3C4}
+.resposta{
+  border-left:3px solid var(--estrela);padding:2px 0 2px 18px;margin-top:8px;
+  animation:sobe .32s ease both;
+}
+@keyframes sobe{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.dado-forte{font-family:var(--dado);font-weight:600;color:var(--estrela)}
+.sec--luz .dado-forte{color:#9A7314}
+
+/* ---------- comparativo ---------- */
+.barras{display:grid;gap:14px;margin-top:18px}
+.barra-item{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:center}
+.barra-nome{font-size:.9rem}
+.barra-nome small{display:block;color:#6B7288;font-size:.76rem}
+.barra-tri{background:#EDE9DD;border-radius:8px;height:44px;position:relative;overflow:hidden}
+.barra-fill{height:100%;border-radius:8px;display:flex;align-items:center;padding:0 12px;color:#fff;font-family:var(--dado);font-size:.86rem;font-weight:600;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.barra-fill[data-tom="claro"]{color:#241A00}
+.tabela{width:100%;border-collapse:collapse;margin-top:20px;font-size:.9rem}
+.tabela th,.tabela td{text-align:left;padding:.7rem .6rem;border-bottom:1px solid #E2DED2}
+.tabela th{font-family:var(--dado);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#6B7288;font-weight:500}
+.tabela td b{font-family:var(--dado)}
+.ressalva{font-size:.82rem;color:#5B6178;border-left:3px solid #D8D3C4;padding-left:14px;margin-top:18px}
+
+/* ---------- condição por vínculo ---------- */
+.vinculo-card{
+  border:1px solid var(--linha);border-radius:20px;padding:26px;
+  background:radial-gradient(120% 130% at 85% 0%,#16224A 0%,#0B1330 62%);
+  box-shadow:0 40px 90px -60px #000;position:relative;overflow:hidden;
+}
+.vinculo-card::after{
+  content:"";position:absolute;top:-90px;right:-60px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(242,180,65,.16),transparent 70%);pointer-events:none;
+}
+.busca-wrap{position:relative;margin-top:22px;max-width:620px}
+.busca-campo{display:flex;align-items:center;gap:.7rem;border:1px solid var(--linha);background:#0B1231;border-radius:14px;padding:.35rem .9rem;transition:border-color .15s}
+.busca-campo:focus-within{border-color:var(--estrela);box-shadow:0 0 0 3px rgba(242,180,65,.12)}
+.busca-campo svg{width:19px;height:19px;stroke:var(--texto-fraco);fill:none;stroke-width:1.8;flex:none}
+.busca-campo input{flex:1;background:transparent;border:0;padding:.95rem 0;font-size:1.02rem}
+.busca-campo input:focus{outline:none}
+.busca-campo .limpar{background:none;border:0;color:var(--texto-fraco);cursor:pointer;font-size:1.2rem;line-height:1;padding:.2rem .3rem;display:none}
+.busca-campo[data-preenchido="1"] .limpar{display:block}
+.girando{width:16px;height:16px;border:2px solid var(--linha);border-top-color:var(--estrela);border-radius:50%;animation:gira .7s linear infinite;display:none;flex:none}
+.busca-campo[data-carregando="1"] .girando{display:block}
+@keyframes gira{to{transform:rotate(360deg)}}
+.lista-org{
+  list-style:none;margin:8px 0 0;padding:6px;position:absolute;left:0;right:0;z-index:40;
+  background:#0C1435;border:1px solid var(--linha);border-radius:14px;max-height:46vh;overflow-y:auto;
+  -webkit-overflow-scrolling:touch;box-shadow:0 30px 60px -30px #000;
+}
+.lista-org[hidden]{display:none}
+.item-org{
+  display:flex;align-items:center;gap:.8rem;padding:.85rem .8rem;border-radius:10px;cursor:pointer;
+  min-height:52px;
+}
+.item-org:hover,.item-org[aria-selected="true"]{background:rgba(242,180,65,.12)}
+.item-org mark{background:transparent;color:var(--estrela);font-weight:600}
+.item-org .ico{
+  width:34px;height:34px;border-radius:9px;flex:none;display:grid;place-items:center;
+  background:#16224A;color:var(--texto-fraco);font-family:var(--dado);font-size:.62rem;letter-spacing:.04em;
+}
+.item-org .txt{min-width:0}
+.item-org .txt b{display:block;font-weight:600;font-size:.96rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.item-org .txt span{font-size:.78rem;color:var(--texto-fraco)}
+.estado-org{padding:.9rem .8rem;font-size:.9rem;color:var(--texto-fraco)}
+.link-nao-achei{
+  background:none;border:0;padding:.6rem 0 0;color:var(--estrela);cursor:pointer;font-size:.9rem;
+  text-decoration:underline;text-underline-offset:3px;
+}
+.org-ok{
+  display:flex;align-items:center;gap:.9rem;border:1px solid var(--estrela);border-radius:14px;
+  padding:1rem 1.1rem;background:rgba(242,180,65,.09);animation:sobe .32s ease both;
+}
+.org-ok .marca-ok{width:32px;height:32px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--estrela);color:#241A00;font-weight:700}
+.org-ok b{display:block;font-size:1.05rem}
+.org-ok span{font-size:.84rem;color:var(--texto-fraco)}
+.cond-bloco{margin-top:18px;animation:sobe .32s ease both}
+.cond-bloco .trocar{background:none;border:0;color:var(--texto-fraco);text-decoration:underline;cursor:pointer;font-size:.84rem;padding:0}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.cond-sucesso{
+  border:1px solid var(--agua);border-radius:14px;padding:22px;background:rgba(95,211,196,.07);
+  animation:sobe .32s ease both;
+}
+.cond-sucesso .selo-ok{width:44px;height:44px;margin-bottom:12px}
+@media (max-width:900px){
+  .vinculo-card{padding:20px}
+  .lista-org{max-height:38vh}
+}
+
+/* ---------- captura, modal, consentimento, consultor ---------- */
+.acoes-sim{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.modal{
+  position:fixed;inset:0;z-index:100;background:rgba(4,8,22,.72);backdrop-filter:blur(6px);
+  display:flex;align-items:flex-end;justify-content:center;padding:16px;overflow-y:auto;
+}
+.modal[hidden]{display:none}
+.modal-caixa{
+  background:linear-gradient(180deg,#101B3D,#0B1330);border:1px solid var(--linha);border-radius:20px;
+  padding:26px;width:100%;max-width:520px;position:relative;margin:auto 0 0;
+  animation:sobe .28s cubic-bezier(.2,.8,.2,1) both;box-shadow:0 -20px 60px -30px #000;
+}
+.modal-x{position:absolute;top:12px;right:14px;background:none;border:0;color:var(--texto-fraco);font-size:1.6rem;line-height:1;cursor:pointer;padding:.2rem .4rem}
+.modal-x:hover{color:var(--marfim)}
+.cookie-bar{
+  position:fixed;left:0;right:0;bottom:0;z-index:90;background:#0C1435;border-top:1px solid var(--linha);
+  padding:14px 18px 16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;
+}
+.cookie-bar p{margin:0;font-size:.84rem;color:var(--texto-fraco);max-width:60ch}
+.cookie-acoes{display:flex;gap:8px;margin-left:auto}
+.consultor{display:flex;gap:18px;align-items:flex-start}
+.consultor-foto{width:84px;height:84px;border-radius:16px;object-fit:cover;flex:none;border:1px solid var(--linha)}
+.consultor-foto.sem{display:grid;place-items:center;background:#16224A;font-family:var(--dado);color:var(--estrela);font-size:1.3rem}
+#proposta{display:none}
+/* trava de rolagem com modal aberto. Só overflow:hidden não segura o Chrome aqui —
+   testado: a roda do mouse continua rolando o fundo. Congelar o body em position:fixed
+   é o que funciona; travarRolagem() guarda e devolve a posição para não pular o scroll. */
+html.rolagem-travada{overflow:hidden}
+html.rolagem-travada body{position:fixed;left:0;right:0;width:100%;overflow:hidden}
+body.imprimindo>*:not(#proposta){display:none!important}
+body.imprimindo #proposta{display:block}
+@media print{
+  body{background:#fff;color:#111}
+  body>*:not(#proposta){display:none!important}
+  #proposta{display:block;font-family:Georgia,serif;padding:0}
+  #proposta h1{font-size:19pt;margin:0 0 4pt}
+  #proposta header p{font-size:9pt;color:#555;margin:0 0 16pt}
+  #proposta table{width:100%;border-collapse:collapse;font-size:10.5pt;margin-bottom:14pt}
+  #proposta th,#proposta td{text-align:left;padding:6pt 4pt;border-bottom:1px solid #ddd}
+  #proposta th{width:45%;font-weight:600;color:#333}
+  #proposta .aviso{font-size:8.5pt;color:#555;line-height:1.45;margin:0 0 8pt}
+}
+@media (min-width:900px){ .modal{align-items:center} .modal-caixa{margin:auto} }
+
+/* ---------- checkout ---------- */
+.passos{display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap}
+.passo{
+  flex:1;min-width:92px;border-top:2px solid var(--linha);padding-top:.5rem;
+  font-family:var(--dado);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--texto-fraco);
+}
+.passo[data-on="1"]{border-top-color:var(--estrela);color:var(--estrela)}
+.passo[data-done="1"]{border-top-color:var(--agua);color:var(--agua)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f{display:flex;flex-direction:column;gap:.35rem}
+.f label{font-size:.8rem;color:var(--texto-fraco)}
+.f input,.f select{
+  background:#0B1231;border:1px solid var(--linha);border-radius:10px;padding:.8rem .9rem;
+}
+.f input:focus,.f select:focus{border-color:var(--estrela);outline:none}
+.f .erro{color:var(--juros);font-size:.76rem;min-height:1em}
+.full{grid-column:1/-1}
+.consent{display:flex;flex-direction:row;flex-wrap:wrap;gap:.7rem;align-items:flex-start;font-size:.84rem;color:var(--texto-fraco)}
+.consent label{flex:1 1 12rem}
+.consent .erro{flex-basis:100%;margin-left:calc(18px + .7rem)}
+.consent input{margin-top:.25rem;accent-color:var(--estrela);width:18px;height:18px}
+.resumo{border:1px dashed var(--linha);border-radius:var(--r);padding:16px;margin-bottom:18px}
+.resumo dl{display:grid;grid-template-columns:1fr auto;gap:.45rem 1rem;margin:0;font-size:.9rem}
+.resumo dt{color:var(--texto-fraco)}
+.resumo dd{margin:0;font-family:var(--dado);text-align:right}
+.pag{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.pag button{border:1px solid var(--linha);background:#0B1231;border-radius:12px;padding:1rem .6rem;cursor:pointer;text-align:center;font-size:.85rem}
+.pag button[aria-pressed="true"]{border-color:var(--estrela);background:rgba(242,180,65,.12);color:var(--estrela)}
+.nav-passo{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.ok-final{text-align:center;padding:26px 10px}
+.ok-final .selo-ok{
+  width:64px;height:64px;border-radius:50%;margin:0 auto 16px;display:grid;place-items:center;
+  background:rgba(95,211,196,.14);border:1px solid var(--agua);color:var(--agua);font-size:1.6rem;
+}
+.proto{font-family:var(--dado);letter-spacing:.1em;color:var(--estrela)}
+
+/* ---------- prova ---------- */
+.depos-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;margin-top:24px}
+.depo{border:1px solid #E2DED2;border-radius:var(--r);padding:20px;background:#fff;display:flex;flex-direction:column;gap:.7rem;position:relative}
+.depo .meta{display:flex;gap:.7rem;align-items:center;font-size:.85rem;color:#4E5468}
+.depo .av{width:38px;height:38px;border-radius:50%;background:#EDE9DD;display:grid;place-items:center;font-family:var(--dado);font-size:.8rem;color:#7A6A3E;flex:none}
+.depo .obj{
+  align-self:flex-start;font-family:var(--dado);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+  color:#7A6320;background:#F6EFDC;border-radius:999px;padding:.3rem .7rem;
+}
+.depo blockquote{margin:0;font-size:.95rem;color:#2A2F42;line-height:1.6}
+.depo blockquote::before{content:"“";font-family:var(--display);font-size:1.6rem;color:#C9A44A;line-height:0;vertical-align:-.2em;margin-right:.1em}
+.depo .ficha{
+  margin-top:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;
+  border-top:1px solid #EDE9DD;padding-top:.8rem;
+}
+.depo .ficha div{display:flex;flex-direction:column;gap:.15rem}
+.depo .ficha span{font-family:var(--dado);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:#7B8093}
+.depo .ficha b{font-family:var(--dado);font-size:.9rem;color:#171B2B;font-weight:600}
+.depo .video{
+  display:inline-flex;align-items:center;gap:.5rem;background:none;border:1px solid #D8D3C4;border-radius:999px;
+  padding:.5rem .9rem;font-size:.85rem;cursor:pointer;color:#171B2B;align-self:flex-start;
+}
+.depo .video:hover{border-color:#C79226}
+.depo .video[disabled]{opacity:.45;cursor:not-allowed}
+.depo .exemplo{
+  position:absolute;top:12px;right:12px;font-family:var(--dado);font-size:.58rem;letter-spacing:.1em;
+  text-transform:uppercase;background:#FBECEC;color:#9E3A31;border:1px solid #F0CFCB;border-radius:999px;padding:.28rem .6rem;
+}
+.depo[data-verificado="1"] .exemplo{display:none}
+.aviso-prova{
+  border:1px solid #F0CFCB;background:#FDF4F3;color:#8C3A31;border-radius:var(--r);
+  padding:14px 16px;font-size:.86rem;margin-top:18px;
+}
+
+/* ---------- barra fixa mobile ---------- */
+.dock{
+  position:fixed;left:0;right:0;bottom:0;z-index:70;display:none;gap:10px;align-items:center;
+  background:rgba(8,15,38,.95);backdrop-filter:blur(10px);border-top:1px solid var(--linha);padding:10px 16px;
+}
+.dock .info{font-size:.78rem;color:var(--texto-fraco);line-height:1.2}
+.dock .info b{display:block;color:var(--marfim);font-family:var(--dado);font-size:1rem}
+.dock .btn{margin-left:auto}
+
+/* ---------- rodapé ---------- */
+.rodape{border-top:1px solid var(--linha);padding:40px 0 110px;font-size:.8rem;color:var(--texto-fraco);background:#080F26}
+.rodape h5{font-family:var(--dado);font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--marfim);margin:0 0 .6rem}
+.rodape p{margin:0 0 .7rem;max-width:88ch}
+.rodape a{color:var(--estrela);text-decoration:underline;text-underline-offset:2px}
+
+/* ---------- funil (debug) ---------- */
+.funil{
+  position:fixed;right:14px;bottom:80px;z-index:80;background:#0B1231;border:1px solid var(--estrela);
+  border-radius:12px;padding:12px 14px;font-family:var(--dado);font-size:.72rem;display:none;min-width:230px;
+}
+.funil h6{margin:0 0 .5rem;font-size:.68rem;letter-spacing:.16em;text-transform:uppercase;color:var(--estrela)}
+.funil div{display:flex;justify-content:space-between;gap:1rem;padding:.15rem 0;border-bottom:1px dotted var(--linha)}
+
+@media (max-width:900px){
+  .hero-grid,.grid2{grid-template-columns:1fr}
+  .planos,.grid3{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .dock{display:flex}
+  .sec{padding:56px 0}
+  .barra-item{grid-template-columns:1fr;gap:6px}
+  .segs{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"Consórcio tem juros?","acceptedAnswer":{"@type":"Answer","text":"Não há juros de financiamento. O custo do plano é a taxa de administração, diluída nas parcelas, e eventuais fundo de reserva e seguro previstos no contrato."}},
+{"@type":"Question","name":"Quanto tempo demora para ser contemplado no consórcio?","acceptedAnswer":{"@type":"Answer","text":"Não existe prazo garantido. A contemplação ocorre por sorteio ou lance em assembleia e pode acontecer no primeiro mês ou perto do fim do grupo. Lances aceleram a chance, mas não garantem data."}},
+{"@type":"Question","name":"Como funciona o lance embutido?","acceptedAnswer":{"@type":"Answer","text":"Parte do próprio crédito é usada como lance. O consorciado recebe um crédito líquido menor, mas antecipa a disputa sem desembolsar dinheiro novo. O percentual permitido consta no regulamento do grupo."}},
+{"@type":"Question","name":"Posso usar o FGTS no consórcio de imóvel?","acceptedAnswer":{"@type":"Answer","text":"Sim, nos planos de imóvel o FGTS pode ser usado como lance ou complemento do crédito, observadas as regras da Caixa e o regulamento do grupo."}},
+{"@type":"Question","name":"O que acontece se eu desistir do consórcio?","acceptedAnswer":{"@type":"Answer","text":"A devolução dos valores segue o contrato e a legislação, com os descontos previstos e, em regra, após o encerramento do grupo. Transferir a cota para outra pessoa costuma ser a alternativa mais vantajosa."}}]}
+</script>
+</head>
+<body>
+
+<!-- ================= TOPO ================= -->
+<header class="topo">
+  <div class="wrap">
+    <div class="marca"><i></i>Consórcio Canopus</div>
+    <div class="vendedor">
+      <span>Consultor: <b id="nomeVendedor">Guilherme</b></span>
+      <a class="btn btn--sm btn--zap" id="zapTopo" href="#" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <canvas class="ceu" id="ceu" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow" id="eyebrowEstagio">Compra planejada · sem juros de financiamento</div>
+        <h1 id="titulo">
+          <span class="h1-linha">Trace a rota até</span>
+          <span class="h1-linha"><em id="tituloAlvo">o seu imóvel</em></span>
+          <span class="h1-linha">sem pagar juros.</span>
+        </h1>
+        <p class="promessa" id="promessa">
+          No consórcio você paga taxa de administração, não juros de financiamento.
+          Escolha o crédito, veja a parcela real e o custo total agora — sem preencher formulário.
+        </p>
+        <div class="selos">
+          <span class="selo"><b>Grupo Canopus</b> · +50 anos de mercado</span>
+          <span class="selo">Administradora autorizada e fiscalizada pelo <b>Banco Central</b></span>
+          <span class="selo">Lei <b>11.795/2008</b></span>
+          <span class="selo">Crédito usável em <b>todo o Brasil</b></span>
+        </div>
+      </div>
+
+      <!-- PAINEL DE SIMULAÇÃO -->
+      <div class="painel" id="painel">
+        <h4>1 · O que você quer conquistar</h4>
+        <div class="segs" id="segs" role="group" aria-label="Tipo de consórcio">
+          <button class="seg" data-seg="imovel" aria-pressed="true">
+            <svg viewBox="0 0 24 24"><path d="M3 10l9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/></svg>Imóvel</button>
+          <button class="seg" data-seg="auto" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><path d="M3 13l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5v5h-3M3 18v-5m0 5h3m12 0H6"/><circle cx="7.5" cy="17.5" r="1.6"/><circle cx="16.5" cy="17.5" r="1.6"/></svg>Carro</button>
+          <button class="seg" data-seg="moto" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><circle cx="5" cy="17" r="3"/><circle cx="19" cy="17" r="3"/><path d="M8 17h6l3-6h-4l-2-3H8"/></svg>Moto</button>
+          <button class="seg" data-seg="pesados" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><path d="M2 7h11v10H2zM13 10h4l4 3v4h-8z"/><circle cx="6" cy="18" r="1.6"/><circle cx="17" cy="18" r="1.6"/></svg>Pesados</button>
+          <button class="seg" data-seg="servicos" aria-pressed="false">
+            <svg viewBox="0 0 24 24"><path d="M12 3l2.5 5.5L20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5z"/></svg>Serviços</button>
+        </div>
+
+        <div class="campo">
+          <label for="credito">2 · Quanto você quer de crédito?</label>
+          <div class="valor-box">
+            <span>R$</span>
+            <input id="credito" inputmode="numeric" value="300.000" aria-label="Valor do crédito">
+          </div>
+          <input type="range" id="range" min="150000" max="800000" step="10000" value="300000" aria-label="Ajustar crédito">
+          <div class="faixa"><span id="faixaMin">R$ 150 mil</span><span id="faixaMax">R$ 800 mil</span></div>
+        </div>
+
+        <div class="acao">
+          <button class="btn" id="btnSimular">Ver planos e parcelas</button>
+          <p class="nota-min">Resultado na hora. Seus dados só entram quando você decidir contratar.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SIMULADOR ================= -->
+<section class="sec" id="simulador">
+  <div class="wrap">
+    <div class="eyebrow">Planos disponíveis</div>
+    <h2>Três rotas para o mesmo destino</h2>
+    <p class="sub">Mesmo crédito, prazos diferentes. Prazo maior significa parcela menor e mais tempo de contribuição. Escolha a rota que cabe no seu orçamento hoje.</p>
+
+    <div class="planos" id="planos" role="group" aria-label="Planos"></div>
+
+    <div class="acoes-sim">
+      <button class="btn" id="btnReceber">Receber esta simulação no WhatsApp</button>
+      <button class="btn btn--ghost" id="btnPdf">Baixar proposta em PDF</button>
+      <button class="btn btn--ghost" id="btnLink">Copiar link para retomar depois</button>
+    </div>
+
+    <!-- ASSINATURA: carta de rota -->
+    <div class="rota" id="rota">
+      <div class="rota-topo">
+        <div>
+          <h3>Carta de rota do seu dinheiro</h3>
+          <p class="sub" style="margin:.3rem 0 0;font-size:.88rem">Quanto você terá desembolsado, mês a mês, em cada caminho.</p>
+        </div>
+        <div class="legenda">
+          <span><i style="background:var(--estrela)"></i>Consórcio Canopus</span>
+          <span><i style="background:var(--juros)"></i>Financiamento</span>
+          <span><i style="background:var(--agua)"></i>Janela de contemplação</span>
+        </div>
+      </div>
+      <svg id="grafico" viewBox="0 0 820 300" role="img" aria-label="Comparativo de desembolso acumulado entre consórcio e financiamento"></svg>
+      <p class="janela-nota">
+        A faixa em água-marinha é a <b>janela de incerteza da contemplação</b>: no consórcio a carta pode sair no primeiro mês por sorteio ou lance, ou perto do fim do grupo.
+        Ninguém — nem a administradora — pode garantir a data. Quem precisa do bem para ontem deve considerar financiamento.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONDIÇÃO POR VÍNCULO ================= -->
+<section class="sec" id="vinculo" style="padding-top:0">
+  <div class="wrap">
+    <div class="vinculo-card">
+      <div class="eyebrow">Condição por vínculo</div>
+      <h2>Sua empresa ou faculdade pode liberar uma condição diferenciada para você.</h2>
+      <p class="sub" style="margin-top:.8rem">Consulte agora se você possui uma condição especial. Leva menos de um minuto e não muda a simulação que você acabou de fazer.</p>
+
+      <div class="busca-wrap" id="buscaWrap">
+        <label for="buscaOrg" style="display:block;font-size:.85rem;color:var(--texto-fraco);margin-bottom:.5rem">Digite onde você trabalha ou estuda</label>
+        <div class="busca-campo" id="buscaCampo">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+          <input id="buscaOrg" type="text" autocomplete="off" autocorrect="off" spellcheck="false"
+                 placeholder="Ex.: Petrobras, UFMG, Unimed, Vivo…"
+                 role="combobox" aria-expanded="false" aria-controls="listaOrg" aria-autocomplete="list">
+          <div class="girando" aria-hidden="true"></div>
+          <button class="limpar" id="limparOrg" type="button" aria-label="Limpar busca">×</button>
+        </div>
+        <ul class="lista-org" id="listaOrg" role="listbox" aria-label="Organizações encontradas" hidden></ul>
+        <button class="link-nao-achei" id="naoAchei" type="button">Não encontrei minha empresa ou faculdade</button>
+      </div>
+
+      <div id="condPainel"></div>
+
+      <p class="janela-nota" style="margin-top:22px">
+        A consulta verifica se existe uma condição comercial cadastrada para a organização informada. Nem toda empresa ou instituição tem uma condição vigente — quando não houver, você é atendido pelas condições normais do plano, sem prejuízo nenhum.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= OBJETIVO / PERSONALIZAÇÃO ================= -->
+<section class="sec sec--luz" id="objetivo">
+  <div class="wrap">
+    <div class="eyebrow">Sua estratégia</div>
+    <h2>O que você pretende fazer com o crédito?</h2>
+    <p class="sub">A resposta muda a melhor combinação de prazo, lance e uso da carta.</p>
+    <div class="chips" id="chipsObjetivo" role="group" aria-label="Objetivo"></div>
+    <div id="respObjetivo"></div>
+  </div>
+</section>
+
+<!-- ================= COMPARATIVO ================= -->
+<section class="sec sec--luz" id="comparativo" style="padding-top:0">
+  <div class="wrap">
+    <div class="eyebrow">Comparação honesta</div>
+    <h2>Consórcio, financiamento ou juntar dinheiro</h2>
+    <p class="sub">Mesmo valor de crédito, mesmas premissas visíveis. Nenhum caminho é melhor para todo mundo — depende de quando você precisa do bem.</p>
+
+    <div class="barras" id="barras"></div>
+
+    <table class="tabela" id="tabelaComp">
+      <thead><tr><th>Critério</th><th>Consórcio Canopus</th><th>Financiamento</th><th>Juntar sozinho</th></tr></thead>
+      <tbody></tbody>
+    </table>
+
+    <p class="ressalva" id="ressalva"></p>
+  </div>
+</section>
+
+<!-- ================= CONTEMPLAÇÃO ================= -->
+<section class="sec" id="contemplacao">
+  <div class="wrap">
+    <div class="eyebrow">Como a carta sai</div>
+    <h2>Quatro formas de ser contemplado</h2>
+    <p class="sub">Toda assembleia é uma chance. Você concorre por sorteio sem gastar nada a mais, e pode acelerar com lance quando fizer sentido para o seu bolso.</p>
+
+    <div class="grid3" style="margin-top:26px">
+      <div class="card">
+        <div class="eyebrow" style="margin-bottom:.6rem">Sorteio</div>
+        <p style="margin:0">Mensal, com base na Loteria Federal. Todo consorciado em dia concorre, sem custo adicional. É a via de quem não tem recurso extra e pode esperar.</p>
+      </div>
+      <div class="card">
+        <div class="eyebrow" style="margin-bottom:.6rem">Lance livre</div>
+        <p style="margin:0">Você oferta o percentual que quiser. Ganha o maior lance da assembleia; empate se resolve pela pedra-chave do sorteio. O lance abate seu saldo devedor — não é taxa.</p>
+      </div>
+      <div class="card">
+        <div class="eyebrow" style="margin-bottom:.6rem">Lance fixo e limitado</div>
+        <p style="margin:0">Percentual pré-definido no regulamento do grupo (frequentemente na casa dos 30%), ou com teto máximo para equilibrar as chances entre participantes.</p>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:16px">
+      <div class="card">
+        <h3>Lance embutido: dar lance sem tirar do bolso</h3>
+        <p class="sub" style="margin-top:.6rem">Parte do próprio crédito vira o lance. Você recebe menos crédito líquido, mas antecipa a contemplação sem dinheiro novo. Nos planos de imóvel o embutido chega a metade do crédito; em veículos costuma ir até 30%. Confirme o percentual no regulamento do seu grupo.</p>
+        <div class="f" style="margin-top:12px">
+          <label for="pctLance">Percentual de lance embutido: <b id="pctLanceTxt" class="dado-forte">25%</b></label>
+          <input type="range" id="pctLance" min="0" max="50" step="5" value="25">
+        </div>
+        <div class="resumo" style="margin-top:14px">
+          <dl>
+            <dt>Crédito contratado</dt><dd id="lc1">—</dd>
+            <dt>Lance embutido</dt><dd id="lc2">—</dd>
+            <dt>Crédito líquido para comprar</dt><dd id="lc3">—</dd>
+            <dt>Parcela após a contemplação</dt><dd id="lc4">—</dd>
+          </dl>
+        </div>
+        <p class="janela-nota">Simulação ilustrativa: o lance abate o saldo devedor e as parcelas restantes são recalculadas conforme o regulamento do grupo. Não representa garantia de contemplação.</p>
+      </div>
+      <div class="card">
+        <h3>Recursos que valem como lance</h3>
+        <ul style="list-style:none;padding:0;margin:.8rem 0 0;display:grid;gap:.8rem;font-size:.93rem;color:var(--texto-fraco)">
+          <li><b style="color:var(--marfim)">FGTS</b> — aceito como lance e como complemento nos planos de imóvel, seguindo as regras da Caixa e do regulamento.</li>
+          <li><b style="color:var(--marfim)">Lance parcelado</b> — a Canopus permite dividir o lance, com a liberação do bem após a quitação do lance.</li>
+          <li><b style="color:var(--marfim)">Lance por antecipação</b> — você antecipa parcelas do fim do plano e usa esse valor como oferta.</li>
+          <li><b style="color:var(--marfim)">Recursos próprios</b> — venda de um bem, 13º, bônus, distribuição de lucros. Combinar embutido + próprio é a estratégia mais usada por quem tem pressa.</li>
+        </ul>
+        <p class="janela-nota">Regras, percentuais e prazos de liberação variam por grupo e por plano vigente. Tudo está no regulamento que você recebe antes de assinar.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROVA SOCIAL ================= -->
+<section class="sec sec--luz" id="provas">
+  <div class="wrap">
+    <div class="eyebrow">Quem já traçou a rota</div>
+    <h2>Contemplações reais, contadas por quem viveu</h2>
+    <p class="sub">Histórias diferentes, objetivos diferentes. Depoimento sem crédito contratado, forma de contemplação e prazo é decoração — aqui cada relato vem com a ficha completa.</p>
+    <div class="depos-grid" id="depos"></div>
+    <div id="avisoProva"></div>
+    <p class="ressalva">Resultados individuais. A contemplação depende de sorteio ou lance em assembleia e <b>não há garantia</b> de que outro consorciado será contemplado em prazo semelhante. Depoimentos publicados com autorização de uso de nome, imagem e voz, conforme a LGPD.</p>
+  </div>
+</section>
+
+<!-- ================= OBJEÇÕES ================= -->
+<section class="sec" id="objecoes">
+  <div class="wrap">
+    <div class="eyebrow">Sem enrolação</div>
+    <h2>O que está te impedindo de começar?</h2>
+    <div class="chips" id="chipsObj" role="group" aria-label="Objeções"></div>
+    <div id="respObj"></div>
+  </div>
+</section>
+
+<!-- ================= CONFIANÇA ================= -->
+<section class="sec" id="confianca" style="padding-top:0">
+  <div class="wrap grid2" id="gridConfianca">
+    <div id="blocoConsultor"></div>
+    <div id="blocoAssembleias"></div>
+  </div>
+</section>
+
+<!-- ================= CONTRATAÇÃO ================= -->
+<section class="sec" id="contratar" style="padding-top:0">
+  <div class="wrap">
+    <div class="card" style="padding:26px">
+      <div class="eyebrow">Adesão</div>
+      <h2>Contrate sem sair desta página</h2>
+      <p class="sub">Seis etapas. Você pode chamar o consultor a qualquer momento — mas não precisa esperar ninguém para começar.</p>
+
+      <div class="passos" id="passos">
+        <div class="passo" data-p="1">01 Plano</div>
+        <div class="passo" data-p="2">02 Identificação</div>
+        <div class="passo" data-p="3">03 Dados</div>
+        <div class="passo" data-p="4">04 Contrato</div>
+        <div class="passo" data-p="5">05 Adesão</div>
+        <div class="passo" data-p="6">06 Confirmação</div>
+      </div>
+
+      <div id="etapas"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= RODAPÉ ================= -->
+<footer class="rodape">
+  <div class="wrap">
+    <h5>Informações obrigatórias</h5>
+    <p>Consórcio não é financiamento e não é investimento com rentabilidade garantida. A contemplação ocorre exclusivamente por sorteio ou lance, em assembleia — <b>não há prazo garantido</b> para o recebimento da carta de crédito, nem promessa de contemplação em data determinada. Grupos de consórcio são regidos pela Lei nº 11.795/2008 e pelas normas do Banco Central do Brasil.</p>
+    <p>Os valores exibidos nesta página são <b>estimativas ilustrativas</b> calculadas a partir de parâmetros configuráveis e não constituem proposta comercial. Parcela, taxa de administração, fundo comum, seguros, prazos, faixas de crédito e regras de lance obedecem ao <b>plano e ao regulamento do grupo vigente</b> no momento da contratação, que prevalecem sobre qualquer simulação. A carta de crédito é reajustada periodicamente pelo índice previsto em contrato (INCC/IPCA para imóveis, tabela de referência do bem para veículos), o que altera o valor das parcelas.</p>
+    <p>Na contemplação são exigidas análise de crédito, comprovação de renda e regularidade cadastral para liberação do crédito. O bem adquirido é alienado à administradora até a quitação. Em caso de desistência, a devolução dos valores segue o contrato e a legislação aplicável. O Consórcio Canopus não comercializa cota contemplada.</p>
+    <p>Página de apoio comercial operada por representante autorizado. Canopus Administradora de Consórcios S.A. — CNPJ 68.318.773/0001-54. Imagens meramente ilustrativas. Dados pessoais tratados conforme a LGPD (Lei nº 13.709/2018); consulte a <a id="linkPrivacidade" href="politica-privacidade.html">Política de Privacidade</a> e os canais de SAC e Ouvidoria da administradora.</p>
+  </div>
+</footer>
+
+<!-- modal de captura / quiz -->
+<div class="modal" id="modalCaptura" hidden></div>
+
+<!-- proposta imprimível (só aparece na impressão) -->
+<div id="proposta" aria-hidden="true"></div>
+
+<!-- barra fixa mobile -->
+<div class="dock">
+  <div class="info">a partir de <b id="dockParcela">—</b></div>
+  <a class="btn btn--sm" href="#simulador" id="dockCta">Simular</a>
+</div>
+
+<!-- painel de funil -->
+<div class="funil" id="funil">
+  <h6>Funil da sessão</h6>
+  <div><span>visitante</span><b id="f0">1</b></div>
+  <div><span>iniciou simulação</span><b id="f1">0</b></div>
+  <div><span>concluiu simulação</span><b id="f2">0</b></div>
+  <div><span>escolheu plano</span><b id="f3">0</b></div>
+  <div><span>iniciou contratação</span><b id="f4">0</b></div>
+  <div><span>concluiu contratação</span><b id="f5">0</b></div>
+  <div><span>lead da simulação</span><b id="f6">0</b></div>
+  <h6 style="margin-top:.8rem">Condição por vínculo</h6>
+  <div><span>viu a seção</span><b id="cf0">0</b></div>
+  <div><span>iniciou busca</span><b id="cf1">0</b></div>
+  <div><span>selecionou organização</span><b id="cf2">0</b></div>
+  <div><span>iniciou formulário</span><b id="cf3">0</b></div>
+  <div><span>lead capturado</span><b id="cf4">0</b></div>
+</div>
+
+<script>
+/* =========================================================================
+   CONFIGURAÇÃO COMERCIAL — ajuste aqui com a TABELA VIGENTE da Canopus.
+   Nada além deste bloco precisa ser tocado para atualizar a LP.
+   ========================================================================= */
+const CONFIG = {
+  // TRAVA COMERCIAL: vire para true só depois de conferir taxas, prazos e faixas
+  // de crédito com a tabela vigente da Canopus. O verificar-lancamento.js bloqueia
+  // o deploy enquanto isto for false.
+  tabelaVerificada: false,
+
+  vendedor: { nome: "Guilherme", whatsapp: "5531972380299" },
+
+  // Identificação do consultor. Preencha para exibir o bloco de confiança.
+  consultor: {
+    nome: "Guilherme", registro: "", foto: "",
+    linkBacen: "https://www.bcb.gov.br/estabilidadefinanceira/consorcio",
+    apresentacao: ""
+  },
+
+  // Tags de marketing. Só carregam DEPOIS do consentimento de cookies.
+  tags: { gtmId: "", gtagId: "", metaPixel: "", conversaoGoogle: "" },
+
+  // Speed-to-lead: dispara o lead no seu fluxo em segundos.
+  notificacao: { webhook: "", avisarWhatsapp: true },
+
+  // Política de privacidade (obrigatória com pixels ativos).
+  // CONFERIR: "empresa" é o controlador dos dados que assina a política. Deduzi
+  // "Prolife Engenharia" do seu domínio de e-mail — se o controlador for outra razão
+  // social (ou seu CPF como representante autônomo), corrija aqui e no arquivo da política.
+  privacidade: { url: "politica-privacidade.html", empresa: "Prolife Engenharia" },
+
+  // Assembleias: só aparece na página se você preencher com dado REAL.
+  assembleias: [],
+
+  // Teste A/B: variantes de headline e CTA. Peso igual, sorteio por sessão.
+  abTest: {
+    ativo: true,
+    variantes: {
+      A: { headline: null, cta: "Ver planos e parcelas" },
+      B: { headline: ["Descubra em 30 segundos", "quanto custa", "sem juros."], cta: "Calcular minha parcela" }
+    }
+  },
+
+  // taxaAdm = taxa de administração TOTAL do plano (% sobre o crédito), diluída nas parcelas.
+  // fundoReserva = % total sobre o crédito (0 se o plano não tiver).
+  // seguro = % mensal sobre o saldo devedor (prestamista). taxaAdesao = % pago na entrada.
+  segmentos: {
+    imovel:   { nome:"Imóvel",   min:150000, max:800000, passo:10000, padrao:300000,
+                planos:[{prazo:120,taxaAdm:17},{prazo:150,taxaAdm:19},{prazo:180,taxaAdm:21}],
+                fundoReserva:0, seguro:0.00035, taxaAdesao:0,
+                embutidoMax:50, indice:"INCC/IPCA", jurosFin:0.0099, prazoFinMax:360, alvo:"o seu imóvel" },
+    auto:     { nome:"Carro",    min:25000,  max:302000, passo:5000,  padrao:90000,
+                planos:[{prazo:60,taxaAdm:15},{prazo:80,taxaAdm:17},{prazo:100,taxaAdm:19}],
+                fundoReserva:0, seguro:0.00045, taxaAdesao:0,
+                embutidoMax:30, indice:"Tabela de referência do bem", jurosFin:0.0175, prazoFinMax:60, alvo:"o seu carro" },
+    moto:     { nome:"Moto",     min:12000,  max:70000,  passo:2000,  padrao:26000,
+                planos:[{prazo:40,taxaAdm:16},{prazo:60,taxaAdm:18},{prazo:80,taxaAdm:20}],
+                fundoReserva:0, seguro:0.00045, taxaAdesao:0,
+                embutidoMax:30, indice:"Tabela de referência do bem", jurosFin:0.0199, prazoFinMax:48, alvo:"a sua moto" },
+    pesados:  { nome:"Pesados",  min:150000, max:600000, passo:10000, padrao:250000,
+                planos:[{prazo:80,taxaAdm:15},{prazo:100,taxaAdm:17},{prazo:113,taxaAdm:18}],
+                fundoReserva:0, seguro:0.00040, taxaAdesao:0,
+                embutidoMax:30, indice:"IPCA", jurosFin:0.0155, prazoFinMax:60, alvo:"o seu caminhão" },
+    servicos: { nome:"Serviços", min:9000,   max:60000,  passo:1000,  padrao:18000,
+                planos:[{prazo:24,taxaAdm:14},{prazo:40,taxaAdm:16},{prazo:55,taxaAdm:18}],
+                fundoReserva:0, seguro:0, taxaAdesao:0,
+                embutidoMax:25, indice:"IPCA", jurosFin:0.0299, prazoFinMax:36, alvo:"o seu projeto" }
+  },
+
+  // Base de organizações da seção "condição por vínculo".
+  // A base NÃO vai no HTML: é buscada sob demanda no primeiro toque do campo.
+  // Troque o endpoint por uma rota de API quando a base passar de alguns milhares de registros
+  // (ex.: "/api/organizacoes?q=" com busca no servidor — ver adaptador em buscarRemoto()).
+  organizacoes: {
+    endpoint: "organizacoes.json",
+    modo: "local",        // "local" = JSON carregado uma vez | "remoto" = busca no servidor a cada consulta
+    minChars: 2,
+    limite: 8,
+    debounce: 180
+  },
+
+  // Destino do lead. Vazio = mantém em memória e apenas dispara os eventos de analytics.
+  lead: { endpoint: "", origem: "lp-canopus-vinculo" },
+
+  // Premissas do comparativo — visíveis ao usuário, editáveis por você.
+  rendimentoPoupanca: 0.0085,  // a.m. líquido estimado para o cenário "juntar sozinho"
+  inflacaoBem: 0.0040          // a.m. estimado de valorização do bem
+};
+
+/* ============================ ESTADO ============================ */
+const S = {
+  seg: "imovel",
+  credito: 300000,
+  plano: null,
+  objetivo: null,
+  passo: 1,
+  pagamento: null,
+  protocolo: null,        // gerado no passo 5, viaja junto com o lead de checkout
+  entregue: false,        // o lead de checkout chegou ao servidor?
+  funil: [1,0,0,0,0,0,0],
+  dados: {}
+};
+
+/* ============================ UTIL ============================ */
+const $ = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const brl = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",maximumFractionDigits:0});
+const brl2 = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",minimumFractionDigits:2,maximumFractionDigits:2});
+const seg = () => CONFIG.segmentos[S.seg];
+
+function evento(nome, extra={}){
+  const dados = {event:nome, segmento:S.seg, credito:S.credito, variante:S.variante, ...extra};
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push(dados);
+  window.__fila = window.__fila || [];
+  if (typeof fbq === "function") fbq("trackCustom", nome, extra);
+  else window.__fila.push(dados);                    // guarda até o consentimento
+  if (typeof gtag === "function") gtag("event", nome, extra);
+}
+function marcaFunil(i){
+  if (S.funil[i]) return;
+  S.funil[i] = 1;
+  const el = document.getElementById("f"+i); if (el) el.textContent = "1";
+}
+
+/* parcela do consórcio: (crédito + taxa adm + fundo de reserva) / prazo + seguro médio.
+   O seguro incide sobre saldo devedor decrescente; usamos a média do período, que é o
+   número honesto para comparar — a primeira parcela vem um pouco acima e a última abaixo. */
+function parcelaConsorcio(credito, plano, segmento){
+  const g = segmento || seg();
+  const adm = credito * (plano.taxaAdm/100);
+  const fr  = credito * ((g.fundoReserva||0)/100);
+  const base = (credito + adm + fr) / plano.prazo;
+  const seguroMedio = credito * (g.seguro||0) * 0.55;   // saldo médio ≈ 55% do crédito
+  const parcela = base + seguroMedio;
+  const adesao = credito * ((g.taxaAdesao||0)/100);
+  const total = parcela * plano.prazo + adesao;
+  return {
+    parcela, base, seguroMedio, adm, fr, adesao, total,
+    custo: total - credito,
+    temExtras: (g.fundoReserva||0) > 0 || (g.seguro||0) > 0 || (g.taxaAdesao||0) > 0
+  };
+}
+/* financiamento pela Tabela Price */
+function parcelaPrice(pv, i, n){
+  if (i <= 0) return pv/n;
+  return pv * i / (1 - Math.pow(1+i, -n));
+}
+
+/* ============================ CÉU (assinatura sutil) ============================ */
+(function ceu(){
+  const c = $("#ceu"); if(!c) return;
+  const ctx = c.getContext("2d");
+  let estrelas = [];
+  function dim(){
+    c.width = c.offsetWidth; c.height = c.offsetHeight;
+    estrelas = Array.from({length: Math.round(c.width*c.height/9000)}, () => ({
+      x: Math.random()*c.width, y: Math.random()*c.height,
+      r: Math.random()*1.3+.2, a: Math.random()*.6+.15, v: Math.random()*.012+.003
+    }));
+  }
+  function pinta(t){
+    ctx.clearRect(0,0,c.width,c.height);
+    estrelas.forEach(e => {
+      const al = e.a + Math.sin(t*e.v)*.18;
+      ctx.beginPath(); ctx.arc(e.x,e.y,e.r,0,7);
+      ctx.fillStyle = `rgba(215,228,255,${Math.max(0,al)})`; ctx.fill();
+    });
+    // Canopus: a estrela guia, maior, no alto à direita
+    const gx = c.width*.82, gy = c.height*.2;
+    const g = ctx.createRadialGradient(gx,gy,0,gx,gy,60);
+    g.addColorStop(0,"rgba(242,180,65,.55)"); g.addColorStop(1,"rgba(242,180,65,0)");
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(gx,gy,60,0,7); ctx.fill();
+    requestAnimationFrame(pinta);
+  }
+  const reduz = (typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches) || innerWidth < 900;
+  dim(); addEventListener("resize", dim);
+  if (reduz) { pinta(0); } else { requestAnimationFrame(pinta); }
+})();
+
+/* ============================ ESTÁGIO DE CONSCIÊNCIA ============================ */
+/* Lê utm_term / utm_campaign / referrer e ajusta a primeira dobra.
+   Ex.: ?utm_term=consorcio+imobiliario+500+mil  → visitante consciente da solução
+        ?utm_campaign=primeiro-apartamento       → visitante consciente do problema     */
+function perfilar(){
+  const p = new URLSearchParams(location.search);
+  const sinal = ((p.get("utm_term")||"") + " " + (p.get("utm_campaign")||"") + " " + (p.get("estagio")||"") + " " + document.referrer).toLowerCase();
+  const v = p.get("v");
+  if (v) { CONFIG.vendedor.nome = decodeURIComponent(v); $("#nomeVendedor").textContent = CONFIG.vendedor.nome; }
+  if (p.get("zap")) CONFIG.vendedor.whatsapp = p.get("zap").replace(/\D/g,"");
+  if (p.get("debug")) $("#funil").style.display = "block";
+
+  const regras = [
+    { chave:/consorcio|consórcio|carta de credito|contemplad/, seg:null, estagio:"solucao",
+      eyebrow:"Você já conhece consórcio · veja números, não definições",
+      titulo:["Compare os planos", "e escolha a rota", "com o menor custo."],
+      promessa:"Você não precisa de mais uma explicação sobre como funciona consórcio. Precisa de parcela, prazo, taxa de administração e custo total lado a lado. Está tudo abaixo." },
+    { chave:/apartamento|casa propria|casa própria|primeiro imovel|primeiro imóvel|imovel|imóvel|minha casa/, seg:"imovel", estagio:"problema",
+      eyebrow:"Sair do aluguel · sem juros de financiamento",
+      titulo:["O apartamento", "não precisa custar", "o dobro em juros."],
+      promessa:"Em um financiamento imobiliário longo, boa parte do que você paga é juros. No consórcio existe taxa de administração — e ela é bem menor. Veja a diferença com o seu número." },
+    { chave:/financiamento|juros|taxa|quitar/, seg:null, estagio:"solucao",
+      eyebrow:"Alternativa ao financiamento",
+      titulo:["Quanto você paga", "de juros hoje", "e quanto pagaria aqui."],
+      promessa:"Coloque o valor do bem e veja os dois cenários calculados na mesma tela: parcela, prazo e custo total de cada caminho." },
+    { chave:/carro|veiculo|veículo|suv|zero km|troca/, seg:"auto", estagio:"problema",
+      eyebrow:"Trocar de carro · compra planejada",
+      titulo:["O carro novo", "sem entregar", "o valor de outro em juros."],
+      promessa:"Escolha o crédito, veja a parcela e decida com calma. Se tiver pressa, dá para acelerar com lance — a página mostra como isso muda a conta." },
+    { chave:/investi|patrimonio|patrimônio|renda|alavanc/, seg:"imovel", estagio:"consciente",
+      eyebrow:"Alavancagem patrimonial",
+      titulo:["Crédito barato", "para construir", "patrimônio."],
+      promessa:"Sem juros de financiamento, o custo do dinheiro é a taxa de administração. Para quem compra imóvel para gerar renda, a conta muda de figura. Simule o crédito." }
+  ];
+  const r = regras.find(x => x.chave.test(sinal));
+  if (!r) return "frio";
+  if (r.seg) S.seg = r.seg;
+  S.tituloFixo = true;
+  $("#eyebrowEstagio").textContent = r.eyebrow;
+  $("#titulo").innerHTML = `<span class="h1-linha">${r.titulo[0]}</span><span class="h1-linha"><em>${r.titulo[1]}</em></span><span class="h1-linha">${r.titulo[2]}</span>`;
+  $("#promessa").textContent = r.promessa;
+  return r.estagio;
+}
+
+/* ============================ SEGMENTO E CRÉDITO ============================ */
+function aplicarSegmento(){
+  const g = seg();
+  $$("#segs .seg").forEach(b => b.setAttribute("aria-pressed", b.dataset.seg === S.seg));
+  const r = $("#range");
+  r.min = g.min; r.max = g.max; r.step = g.passo;
+  S.credito = Math.min(Math.max(S.credito, g.min), g.max);
+  if (!S.creditoTocado) S.credito = g.padrao;
+  r.value = S.credito;
+  $("#credito").value = S.credito.toLocaleString("pt-BR");
+  $("#faixaMin").textContent = brl(g.min).replace(/\s/g," ");
+  $("#faixaMax").textContent = brl(g.max);
+  $("#pctLance").max = g.embutidoMax;
+  if (+$("#pctLance").value > g.embutidoMax) $("#pctLance").value = g.embutidoMax;
+  const alvo = $("#tituloAlvo");
+  if (alvo && !S.tituloFixo) alvo.textContent = g.alvo;
+  render();
+}
+function lerCredito(){
+  const n = +($("#credito").value.replace(/\D/g,"") || 0);
+  const g = seg();
+  S.credito = Math.min(Math.max(n, g.min), g.max);
+  S.creditoTocado = true;
+  $("#range").value = S.credito;
+  render();
+}
+
+/* ============================ PLANOS ============================ */
+function render(){
+  const g = seg();
+  const cont = $("#planos");
+  const rotulos = ["Parcela menor","Equilibrado","Menor custo total"];
+  const ordenados = [...g.planos].sort((a,b)=>b.prazo-a.prazo);
+  cont.innerHTML = ordenados.map((p,i) => {
+    const c = parcelaConsorcio(S.credito, p);
+    const sel = S.plano && S.plano.prazo === p.prazo;
+    return `<button class="plano" data-prazo="${p.prazo}" aria-pressed="${sel?"true":"false"}">
+      <span class="tag">${rotulos[i]}</span>
+      <span class="parc">${brl2(c.parcela)}<small> /mês</small></span>
+      <ul>
+        <li><span>Crédito</span><b>${brl(S.credito)}</b></li>
+        <li><span>Prazo</span><b>${p.prazo} meses</b></li>
+        <li><span>Taxa de administração</span><b>${p.taxaAdm}%</b></li>
+        ${g.fundoReserva ? `<li><span>Fundo de reserva</span><b>${g.fundoReserva}%</b></li>` : ""}
+        ${g.seguro ? `<li><span>Seguro (média)</span><b>${brl2(c.seguroMedio)}/mês</b></li>` : ""}
+        ${g.taxaAdesao ? `<li><span>Taxa de adesão</span><b>${brl(c.adesao)}</b></li>` : ""}
+        <li><span>Custo total do plano</span><b>${brl(c.custo)}</b></li>
+        <li><span>Total a pagar</span><b>${brl(c.total)}</b></li>
+      </ul>
+    </button>`;
+  }).join("");
+  cont.querySelectorAll(".plano").forEach(b => b.onclick = () => escolherPlano(+b.dataset.prazo));
+
+  const base = ordenados[0];
+  $("#dockParcela").textContent = brl2(parcelaConsorcio(S.credito, base).parcela);
+
+  const pRef = S.plano || ordenados[1] || base;
+  desenharRota(pRef);
+  comparativo(pRef);
+  lanceSim();
+}
+
+function escolherPlano(prazo){
+  S.plano = seg().planos.find(p => p.prazo === prazo);
+  marcaFunil(3);
+  evento("plano_escolhido", {prazo, taxa_adm:S.plano.taxaAdm});
+  render();
+  montarEtapas();
+  $("#contratar").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+/* ============================ CARTA DE ROTA (SVG) ============================ */
+function desenharRota(plano){
+  const g = seg();
+  const svg = $("#grafico");
+  const W=820,H=300,ml=64,mr=18,mt=18,mb=34;
+  const n = plano.prazo;
+  const c = parcelaConsorcio(S.credito, plano);
+  const nFin = Math.min(n, g.prazoFinMax);
+  const pmtFin = parcelaPrice(S.credito, g.jurosFin, nFin);
+  const totFin = pmtFin * nFin;
+  const yMax = Math.max(c.total, totFin) * 1.06;
+  const x = m => ml + (m/n) * (W-ml-mr);
+  const y = v => H-mb - (v/yMax) * (H-mt-mb);
+
+  const linha = (fn, passo=1) => {
+    let d = `M ${x(0)} ${y(0)}`;
+    for (let m=passo; m<=n; m+=passo) d += ` L ${x(m)} ${y(fn(m))}`;
+    return d;
+  };
+  const dCon = linha(m => c.parcela*m, Math.max(1,Math.round(n/60)));
+  const dFin = linha(m => pmtFin*Math.min(m,nFin), Math.max(1,Math.round(n/60)));
+
+  const grades = [0,.25,.5,.75,1].map(f => {
+    const v = yMax*f;
+    return `<line x1="${ml}" y1="${y(v)}" x2="${W-mr}" y2="${y(v)}" stroke="#26325C" stroke-width="1" stroke-dasharray="2 5"/>
+            <text x="${ml-8}" y="${y(v)+4}" text-anchor="end" fill="#A3ADCB" font-family="IBM Plex Mono" font-size="10">${(v/1000).toFixed(0)}k</text>`;
+  }).join("");
+
+  const jIni = x(1), jFim = x(n);
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="gEstrela" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#F2B441" stop-opacity=".55"/><stop offset="100%" stop-color="#F2B441"/>
+      </linearGradient>
+    </defs>
+    ${grades}
+    <rect x="${jIni}" y="${mt}" width="${jFim-jIni}" height="${H-mt-mb}" fill="rgba(95,211,196,.07)"/>
+    <line x1="${jIni}" y1="${mt}" x2="${jIni}" y2="${H-mb}" stroke="#5FD3C4" stroke-width="1" stroke-dasharray="4 4"/>
+    <text x="${jIni+6}" y="${mt+13}" fill="#5FD3C4" font-family="IBM Plex Mono" font-size="10">contemplação possível de ${1}º ao ${n}º mês</text>
+    <path d="${dFin}" fill="none" stroke="#E2685C" stroke-width="2.5" stroke-linecap="round"/>
+    <path d="${dCon}" fill="none" stroke="url(#gEstrela)" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="${x(n)}" cy="${y(c.total)}" r="4.5" fill="#F2B441"/>
+    <circle cx="${x(nFin)}" cy="${y(totFin)}" r="4.5" fill="#E2685C"/>
+    <text x="${x(n)-6}" y="${y(c.total)-10}" text-anchor="end" fill="#F2B441" font-family="IBM Plex Mono" font-size="11">${brl(c.total)}</text>
+    <text x="${x(nFin)-6}" y="${y(totFin)-10}" text-anchor="end" fill="#E2685C" font-family="IBM Plex Mono" font-size="11">${brl(totFin)}</text>
+    <line x1="${ml}" y1="${H-mb}" x2="${W-mr}" y2="${H-mb}" stroke="#26325C"/>
+    <text x="${ml}" y="${H-12}" fill="#A3ADCB" font-family="IBM Plex Mono" font-size="10">mês 0</text>
+    <text x="${W-mr}" y="${H-12}" text-anchor="end" fill="#A3ADCB" font-family="IBM Plex Mono" font-size="10">mês ${n}</text>`;
+}
+
+/* ============================ COMPARATIVO ============================ */
+function comparativo(plano){
+  const g = seg();
+  const c = parcelaConsorcio(S.credito, plano);
+  const nFin = Math.min(plano.prazo, g.prazoFinMax);
+  const pmtFin = parcelaPrice(S.credito, g.jurosFin, nFin);
+  const totFin = pmtFin * nFin;
+
+  // juntar sozinho: depositando o valor da parcela do consórcio, com o bem se valorizando
+  let saldo=0, alvo=S.credito, meses=0;
+  while (saldo < alvo && meses < 600){ saldo = saldo*(1+CONFIG.rendimentoPoupanca) + c.parcela; alvo *= (1+CONFIG.inflacaoBem); meses++; }
+  const totJuntar = c.parcela*meses;
+
+  const max = Math.max(c.total, totFin, totJuntar);
+  const barra = (nome,sub,valor,cor,tom) => `
+    <div class="barra-item">
+      <div class="barra-nome">${nome}<small>${sub}</small></div>
+      <div class="barra-tri"><div class="barra-fill" data-tom="${tom}" style="width:${Math.max(18,valor/max*100)}%;background:${cor}">${brl(valor)}</div></div>
+    </div>`;
+
+  $("#barras").innerHTML =
+    barra("Consórcio Canopus", `${plano.prazo}x de ${brl2(c.parcela)} · taxa adm. ${plano.taxaAdm}%`, c.total, "linear-gradient(90deg,#E0A32E,#F5C451)","claro") +
+    barra("Financiamento", `${nFin}x de ${brl2(pmtFin)} · ${(g.jurosFin*100).toFixed(2)}% a.m.`, totFin, "linear-gradient(90deg,#9E3A31,#C9483C)","escuro") +
+    barra("Juntar sozinho", `${meses} meses guardando ${brl2(c.parcela)} a ${(CONFIG.rendimentoPoupanca*100).toFixed(2)}% a.m.`, totJuntar, "linear-gradient(90deg,#3E4457,#616982)","escuro");
+
+  const economia = totFin - c.total;
+  $("#tabelaComp tbody").innerHTML = `
+    <tr><td>Custo do dinheiro</td><td><b>Taxa de administração ${plano.taxaAdm}%</b>, sem juros</td><td><b>${(g.jurosFin*100).toFixed(2)}% a.m.</b> de juros compostos</td><td>Nenhum — mas o bem sobe de preço</td></tr>
+    <tr><td>Parcela</td><td><b>${brl2(c.parcela)}</b></td><td><b>${brl2(pmtFin)}</b></td><td><b>${brl2(c.parcela)}</b> guardados</td></tr>
+    <tr><td>Quando você usa o bem</td><td>Na contemplação — <b>data incerta</b></td><td><b>Imediato</b></td><td>Só ao final: <b>~${meses} meses</b></td></tr>
+    <tr><td>Entrada</td><td>Não exigida</td><td>Normalmente 10% a 30%</td><td>Não se aplica</td></tr>
+    <tr><td>Total desembolsado</td><td><b>${brl(c.total)}</b></td><td><b>${brl(totFin)}</b></td><td><b>${brl(totJuntar)}</b></td></tr>
+    <tr><td>Diferença vs. consórcio</td><td>—</td><td><b style="color:#B7473D">+ ${brl(economia)}</b></td><td>Bem custará <b>${brl(alvo)}</b> lá na frente</td></tr>`;
+
+  $("#ressalva").innerHTML = `<b>Como esta conta foi feita:</b> consórcio = crédito + taxa de administração de ${plano.taxaAdm}%${g.fundoReserva ? ` + fundo de reserva de ${g.fundoReserva}%` : " (sem fundo de reserva)"} dividido em ${plano.prazo} meses${g.seguro ? `, mais seguro prestamista pela média do saldo devedor` : ", sem seguro no cálculo"}.
+    Financiamento = Tabela Price a ${(g.jurosFin*100).toFixed(2)}% a.m. em ${nFin} meses, sem IOF, tarifas e seguros obrigatórios — o custo real de um financiamento tende a ser <b>maior</b> que o mostrado.
+    Nenhum dos três cenários considera a correção anual do crédito (${g.indice}), que reajusta parcelas no consórcio e valoriza o bem nos outros caminhos.
+    Ajuste as premissas com o seu consultor antes de decidir.`;
+}
+
+/* ============================ LANCE EMBUTIDO ============================ */
+function lanceSim(){
+  const g = seg();
+  const plano = S.plano || g.planos[g.planos.length-1];
+  const pct = +$("#pctLance").value;
+  const c = parcelaConsorcio(S.credito, plano);
+  const lance = S.credito * pct/100;
+  const liquido = S.credito - lance;
+  const mesesRest = Math.max(1, plano.prazo - 12);
+  const saldoApos = Math.max(0, c.total - lance - c.parcela*12);
+  $("#pctLanceTxt").textContent = pct + "%";
+  $("#lc1").textContent = brl(S.credito);
+  $("#lc2").textContent = brl(lance);
+  $("#lc3").textContent = brl(liquido);
+  $("#lc4").textContent = brl2(saldoApos/mesesRest) + " em " + mesesRest + "x";
+}
+
+/* ============================ OBJETIVO ============================ */
+const OBJETIVOS = [
+  { id:"primeiro", txt:"Comprar meu primeiro imóvel", seg:"imovel", html:`
+    <h3>Primeiro imóvel: o aluguel é o seu concorrente</h3>
+    <p>Se a parcela do consórcio é próxima do seu aluguel, você troca despesa por patrimônio. A estratégia que mais funciona aqui:</p>
+    <ul>
+      <li>Contrate o <b>maior prazo</b> para a parcela caber com folga e concorra por sorteio desde a primeira assembleia.</li>
+      <li>Use <b>FGTS</b> como lance — dinheiro que já é seu e rende pouco onde está.</li>
+      <li>Combine <b>lance embutido</b> (até metade do crédito nos planos de imóvel) com FGTS para encurtar a espera sem tirar do bolso.</li>
+      <li>Se ainda paga aluguel, some aluguel + parcela e veja quanto tempo você aguenta antes da contemplação. Esse é o número que decide o prazo.</li>
+    </ul>` },
+  { id:"trocar", txt:"Trocar de carro", seg:"auto", html:`
+    <h3>Troca de carro: o seu usado é o seu lance</h3>
+    <p>Quem já tem veículo tem uma vantagem grande no consórcio de automóvel:</p>
+    <ul>
+      <li>A venda do usado vira <b>lance livre</b> — costuma ser a forma mais rápida de contemplação sem juros.</li>
+      <li>O crédito é corrigido pela tabela de referência do bem, então ele acompanha o preço do carro que você quer.</li>
+      <li>A carta vale em <b>qualquer concessionária ou loja</b> do país, e serve para novos e seminovos dentro da idade permitida no plano.</li>
+      <li>Compra à vista com carta de crédito dá poder de negociação de desconto — o que financiamento não dá.</li>
+    </ul>` },
+  { id:"investir", txt:"Investir / formar patrimônio", seg:"imovel", html:`
+    <h3>Alavancagem: crédito barato é a matéria-prima</h3>
+    <p>Para quem compra para gerar renda, o que importa é o custo do dinheiro e o prazo:</p>
+    <ul>
+      <li>O custo aqui é a <b>taxa de administração</b>, diluída no plano — bem abaixo dos juros de um financiamento equivalente.</li>
+      <li>Cotas múltiplas de valores menores dão <b>mais bilhetes na assembleia</b> do que uma cota grande, e permitem escalonar as contemplações.</li>
+      <li>Contemplada, a carta compra à vista — desconto na negociação e possibilidade de gerar aluguel enquanto você ainda paga o plano.</li>
+      <li>Ponto de atenção honesto: <b>não há data garantida</b> de contemplação. Estratégia patrimonial com consórcio exige caixa para lances.</li>
+    </ul>` },
+  { id:"construir", txt:"Construir ou reformar", seg:"imovel", html:`
+    <h3>Construção e reforma: o crédito é liberado para a obra</h3>
+    <ul>
+      <li>A carta de imóvel pode ser usada para <b>construir em terreno próprio, reformar ou ampliar</b>, conforme o regulamento do plano.</li>
+      <li>Comprar material à vista com a carta contemplada costuma render descontos que compensam parte da taxa de administração.</li>
+      <li>Também é possível usar o crédito para <b>quitar um financiamento imobiliário</b> em andamento e sair dos juros.</li>
+      <li>A liberação exige documentação do imóvel e análise — organize matrícula e projeto antes da contemplação para não perder tempo.</li>
+    </ul>` },
+  { id:"empresa", txt:"Comprar para minha empresa", seg:"pesados", html:`
+    <h3>Empresa: crédito sem comprometer capital de giro</h3>
+    <ul>
+      <li>Frota, maquinário, sala comercial ou galpão: parcela previsível, sem os juros de uma linha de crédito bancária.</li>
+      <li>Cotas em nome do CNPJ com planejamento tributário do bem — trate isso com a sua contabilidade antes de assinar.</li>
+      <li>Múltiplas cotas permitem <b>renovar frota de forma escalonada</b>, uma contemplação por vez.</li>
+      <li>Atenção: alguns bens (linha amarela, náuticos, aeronaves) exigem garantia adicional na liberação.</li>
+    </ul>` }
+];
+function montarObjetivos(){
+  $("#chipsObjetivo").innerHTML = OBJETIVOS.map(o => `<button class="chip" data-id="${o.id}" aria-pressed="false">${o.txt}</button>`).join("");
+  $$("#chipsObjetivo .chip").forEach(b => b.onclick = () => {
+    const o = OBJETIVOS.find(x => x.id === b.dataset.id);
+    S.objetivo = o.id;
+    $$("#chipsObjetivo .chip").forEach(x => x.setAttribute("aria-pressed", x === b));
+    $("#respObjetivo").innerHTML = `<div class="resposta">${o.html}
+      <p style="margin-top:1rem"><button class="btn btn--sm" onclick="document.getElementById('simulador').scrollIntoView({behavior:'smooth'})">Ajustar minha simulação</button></p></div>`;
+    evento("objetivo_definido", {objetivo:o.id});
+    montarDepos();
+    if (o.seg && o.seg !== S.seg && confirmarTroca(o)) { S.seg = o.seg; S.creditoTocado = false; aplicarSegmento(); }
+  });
+}
+function confirmarTroca(o){ return !S.creditoTocado; }
+
+/* ============================ OBJEÇÕES ============================ */
+const OBJECOES = [
+  { t:"Tenho medo de demorar para ser contemplado", h:`
+     <h3>É o risco real do consórcio — e dá para administrar</h3>
+     <p>Ninguém pode prometer data de contemplação: seria ilegal e desonesto. O que existe é estratégia.
+     Toda assembleia você concorre no sorteio sem gastar nada. Quando quiser acelerar, entram os lances — livre, fixo, embutido, parcelado em até 4 vezes ou por antecipação de parcelas.
+     O <b>lance embutido</b> usa o próprio crédito, então dá para antecipar sem dinheiro novo, recebendo um crédito líquido menor.
+     Regra prática: se você precisa do bem em menos de 6 meses e não tem recurso para lance, financiamento é mais adequado. Prefiro te dizer isso agora do que depois da assinatura.</p>` },
+  { t:"Não sei qual crédito escolher", h:`
+     <h3>Escolha pelo bem, não pela parcela</h3>
+     <p>Contrate o crédito correspondente ao valor do bem que você quer <b>hoje</b> — a carta é corrigida pelo índice do plano justamente para não ficar defasada.
+     Crédito curto demais obriga a completar com dinheiro próprio na hora da compra; crédito folgado demais pesa na parcela sem necessidade.
+     Se ficar entre duas faixas, considere <b>duas cotas menores</b>: mais chances por assembleia e possibilidade de contemplações escalonadas.</p>` },
+  { t:"Achei a parcela alta", h:`
+     <h3>Três alavancas antes de desistir</h3>
+     <p><b>Prazo maior</b> reduz a parcela imediatamente. <b>Crédito menor</b> com complemento próprio na compra também resolve.
+     E existe a opção de começar com uma cota menor agora e contratar outra depois, quando o orçamento permitir.
+     Uma regra de segurança: a parcela não deveria passar de cerca de 30% da sua renda somada às outras dívidas — consórcio atrasado perde direito de concorrer na assembleia.</p>` },
+  { t:"Quero entender o lance", h:`
+     <h3>Lance não é taxa, é adiantamento</h3>
+     <p>O valor do lance <b>abate o seu saldo devedor</b>: você não perde esse dinheiro, antecipa pagamento. Se não for contemplado, o lance ofertado não é debitado.
+     No <b>lance livre</b> vence o maior percentual da assembleia. No <b>fixo</b>, todos ofertam o mesmo percentual definido no regulamento e o desempate segue a pedra-chave da Loteria Federal.
+     No <b>embutido</b>, parte do crédito paga o lance — você recebe menos crédito, mas não tira do bolso. Use o controle da seção de contemplação para ver o efeito nos seus números.</p>` },
+  { t:"E se eu quiser desistir?", h:`
+     <h3>Existe saída, e ela tem custo</h3>
+     <p>Desistência é o cenário mais caro do consórcio, e é justo você saber disso antes.
+     Os valores pagos são devolvidos conforme o contrato e a legislação, com descontos previstos e, em regra, após o encerramento do grupo ou conforme as condições contratuais.
+     Alternativa quase sempre melhor: <b>transferir a cota</b> para outra pessoa, com anuência da administradora. Por isso o dimensionamento da parcela no começo importa tanto.</p>` },
+  { t:"Consórcio é seguro? E se a empresa quebrar?", h:`
+     <h3>Sistema regulado, dinheiro do grupo separado</h3>
+     <p>Consórcio é regido pela <b>Lei 11.795/2008</b> e fiscalizado pelo <b>Banco Central</b>. Os recursos pertencem ao grupo, não ao patrimônio da administradora, que atua como gestora e presta contas.
+     A Canopus faz parte de um grupo com décadas de mercado, com app próprio para acompanhar assembleias, boletos, extratos e ofertas de lance.
+     Você pode conferir a autorização da administradora no site do Banco Central antes de assinar. Recomendo que confira.</p>` }
+];
+function montarObjecoes(){
+  $("#chipsObj").innerHTML = OBJECOES.map((o,i) => `<button class="chip" data-i="${i}" aria-pressed="false">${o.t}</button>`).join("");
+  $$("#chipsObj .chip").forEach(b => b.onclick = () => {
+    const o = OBJECOES[+b.dataset.i];
+    $$("#chipsObj .chip").forEach(x => x.setAttribute("aria-pressed", x === b));
+    $("#respObj").innerHTML = `<div class="resposta">${o.h}
+      <p style="margin-top:1rem;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn btn--sm" onclick="document.getElementById('simulador').scrollIntoView({behavior:'smooth'})">Voltar para a simulação</button>
+        <a class="btn btn--sm btn--ghost" href="${linkZap('Ainda tenho dúvida: '+o.t)}" target="_blank" rel="noopener">Falar com ${CONFIG.vendedor.nome}</a>
+      </p></div>`;
+    evento("objecao_aberta", {objecao:o.t});
+  });
+}
+
+/* ============================ DEPOIMENTOS ============================ */
+/* Base externa em depoimentos.json. REGRA: só entra no ar com verificado=true,
+   o que exige cliente real, autorização assinada (LGPD) e contrato/cota que
+   comprove crédito, forma de contemplação e prazo. Enquanto false, o card sai
+   marcado como exemplo ilustrativo e a seção exibe o aviso de pendência.      */
+const DEPOIMENTOS_FALLBACK = [
+  {id:"dep-mariana",verificado:false,nome:"Mariana Alves",cidade:"Belo Horizonte/MG",objetivo:"Primeiro imóvel",segmento:"imovel",credito:350000,contemplacao:"Lance",meses:11,video:null,videoRotulo:"Assistir à história da Mariana",
+   relato:"Eu queria sair do aluguel, mas não queria assumir um financiamento sem entender quanto aquilo custaria no final. Entrei no consórcio já sabendo que não existia uma data garantida para contemplação. Me organizei para ofertar um lance e, quando fui contemplada, consegui seguir com a compra do apartamento que estava procurando."},
+  {id:"dep-rafael",verificado:false,nome:"Rafael Martins",cidade:"Campinas/SP",objetivo:"Trocar de carro",segmento:"auto",credito:120000,contemplacao:"Sorteio",meses:6,video:null,videoRotulo:"Ver como foi a experiência do Rafael",
+   relato:"Meu carro ainda me atendia, então eu podia planejar a troca sem tanta pressa. Escolhi uma carta de R$ 120 mil e fui acompanhando as assembleias. No sexto mês fui contemplado por sorteio. Foi antes do que eu esperava, mas eu sabia desde o início que poderia levar mais tempo."},
+  {id:"dep-brunocamila",verificado:false,nome:"Bruno e Camila",cidade:"Curitiba/PR",objetivo:"Imóvel para a família",segmento:"imovel",credito:600000,contemplacao:"Lance",meses:18,video:null,videoRotulo:"Conhecer a história do casal",
+   relato:"A nossa maior dúvida era não saber quando seríamos contemplados. O consultor deixou isso muito claro antes da adesão. Entramos porque conseguíamos esperar e planejamos um valor para lance. Depois de 18 meses, conseguimos a contemplação e começamos o processo para aquisição do imóvel."},
+  {id:"dep-eduardo",verificado:false,nome:"Eduardo Nascimento",cidade:"Goiânia/GO",objetivo:"Veículo para o negócio",segmento:"auto",credito:180000,contemplacao:"Lance",meses:9,video:null,videoRotulo:"Assistir ao depoimento do Eduardo",
+   relato:"Eu precisava trocar o veículo da empresa, mas conseguia me programar. Contratei uma carta de R$ 180 mil e reservei recursos para tentar um lance. Fui contemplado no nono mês e usei o crédito para comprar o veículo que precisava."},
+  {id:"dep-anapaula",verificado:false,status:"contemplado",nome:"Ana Paula Ribeiro",cidade:"Salvador/BA",objetivo:"Imóvel",segmento:"imovel",credito:280000,contemplacao:"Sorteio",meses:23,video:null,videoRotulo:"Ver a história da Ana Paula",
+   relato:"Eu tinha receio de entrar sem saber exatamente como funcionavam sorteio, lance e contemplação. Depois de entender as regras, decidi seguir. Minha contemplação aconteceu por sorteio depois de 23 meses. A experiência me mostrou que consórcio precisa ser encarado como planejamento, não como promessa de crédito imediato."},
+  {id:"dep-espera-longa",verificado:false,status:"contemplado",nome:"Nome do cliente",cidade:"Cidade/UF",objetivo:"Espera longa — substituir por caso real",segmento:"imovel",credito:0,contemplacao:"Sorteio",meses:0,video:null,videoRotulo:"Assistir ao depoimento",
+   relato:"Reservado para um cliente da carteira que esperou bem mais que a média. O relato deve dizer quanto tempo levou, por que a pessoa escolheu não dar lance e como ela organizou a vida enquanto esperava. É o depoimento que mais protege você de vender expectativa errada."},
+  {id:"dep-aguardando",verificado:false,status:"aguardando",nome:"Nome do cliente",cidade:"Cidade/UF",objetivo:"Ainda no plano — substituir por caso real",segmento:"auto",credito:0,contemplacao:null,meses:null,mesesPlano:0,video:null,videoRotulo:"Assistir ao depoimento",
+   relato:"Reservado para um cliente que ainda não foi contemplado. O relato deve tratar de como é a rotina de pagar em dia e concorrer nas assembleias, e por que a pessoa continua achando que valeu a pena. Mostrar quem ainda espera é o que torna os outros depoimentos críveis."}
+];
+let DEPOIMENTOS = DEPOIMENTOS_FALLBACK;
+
+const iniciais = n => n.split(/\s+e\s+|\s+/).filter(Boolean).slice(0,2).map(p => p[0]).join("").toUpperCase();
+
+async function carregarDepoimentos(){
+  try{
+    const r = await fetch("depoimentos.json", {cache:"force-cache"});
+    if (!r.ok) throw 0;
+    const j = await r.json();
+    if (Array.isArray(j.depoimentos) && j.depoimentos.length) DEPOIMENTOS = j.depoimentos;
+  }catch(e){ /* mantém o fallback embutido */ }
+  montarDepos();
+}
+
+/* prova social no momento certo: quem simulou imóvel vê primeiro quem comprou imóvel */
+function ordenarDepos(){
+  const objSeg = { primeiro:"imovel", construir:"imovel", investir:"imovel", trocar:"auto", empresa:"pesados" };
+  const alvo = objSeg[S.objetivo] || S.seg;
+  return [...DEPOIMENTOS].sort((a,b) => (b.segmento === alvo) - (a.segmento === alvo));
+}
+
+function montarDepos(){
+  const lista = ordenarDepos();
+  const ficha = d => {
+    if (d.status === "aguardando") return `
+      <div><span>Crédito</span><b>${d.credito ? brl(d.credito) : "—"}</b></div>
+      <div><span>Situação</span><b>Ainda no plano</b></div>
+      <div><span>Tempo de plano</span><b>${d.mesesPlano ? d.mesesPlano + " meses" : "—"}</b></div>`;
+    return `
+      <div><span>Crédito</span><b>${d.credito ? brl(d.credito) : "—"}</b></div>
+      <div><span>Contemplação</span><b>${escapar(d.contemplacao || "—")}</b></div>
+      <div><span>Prazo</span><b>${d.meses ? d.meses + " meses" : "—"}</b></div>`;
+  };
+  $("#depos").innerHTML = lista.map(d => `
+    <article class="depo" data-verificado="${d.verificado ? 1 : 0}" data-status="${escapar(d.status || "contemplado")}" data-id="${escapar(d.id)}">
+      <span class="exemplo" title="Depoimento ainda não verificado">Exemplo ilustrativo</span>
+      <div class="meta"><div class="av">${escapar(iniciais(d.nome))}</div>
+        <div><b>${escapar(d.nome)}</b><br>${escapar(d.cidade)}</div></div>
+      <span class="obj">${escapar(d.objetivo)}</span>
+      <blockquote>${escapar(d.relato)}</blockquote>
+      <div class="ficha">${ficha(d)}</div>
+      ${d.video
+        ? `<button class="video" data-video="${escapar(d.video)}">▶ ${escapar(d.videoRotulo || "Assistir ao depoimento")}</button>`
+        : `<button class="video" disabled title="Vídeo ainda não enviado">▶ ${escapar(d.videoRotulo || "Assistir ao depoimento")}</button>`}
+    </article>`).join("");
+
+  $$("#depos .video[data-video]").forEach(b => b.onclick = () => {
+    evento("prova_video_clicado", {depoimento: b.closest(".depo").dataset.id});
+    window.open(b.dataset.video, "_blank", "noopener");
+  });
+
+  const pendentes = lista.filter(d => !d.verificado).length;
+  const esperando = lista.filter(d => d.status === "aguardando").length;
+  $("#avisoProva").innerHTML = pendentes ? `
+    <div class="aviso-prova">
+      <b>${pendentes} de ${lista.length} depoimentos ainda não verificados.</b> Este aviso e o selo dos cards aparecem enquanto <code>verificado</code> for <code>false</code> em <code>depoimentos.json</code>.
+      Antes de publicar, cada relato precisa de cliente real da carteira, autorização de nome, imagem e voz assinada, e contrato ou cota que comprove crédito, forma de contemplação e prazo.
+      ${esperando ? `Há ${esperando} espaço(s) reservado(s) para quem ainda não foi contemplado — não remova, é o que equilibra a prova social.` : ""}
+    </div>` : "";
+}
+
+/* ============================ CHECKOUT ============================ */
+function linkZap(msg){
+  const g = seg();
+  const base = `Olá, ${CONFIG.vendedor.nome}. Vim da página do Consórcio Canopus.\n`+
+    `Segmento: ${g.nome}\nCrédito: ${brl(S.credito)}\n`+
+    (S.plano ? `Plano: ${S.plano.prazo}x · taxa adm. ${S.plano.taxaAdm}% · parcela ${brl2(parcelaConsorcio(S.credito,S.plano).parcela)}\n` : "")+
+    (msg ? `\n${msg}` : "");
+  return `https://wa.me/${CONFIG.vendedor.whatsapp}?text=${encodeURIComponent(base)}`;
+}
+function validaCPF(v){
+  const c = v.replace(/\D/g,"");
+  if (c.length !== 11 || /^(\d)\1{10}$/.test(c)) return false;
+  let s=0; for(let i=0;i<9;i++) s += +c[i]*(10-i);
+  let d1 = (s*10)%11; if(d1===10) d1=0; if(d1 !== +c[9]) return false;
+  s=0; for(let i=0;i<10;i++) s += +c[i]*(11-i);
+  let d2 = (s*10)%11; if(d2===10) d2=0;
+  return d2 === +c[10];
+}
+const mascaraCPF = v => v.replace(/\D/g,"").slice(0,11).replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");
+const mascaraTel = v => v.replace(/\D/g,"").slice(0,11).replace(/(\d{2})(\d)/,"($1) $2").replace(/(\d{5})(\d)/,"$1-$2");
+
+/* idade em anos completos a partir de "aaaa-mm-dd"; null quando a data é vazia ou inválida */
+function idadeEm(iso){
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso||"")) return null;
+  const [a,m,d] = iso.split("-").map(Number);
+  const nasc = new Date(a, m-1, d);
+  if (nasc.getFullYear() !== a || nasc.getMonth() !== m-1 || nasc.getDate() !== d) return null;
+  const hoje = new Date();
+  let anos = hoje.getFullYear() - a;
+  const fezAniversario = hoje.getMonth() > m-1 || (hoje.getMonth() === m-1 && hoje.getDate() >= d);
+  if (!fezAniversario) anos--;
+  return anos;
+}
+
+function resumoHTML(){
+  const g = seg();
+  const p = S.plano || g.planos[g.planos.length-1];
+  const c = parcelaConsorcio(S.credito, p);
+  return `<div class="resumo"><dl>
+    <dt>Segmento</dt><dd>${g.nome}</dd>
+    <dt>Crédito</dt><dd>${brl(S.credito)}</dd>
+    <dt>Prazo</dt><dd>${p.prazo} meses</dd>
+    <dt>Taxa de administração</dt><dd>${p.taxaAdm}%</dd>
+    <dt>Parcela estimada</dt><dd>${brl2(c.parcela)}</dd>
+    <dt>Total do plano</dt><dd>${brl(c.total)}</dd>
+  </dl></div>`;
+}
+
+function montarEtapas(){
+  const el = $("#etapas");
+  $$("#passos .passo").forEach(p => {
+    const n = +p.dataset.p;
+    p.dataset.on = n === S.passo ? "1" : "0";
+    p.dataset.done = n < S.passo ? "1" : "0";
+  });
+
+  if (S.passo === 1){
+    el.innerHTML = `${resumoHTML()}
+      <p class="sub">Confira o plano. Para mudar prazo ou crédito, volte à simulação — nada aqui é definitivo até a assinatura.</p>
+      <div class="nav-passo">
+        <button class="btn" id="p1a">Avançar para identificação</button>
+        <button class="btn btn--ghost" onclick="document.getElementById('simulador').scrollIntoView({behavior:'smooth'})">Mudar o plano</button>
+      </div>`;
+    $("#p1a").onclick = () => { marcaFunil(4); evento("contratacao_iniciada"); S.passo=2; montarEtapas(); };
+  }
+
+  if (S.passo === 2){
+    el.innerHTML = `
+      <div class="form-grid">
+        <div class="f"><label for="i_nome">Nome completo</label><input id="i_nome" autocomplete="name" value="${S.dados.nome||""}"><span class="erro" id="e_nome"></span></div>
+        <div class="f"><label for="i_cpf">CPF</label><input id="i_cpf" inputmode="numeric" autocomplete="off" value="${S.dados.cpf||""}"><span class="erro" id="e_cpf"></span></div>
+        <div class="f"><label for="i_tel">Celular com WhatsApp</label><input id="i_tel" inputmode="tel" autocomplete="tel" value="${S.dados.tel||""}"><span class="erro" id="e_tel"></span></div>
+        <div class="f"><label for="i_mail">E-mail</label><input id="i_mail" type="email" autocomplete="email" value="${S.dados.email||""}"><span class="erro" id="e_mail"></span></div>
+        <div class="f full consent"><input type="checkbox" id="i_lgpd" ${S.dados.lgpd?"checked":""}>
+          <label for="i_lgpd">Autorizo o contato do consultor e o tratamento dos meus dados para análise desta proposta, conforme a LGPD. Posso revogar a qualquer momento.</label>
+          <span class="erro" id="e_lgpd"></span></div>
+      </div>
+      <div class="nav-passo"><button class="btn" id="p2a">Continuar</button><button class="btn btn--ghost" id="p2v">Voltar</button></div>`;
+    $("#i_cpf").oninput = e => e.target.value = mascaraCPF(e.target.value);
+    $("#i_tel").oninput = e => e.target.value = mascaraTel(e.target.value);
+    $("#p2v").onclick = () => { S.passo=1; montarEtapas(); };
+    $("#p2a").onclick = () => {
+      const d = { nome:$("#i_nome").value.trim(), cpf:$("#i_cpf").value, tel:$("#i_tel").value, email:$("#i_mail").value.trim(), lgpd:$("#i_lgpd").checked };
+      let ok = true;
+      $("#e_nome").textContent = d.nome.split(" ").length < 2 ? "Informe nome e sobrenome." : ""; if(d.nome.split(" ").length<2) ok=false;
+      $("#e_cpf").textContent = validaCPF(d.cpf) ? "" : "CPF inválido."; if(!validaCPF(d.cpf)) ok=false;
+      $("#e_tel").textContent = d.tel.replace(/\D/g,"").length >= 10 ? "" : "Informe DDD e número."; if(d.tel.replace(/\D/g,"").length<10) ok=false;
+      $("#e_mail").textContent = /.+@.+\..+/.test(d.email) ? "" : "E-mail inválido."; if(!/.+@.+\..+/.test(d.email)) ok=false;
+      $("#e_lgpd").textContent = d.lgpd ? "" : "É necessário aceitar o tratamento de dados."; if(!d.lgpd) ok=false;
+      if (!ok) return;
+      S.dados = {...S.dados, ...d};
+      evento("identificacao_concluida");
+      S.passo = 3; montarEtapas();
+    };
+  }
+
+  if (S.passo === 3){
+    el.innerHTML = `
+      <div class="form-grid">
+        <div class="f"><label for="i_nasc">Data de nascimento</label><input id="i_nasc" type="date" value="${S.dados.nasc||""}"><span class="erro" id="e_nasc"></span></div>
+        <div class="f"><label for="i_prof">Profissão</label><input id="i_prof" value="${S.dados.prof||""}"><span class="erro" id="e_prof"></span></div>
+        <div class="f"><label for="i_renda">Renda mensal aproximada</label>
+          <select id="i_renda">
+            <option>Até R$ 3.000</option><option>R$ 3.001 a R$ 6.000</option><option>R$ 6.001 a R$ 12.000</option>
+            <option>R$ 12.001 a R$ 25.000</option><option>Acima de R$ 25.000</option>
+          </select></div>
+        <div class="f"><label for="i_comp">Como comprova renda</label>
+          <select id="i_comp"><option>Holerite / CLT</option><option>Extrato bancário (autônomo)</option><option>Pró-labore / CNPJ</option><option>Declaração de IR</option></select></div>
+        <div class="f"><label for="i_cep">CEP</label><input id="i_cep" inputmode="numeric" value="${S.dados.cep||""}"><span class="erro" id="e_cep"></span></div>
+        <div class="f"><label for="i_uf">Cidade / UF</label><input id="i_uf" value="${S.dados.uf||""}"><span class="erro" id="e_uf"></span></div>
+      </div>
+      <p class="janela-nota">Estes dados servem para montar a proposta e a análise cadastral. A análise de crédito completa acontece na contemplação, quando o crédito é liberado.</p>
+      <div class="nav-passo"><button class="btn" id="p3a">Gerar contrato</button><button class="btn btn--ghost" id="p3v">Voltar</button></div>`;
+    $("#p3v").onclick = () => { S.passo=2; montarEtapas(); };
+    $("#p3a").onclick = () => {
+      const d = { nasc:$("#i_nasc").value, prof:$("#i_prof").value.trim(), renda:$("#i_renda").value,
+                  comp:$("#i_comp").value, cep:$("#i_cep").value, uf:$("#i_uf").value.trim() };
+      let ok = true;
+      // estes dados vão para o contrato do passo 4 — não podem seguir em branco
+      const anos = idadeEm(d.nasc);
+      $("#e_nasc").textContent = anos === null ? "Informe a data de nascimento."
+                               : anos < 18      ? "É preciso ter 18 anos ou mais para aderir."
+                               : anos > 110     ? "Confira a data de nascimento." : "";
+      if ($("#e_nasc").textContent) ok = false;
+      $("#e_prof").textContent = d.prof.length >= 2 ? "" : "Informe sua profissão."; if(d.prof.length<2) ok=false;
+      const cep = d.cep.replace(/\D/g,"");
+      $("#e_cep").textContent = cep.length === 8 ? "" : "CEP deve ter 8 dígitos."; if(cep.length!==8) ok=false;
+      $("#e_uf").textContent = d.uf.length >= 3 ? "" : "Informe cidade e UF."; if(d.uf.length<3) ok=false;
+      if (!ok) return;
+      S.dados = {...S.dados, ...d};
+      evento("dados_concluidos"); S.passo=4; montarEtapas();
+    };
+  }
+
+  if (S.passo === 4){
+    const g = seg(); const p = S.plano || g.planos[g.planos.length-1];
+    const c = parcelaConsorcio(S.credito, p);
+    el.innerHTML = `
+      <h3>Documentos da proposta</h3>
+      <ul style="color:var(--texto-fraco);font-size:.93rem;line-height:1.8">
+        <li><b style="color:var(--marfim)">Proposta de adesão</b> — ${g.nome}, crédito ${brl(S.credito)}, ${p.prazo} parcelas de ${brl2(c.parcela)}.</li>
+        <li><b style="color:var(--marfim)">Contrato de participação em grupo de consórcio</b> — Lei 11.795/2008.</li>
+        <li><b style="color:var(--marfim)">Regulamento do grupo</b> — critérios de sorteio, modalidades e percentuais de lance, prazos de liberação, reajuste pelo ${g.indice}, hipóteses de exclusão e regras de devolução em caso de desistência.</li>
+      </ul>
+      <div class="consent" style="margin:14px 0">
+        <input type="checkbox" id="i_li">
+        <label for="i_li">Li a proposta, o contrato e o regulamento. Entendo que <b>não existe garantia de data de contemplação</b>, que o crédito e as parcelas são reajustados periodicamente e que a taxa de administração é o custo do plano.</label>
+      </div>
+      <div class="f"><label for="i_assin">Assine digitando seu nome completo</label><input id="i_assin" placeholder="${S.dados.nome||""}"><span class="erro" id="e_assin"></span></div>
+      <div class="nav-passo"><button class="btn" id="p4a">Assinar e ir para a adesão</button><button class="btn btn--ghost" id="p4v">Voltar</button></div>`;
+    $("#p4v").onclick = () => { S.passo=3; montarEtapas(); };
+    $("#p4a").onclick = () => {
+      const nomeOk = $("#i_assin").value.trim().toLowerCase() === (S.dados.nome||"").trim().toLowerCase();
+      if (!$("#i_li").checked) { $("#e_assin").textContent = "Marque a confirmação de leitura."; return; }
+      if (!nomeOk) { $("#e_assin").textContent = "Digite exatamente o nome informado na identificação."; return; }
+      evento("contrato_aceito"); S.passo=5; montarEtapas();
+    };
+  }
+
+  if (S.passo === 5){
+    const g = seg(); const p = S.plano || g.planos[g.planos.length-1];
+    const c = parcelaConsorcio(S.credito, p);
+    el.innerHTML = `${resumoHTML()}
+      <h3>Primeira parcela</h3>
+      <p class="sub">Valor de hoje: <b class="dado-forte">${brl2(c.parcela)}</b>. A adesão fica confirmada após a compensação e a alocação no grupo em assembleia.</p>
+      <div class="pag" id="pag">
+        <button data-m="pix" aria-pressed="false">Pix<br><small style="color:var(--texto-fraco)">confirmação imediata</small></button>
+        <button data-m="boleto" aria-pressed="false">Boleto<br><small style="color:var(--texto-fraco)">até 3 dias úteis</small></button>
+        <button data-m="cartao" aria-pressed="false">Cartão<br><small style="color:var(--texto-fraco)">primeira parcela</small></button>
+      </div>
+      <p class="janela-nota">Ambiente de demonstração: nesta versão o pagamento não é processado. Em produção, esta etapa integra com o sistema da administradora ou com o gateway autorizado, e a cota só é gerada após a confirmação.</p>
+      <div class="nav-passo"><button class="btn" id="p5a">Concluir adesão</button><button class="btn btn--ghost" id="p5v">Voltar</button></div>
+      <span class="erro" id="e_pag"></span>`;
+    $$("#pag button").forEach(b => b.onclick = () => {
+      S.pagamento = b.dataset.m;
+      $$("#pag button").forEach(x => x.setAttribute("aria-pressed", x===b));
+      $("#e_pag").textContent = "";
+    });
+    $("#p5v").onclick = () => { S.passo=4; montarEtapas(); };
+    $("#p5a").onclick = async () => {
+      if (!S.pagamento) { $("#e_pag").textContent = "Escolha como pagar a primeira parcela."; return; }
+      $("#p5a").disabled = true; $("#p5a").textContent = "Registrando…";
+      // o protocolo nasce aqui para viajar junto com o lead — protocolo que só existe
+      // na tela do cliente não serve para nada
+      S.protocolo = "CNP-" + Date.now().toString(36).toUpperCase().slice(-8);
+      S.entregue = await enviarLead(payloadCheckout(), "checkout");
+      evento("contratacao_concluida", {meio:S.pagamento, entregue:S.entregue});
+      marcaFunil(5); S.passo=6; montarEtapas();
+    };
+  }
+
+  if (S.passo === 6){
+    const proto = S.protocolo || "—";
+    el.innerHTML = S.entregue
+      ? `<div class="ok-final">
+      <div class="selo-ok">✓</div>
+      <h3>Adesão registrada</h3>
+      <p class="sub" style="margin:.6rem auto 1.2rem">Protocolo <span class="proto">${proto}</span>. ${CONFIG.vendedor.nome} recebeu sua proposta e acompanha a alocação no grupo.</p>
+      <p class="sub" style="margin:0 auto 1.4rem">Próximos passos: confirmação do pagamento, alocação em grupo na próxima assembleia, envio do contrato assinado e acesso ao app Canopus para acompanhar sorteios, boletos e ofertas de lance.</p>
+      <a class="btn btn--zap" href="${linkZap('Concluí a adesão pela página. Protocolo '+proto)}" target="_blank" rel="noopener">Enviar o protocolo no WhatsApp</a>
+    </div>`
+      : `<div class="ok-final">
+      <div class="selo-ok" style="border-color:var(--estrela);color:var(--estrela)">!</div>
+      <h3>Sua adesão não chegou até ${CONFIG.vendedor.nome}</h3>
+      <p class="sub" style="margin:.6rem auto 1.2rem">O registro falhou no envio. Nada foi perdido do seu lado — os dados continuam nesta tela —, mas <b>ninguém foi notificado ainda</b>. Chame no WhatsApp para concluir: a mensagem já vai com o protocolo <span class="proto">${proto}</span> e o plano escolhido.</p>
+      <div class="nav-passo" style="justify-content:center">
+        <a class="btn btn--zap" href="${linkZap('Concluí a adesão pela página, mas o envio falhou. Protocolo '+proto)}" target="_blank" rel="noopener">Concluir no WhatsApp</a>
+        <button class="btn btn--ghost" id="p6r">Tentar enviar de novo</button>
+      </div>
+    </div>`;
+    if ($("#p6r")) $("#p6r").onclick = async () => {
+      $("#p6r").disabled = true; $("#p6r").textContent = "Enviando…";
+      S.entregue = await enviarLead(payloadCheckout(), "checkout");
+      evento("checkout_reenvio", {entregue:S.entregue});
+      montarEtapas();
+    };
+  }
+}
+
+/* payload da contratação — o único lead que fecha negócio. O schema guarda o corpo
+   inteiro em `payload`, então os campos que não têm coluna própria (CPF, endereço,
+   assinatura, protocolo) não se perdem. */
+function payloadCheckout(){
+  const g = seg(); const p = S.plano || g.planos[g.planos.length-1];
+  const c = parcelaConsorcio(S.credito, p);
+  const d = S.dados || {};
+  return {
+    origem: "lp-canopus-checkout",
+    criado_em: new Date().toISOString(),
+    protocolo: S.protocolo || null,
+    lead: { nome: d.nome, telefone: (d.tel||"").replace(/\D/g,""), email: d.email || null },
+    cadastro: {
+      cpf: (d.cpf||"").replace(/\D/g,"") || null, nascimento: d.nasc || null,
+      profissao: d.prof || null, renda: d.renda || null, comprovacao: d.comp || null,
+      cep: (d.cep||"").replace(/\D/g,"") || null, cidade_uf: d.uf || null
+    },
+    organizacao: VINC.org ? { id:VINC.org.id, nome:VINC.org.nome, tipo:VINC.org.tipo,
+                              setor:VINC.org.setor||null, campanha:VINC.org.campanha||null } : {},
+    simulacao: {
+      produto: g.nome, segmento: S.seg, credito: S.credito, prazo: p.prazo,
+      taxa_adm: p.taxaAdm, parcela: Math.round(c.parcela*100)/100, total_plano: Math.round(c.total),
+      objetivo: S.objetivo || null, retomada: linkRetomada(), plano_escolhido: !!S.plano
+    },
+    adesao: { meio_pagamento: S.pagamento, assinatura_digitada: d.nome, assinado_em: new Date().toISOString() },
+    marketing: { ...utms(), referrer: document.referrer ? new URL(document.referrer).hostname : null, vendedor: CONFIG.vendedor.nome },
+    consentimento: { lgpd: true, em: new Date().toISOString(),
+                     texto: "contato do consultor, tratamento de dados para análise da proposta e aceite de proposta, contrato e regulamento" }
+  };
+}
+
+/* =========================================================================
+   CONDIÇÃO POR VÍNCULO — busca de organização + captura de lead
+   Arquitetura: organização → elegibilidade → campanha → benefício.
+   Enquanto não houver campanha ATIVA cadastrada, a interface fala apenas em
+   "consultar condição". Nenhum benefício é afirmado sem regra real.
+   ========================================================================= */
+const VINC = {
+  base:null, campanhas:{}, indice:[], carregando:false, erro:false,
+  org:null, manual:null, marcado:-1, seq:0,
+  formAberto:false, envios:0, ultimoEnvio:0, abertoEm:0,
+  naoEncontradas:[]   // termos sem resultado nesta sessão (para alimentar a base depois)
+};
+
+/* fallback mínimo: usado só se o JSON não puder ser carregado (ex.: arquivo aberto
+   direto do disco, sem servidor). Em produção o JSON/API sempre responde. */
+const SEED_ORGS = [
+  {id:"emp-petrobras",nome:"Petrobras",tipo:"empresa",setor:"Energia",aliases:["petroleo brasileiro"],elegibilidade:"consultar",campanha:null},
+  {id:"emp-vale",nome:"Vale",tipo:"empresa",setor:"Mineração",aliases:[],elegibilidade:"consultar",campanha:null},
+  {id:"emp-itau",nome:"Itaú Unibanco",tipo:"empresa",setor:"Bancos",aliases:["itau"],elegibilidade:"consultar",campanha:null},
+  {id:"emp-bb",nome:"Banco do Brasil",tipo:"empresa",setor:"Bancos",aliases:["bb"],elegibilidade:"consultar",campanha:null},
+  {id:"emp-cemig",nome:"Cemig",tipo:"empresa",setor:"Energia",aliases:["companhia energetica de minas gerais"],elegibilidade:"consultar",campanha:null},
+  {id:"emp-vivo",nome:"Vivo",tipo:"empresa",setor:"Telecom",aliases:["telefonica"],elegibilidade:"consultar",campanha:null},
+  {id:"emp-unimed",nome:"Unimed",tipo:"empresa",setor:"Saúde",aliases:["unimed bh"],elegibilidade:"consultar",campanha:null},
+  {id:"emp-localiza",nome:"Localiza",tipo:"empresa",setor:"Mobilidade",aliases:[],elegibilidade:"consultar",campanha:null},
+  {id:"edu-ufmg",nome:"UFMG",tipo:"ensino",setor:"Universidade pública",aliases:["universidade federal de minas gerais"],elegibilidade:"consultar",campanha:null},
+  {id:"edu-pucminas",nome:"PUC Minas",tipo:"ensino",setor:"Universidade privada",aliases:["puc mg"],elegibilidade:"consultar",campanha:null},
+  {id:"edu-usp",nome:"USP",tipo:"ensino",setor:"Universidade pública",aliases:["universidade de sao paulo"],elegibilidade:"consultar",campanha:null},
+  {id:"edu-unicesumar",nome:"Unicesumar",tipo:"ensino",setor:"EAD",aliases:["cesumar"],elegibilidade:"consultar",campanha:null}
+];
+
+/* normalização preservando o comprimento (permite destacar o trecho no nome original) */
+const semAcento = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase();
+const chave = s => semAcento(s).replace(/[^a-z0-9]+/g," ").trim();
+const limpo = (s,max=90) => String(s||"").replace(/[<>]/g,"").replace(/\s+/g," ").trim().slice(0,max);
+const escapar = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+
+async function carregarBase(){
+  if (VINC.base || VINC.carregando) return;
+  VINC.carregando = true; VINC.erro = false;
+  $("#buscaCampo").dataset.carregando = "1";
+  try{
+    const r = await fetch(CONFIG.organizacoes.endpoint, {cache:"force-cache"});
+    if (!r.ok) throw new Error("http "+r.status);
+    const j = await r.json();
+    VINC.base = j.organizacoes || [];
+    VINC.campanhas = j.campanhas || {};
+  }catch(e){
+    VINC.base = SEED_ORGS; VINC.campanhas = {}; VINC.erro = true;
+  }finally{
+    VINC.indice = VINC.base.map(o => ({
+      o,
+      k: chave(o.nome),
+      tokens: chave([o.nome, ...(o.aliases||[])].join(" ")).split(" ").filter(Boolean),
+      apelidos: (o.aliases||[]).map(chave)
+    }));
+    VINC.carregando = false;
+    $("#buscaCampo").dataset.carregando = "0";
+  }
+}
+
+/* busca local pontuada: nome > sigla/alias > início de palavra > trecho */
+function buscarLocal(q){
+  const n = chave(q); if (!n) return [];
+  const out = [];
+  for (const it of VINC.indice){
+    let p = 0;
+    if (it.k === n) p = 120;
+    else if (it.apelidos.includes(n)) p = 110;
+    else if (it.k.startsWith(n)) p = 95;
+    else if (it.apelidos.some(a => a.startsWith(n))) p = 85;
+    else if (it.tokens.some(t => t.startsWith(n))) p = 70;
+    else if (it.k.includes(n) || it.apelidos.some(a => a.includes(n))) p = 40;
+    if (p) out.push({o:it.o, p: p + (it.o.peso || 0)});  // "peso" opcional prioriza organizações da sua região
+  }
+  return out.sort((a,b) => b.p - a.p || a.o.nome.length - b.o.nome.length)
+            .slice(0, CONFIG.organizacoes.limite).map(x => x.o);
+}
+
+/* adaptador para base grande: troque CONFIG.organizacoes.modo para "remoto".
+   Espera { organizacoes:[...] } com o mesmo formato de campo. */
+async function buscarRemoto(q){
+  const r = await fetch(CONFIG.organizacoes.endpoint + encodeURIComponent(q), {headers:{"Accept":"application/json"}});
+  if (!r.ok) throw new Error("http "+r.status);
+  const j = await r.json();
+  VINC.campanhas = j.campanhas || VINC.campanhas;
+  return (j.organizacoes || []).slice(0, CONFIG.organizacoes.limite);
+}
+
+function destacar(nome, q){
+  const alvo = semAcento(nome), termo = semAcento(q);
+  const i = alvo.indexOf(termo);
+  if (i < 0 || !termo) return escapar(nome);
+  return escapar(nome.slice(0,i)) + "<mark>" + escapar(nome.slice(i, i+termo.length)) + "</mark>" + escapar(nome.slice(i+termo.length));
+}
+
+function pintarLista(itens, q){
+  const ul = $("#listaOrg");
+  VINC.marcado = -1;
+  if (!itens.length){
+    ul.innerHTML = `<li class="estado-org">Nenhuma organização encontrada para “${escapar(limpo(q,40))}”. Você pode informar o nome manualmente.</li>`;
+  } else {
+    ul.innerHTML = itens.map((o,i) => `
+      <li class="item-org" role="option" id="org-op-${i}" data-id="${o.id}" aria-selected="false">
+        <span class="ico">${o.tipo === "ensino" ? "EDU" : "EMP"}</span>
+        <span class="txt"><b>${destacar(o.nome,q)}</b><span>${escapar(o.setor||"")}</span></span>
+      </li>`).join("");
+    ul.querySelectorAll(".item-org").forEach(li => li.onclick = () => {
+      selecionarOrg(itens.find(x => x.id === li.dataset.id));
+    });
+  }
+  ul.hidden = false;
+  $("#buscaOrg").setAttribute("aria-expanded","true");
+}
+
+function fecharLista(){
+  $("#listaOrg").hidden = true;
+  $("#buscaOrg").setAttribute("aria-expanded","false");
+  VINC.marcado = -1;
+}
+
+let tDeb;
+async function aoDigitar(){
+  const inp = $("#buscaOrg");
+  const q = inp.value;
+  $("#buscaCampo").dataset.preenchido = q ? "1" : "0";
+  clearTimeout(tDeb);
+  if (chave(q).length < CONFIG.organizacoes.minChars) { fecharLista(); return; }
+  const meu = ++VINC.seq;
+  tDeb = setTimeout(async () => {
+    await carregarBase();
+    let itens = [];
+    try{
+      itens = CONFIG.organizacoes.modo === "remoto" ? await buscarRemoto(q) : buscarLocal(q);
+    }catch(e){
+      $("#listaOrg").innerHTML = `<li class="estado-org">Não foi possível consultar agora. Tente de novo ou informe o nome manualmente.</li>`;
+      $("#listaOrg").hidden = false; return;
+    }
+    if (meu !== VINC.seq) return;              // resposta velha: descarta
+    pintarLista(itens, q);
+    evento("cond_organizacao_pesquisada", {termo_tamanho: chave(q).length, resultados: itens.length});
+    if (!itens.length){
+      const t = limpo(q,60);
+      if (!VINC.naoEncontradas.includes(t)) VINC.naoEncontradas.push(t);
+      evento("cond_organizacao_nao_encontrada", {termo: t});
+    }
+  }, CONFIG.organizacoes.debounce);
+}
+
+function navegarLista(e){
+  const ops = [...$("#listaOrg").querySelectorAll(".item-org")];
+  if (e.key === "Escape") { fecharLista(); return; }
+  if (!ops.length) return;
+  if (e.key === "ArrowDown" || e.key === "ArrowUp"){
+    e.preventDefault();
+    VINC.marcado = e.key === "ArrowDown"
+      ? (VINC.marcado + 1) % ops.length
+      : (VINC.marcado - 1 + ops.length) % ops.length;
+    ops.forEach((li,i) => li.setAttribute("aria-selected", i === VINC.marcado));
+    ops[VINC.marcado].scrollIntoView({block:"nearest"});
+    $("#buscaOrg").setAttribute("aria-activedescendant", ops[VINC.marcado].id);
+  }
+  if (e.key === "Enter" && VINC.marcado >= 0){ e.preventDefault(); ops[VINC.marcado].click(); }
+}
+
+/* organização → elegibilidade → campanha → benefício */
+function resolverCondicao(org){
+  const c = org && org.campanha ? VINC.campanhas[org.campanha] : null;
+  if (c && c.ativa) return {tipo:"campanha", id:org.campanha, titulo:c.beneficio, detalhe:c.detalhe || ""};
+  return {tipo:"consultar", id:null, titulo:"Você pode ter acesso a uma condição diferenciada.", detalhe:"Consulte sua condição personalizada."};
+}
+
+function selecionarOrg(org){
+  if (!org) return;
+  VINC.org = org; VINC.manual = null;
+  $("#buscaOrg").value = org.nome;
+  $("#buscaCampo").dataset.preenchido = "1";
+  fecharLista();
+  evento("cond_organizacao_selecionada", {org_id:org.id, org_tipo:org.tipo, org_setor:org.setor||""});
+  pintarCondicao();
+}
+function usarManual(nome){
+  VINC.org = null;
+  VINC.manual = limpo(nome,80);
+  evento("cond_organizacao_manual", {termo: VINC.manual});
+  pintarCondicao();
+}
+
+function nomeOrg(){ return VINC.org ? VINC.org.nome : (VINC.manual || ""); }
+
+function pintarCondicao(){
+  const cond = resolverCondicao(VINC.org);
+  const jaTem = S.dados.nome && S.dados.tel;
+  const consentido = !!S.dados.lgpd;
+  $("#condPainel").innerHTML = `
+    <div class="cond-bloco">
+      <div class="org-ok">
+        <span class="marca-ok">✓</span>
+        <span>
+          <b>Encontramos: ${escapar(nomeOrg())}</b>
+          <span>${escapar(cond.titulo)} ${escapar(cond.detalhe)}</span>
+        </span>
+      </div>
+
+      <div class="form-grid" style="margin-top:16px">
+        ${jaTem ? `
+          <div class="full resumo" style="margin:0">
+            <dl>
+              <dt>Nome</dt><dd>${escapar(S.dados.nome)}</dd>
+              <dt>WhatsApp</dt><dd>${escapar(S.dados.tel)}</dd>
+            </dl>
+            <button class="trocar" id="condTrocar" type="button" style="margin-top:.6rem">Usar outros dados</button>
+          </div>` : `
+          <div class="f"><label for="cond_nome">Seu nome</label><input id="cond_nome" autocomplete="name" value="${escapar(S.dados.nome||"")}"><span class="erro" id="cond_e_nome"></span></div>
+          <div class="f"><label for="cond_tel">WhatsApp</label><input id="cond_tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" value="${escapar(S.dados.tel||"")}"><span class="erro" id="cond_e_tel"></span></div>`}
+        <input class="hp" id="cond_hp" tabindex="-1" aria-hidden="true" autocomplete="off" placeholder="não preencher">
+        ${consentido ? "" : `
+        <div class="f full consent"><input type="checkbox" id="cond_lgpd">
+          <label for="cond_lgpd">Autorizo o contato do consultor sobre esta consulta e o tratamento dos meus dados conforme a LGPD. Posso revogar quando quiser.</label></div>`}
+        <div class="full"><span class="erro" id="cond_e_geral"></span></div>
+      </div>
+
+      <div class="nav-passo">
+        <button class="btn" id="condEnviar">Ver minha condição</button>
+        <button class="btn btn--ghost" id="condOutra" type="button">Escolher outra organização</button>
+      </div>
+    </div>`;
+
+  VINC.abertoEm = Date.now();
+  marcaFunilCond(2);
+  if (!VINC.formAberto){ VINC.formAberto = true; marcaFunilCond(3); evento("cond_formulario_iniciado", eventoOrg()); }
+
+  const tel = $("#cond_tel"); if (tel) tel.oninput = e => e.target.value = mascaraTel(e.target.value);
+  const tr = $("#condTrocar"); if (tr) tr.onclick = () => { S.dados.nome=""; S.dados.tel=""; pintarCondicao(); };
+  $("#condOutra").onclick = () => {
+    VINC.org=null; VINC.manual=null; $("#condPainel").innerHTML="";
+    $("#buscaOrg").value=""; $("#buscaCampo").dataset.preenchido="0"; $("#buscaOrg").focus();
+  };
+  $("#condEnviar").onclick = enviarCondicao;
+  $("#condPainel").scrollIntoView({behavior:"smooth", block:"center"});
+}
+
+function eventoOrg(){
+  return {
+    org_id: VINC.org ? VINC.org.id : null,
+    org_tipo: VINC.org ? VINC.org.tipo : "manual",
+    campanha: VINC.org && VINC.org.campanha ? VINC.org.campanha : null,
+    manual: !VINC.org
+  };
+}
+
+function utms(){
+  const p = new URLSearchParams(location.search), o = {};
+  ["utm_source","utm_medium","utm_campaign","utm_content","utm_term","gclid","fbclid"].forEach(k => { if (p.get(k)) o[k] = limpo(p.get(k),120); });
+  return o;
+}
+
+async function enviarCondicao(){
+  const err = $("#cond_e_geral"); err.textContent = "";
+  const agora = Date.now();
+
+  // proteções contra abuso: honeypot, tempo mínimo, intervalo e teto por sessão
+  if ($("#cond_hp").value) return;
+  if (agora - VINC.abertoEm < 1200){ err.textContent = "Aguarde um instante e tente novamente."; return; }
+  if (agora - VINC.ultimoEnvio < 5000){ err.textContent = "Envio já registrado. Aguarde alguns segundos."; return; }
+  if (VINC.envios >= 3){ err.textContent = "Já registramos suas consultas. Fale com o consultor pelo WhatsApp."; return; }
+
+  let nome = S.dados.nome, tel = S.dados.tel;
+  if ($("#cond_nome")){
+    nome = limpo($("#cond_nome").value, 80);
+    tel  = limpo($("#cond_tel").value, 20);
+    let ok = true;
+    $("#cond_e_nome").textContent = nome.split(" ").filter(Boolean).length >= 2 ? "" : "Informe nome e sobrenome.";
+    if (nome.split(" ").filter(Boolean).length < 2) ok = false;
+    const dig = tel.replace(/\D/g,"");
+    $("#cond_e_tel").textContent = dig.length >= 10 && dig.length <= 11 ? "" : "Informe DDD e número.";
+    if (dig.length < 10 || dig.length > 11) ok = false;
+    if (!ok) return;
+  }
+  if ($("#cond_lgpd") && !$("#cond_lgpd").checked){ err.textContent = "É necessário autorizar o contato para consultar sua condição."; return; }
+
+  // preserva no estado da LP: o checkout não perguntará de novo
+  S.dados.nome = nome; S.dados.tel = tel; S.dados.lgpd = true;
+  S.dados.organizacao = VINC.org ? VINC.org.id : null;
+  S.dados.organizacaoNome = nomeOrg();
+
+  const g = seg();
+  const plano = S.plano || g.planos[g.planos.length-1];
+  const c = parcelaConsorcio(S.credito, plano);
+  const payload = {
+    origem: CONFIG.lead.origem,
+    pagina: location.pathname,                 // sem query: nenhum dado pessoal vai para URL
+    criado_em: new Date().toISOString(),
+    lead: { nome, telefone: tel.replace(/\D/g,"") },
+    organizacao: {
+      id: VINC.org ? VINC.org.id : null,
+      nome: nomeOrg(),
+      tipo: VINC.org ? VINC.org.tipo : null,
+      setor: VINC.org ? (VINC.org.setor || null) : null,
+      vinculo: VINC.org ? (VINC.org.tipo === "ensino" ? "estudante" : "colaborador") : null,
+      manual: VINC.manual,
+      campanha: VINC.org ? VINC.org.campanha : null,
+      elegibilidade: VINC.org ? VINC.org.elegibilidade : "nao_cadastrada"
+    },
+    simulacao: {
+      produto: g.nome, segmento: S.seg, credito: S.credito,
+      prazo: plano.prazo, taxa_adm: plano.taxaAdm, parcela: Math.round(c.parcela*100)/100,
+      total_plano: Math.round(c.total), objetivo: S.objetivo || null, plano_escolhido: !!S.plano
+    },
+    marketing: { ...utms(), referrer: document.referrer ? new URL(document.referrer).hostname : null, vendedor: CONFIG.vendedor.nome },
+    consentimento: { lgpd: true, em: new Date().toISOString(), texto: "contato do consultor e tratamento de dados para consulta de condição" }
+  };
+
+  $("#condEnviar").disabled = true; $("#condEnviar").textContent = "Consultando…";
+  evento("cond_formulario_enviado", eventoOrg());
+
+  const entregue = await enviarLead(payload, "vinculo");
+
+  VINC.envios++; VINC.ultimoEnvio = Date.now();
+  marcaFunilCond(4);
+  evento("cond_lead_capturado", {...eventoOrg(), entregue});   // sem PII
+  pintarSucesso(entregue);
+}
+
+function pintarSucesso(entregue){
+  const cond = resolverCondicao(VINC.org);
+  const temCampanha = cond.tipo === "campanha";
+  $("#condPainel").innerHTML = `
+    <div class="cond-sucesso">
+      <div class="selo-ok" style="border-radius:50%;display:grid;place-items:center;background:rgba(95,211,196,.14);border:1px solid ${entregue?"var(--agua)":"var(--estrela)"};color:${entregue?"var(--agua)":"var(--estrela)"};font-size:1.3rem">${entregue?"✓":"!"}</div>
+      <h3>${entregue ? `Consulta registrada para ${escapar(nomeOrg())}` : "Não consegui registrar sua consulta"}</h3>
+      <p class="sub" style="margin:.6rem 0 1rem">
+        ${!entregue
+          ? `O envio falhou e seus dados não chegaram até ${CONFIG.vendedor.nome}. Para não perder a consulta de ${escapar(nomeOrg())}, chame no WhatsApp — o botão abaixo já leva a mensagem pronta.`
+          : temCampanha
+            ? escapar(cond.titulo) + " " + escapar(cond.detalhe)
+            : `${CONFIG.vendedor.nome} vai verificar se existe uma condição vigente para a sua organização e retorna pelo WhatsApp com o resultado — inclusive se não houver, para você não ficar esperando.`}
+      </p>
+      <p class="sub" style="margin:0 0 1.2rem">Sua simulação foi preservada: ${escapar(seg().nome)}, crédito ${brl(S.credito)}. Você pode seguir com a contratação agora e ajustar depois, se surgir condição melhor.</p>
+      <div class="nav-passo">
+        ${entregue ? `<button class="btn" id="condSeguir">Continuar para a contratação</button>` : ""}
+        <a class="btn ${entregue?"btn--ghost":"btn--zap"}" id="condZap" href="${linkZap(entregue
+            ? "Fiz a consulta de condição por vínculo na página."
+            : "Tentei consultar a condição por vínculo de " + nomeOrg() + " na página, mas o envio falhou.")}" target="_blank" rel="noopener">Falar com ${CONFIG.vendedor.nome}</a>
+        ${entregue ? "" : `<button class="btn btn--ghost" id="condSeguir">Continuar para a contratação</button>`}
+      </div>
+    </div>`;
+  $("#condSeguir").onclick = () => {
+    evento("cond_continuar_clicado", eventoOrg());
+    if (!S.plano) { $("#simulador").scrollIntoView({behavior:"smooth"}); }
+    else { montarEtapas(); $("#contratar").scrollIntoView({behavior:"smooth"}); }
+  };
+  $("#condZap").onclick = () => evento("cond_continuar_clicado", {...eventoOrg(), destino:"whatsapp"});
+}
+
+/* funil próprio da seção */
+function marcaFunilCond(i){
+  const ids = ["cf0","cf1","cf2","cf3","cf4"];
+  const el = document.getElementById(ids[i]);
+  if (el && el.textContent === "0") el.textContent = "1";
+}
+
+/* ligações da seção */
+$("#buscaOrg").addEventListener("focus", () => {
+  carregarBase();
+  marcaFunilCond(1);
+  evento("cond_busca_iniciada");
+  setTimeout(() => $("#buscaWrap").scrollIntoView({behavior:"smooth", block:"start"}), 250); // teclado no mobile
+}, {once:true});
+$("#buscaOrg").addEventListener("input", aoDigitar);
+$("#buscaOrg").addEventListener("keydown", navegarLista);
+$("#limparOrg").addEventListener("click", () => {
+  $("#buscaOrg").value = ""; $("#buscaCampo").dataset.preenchido = "0"; fecharLista(); $("#buscaOrg").focus();
+});
+$("#naoAchei").addEventListener("click", () => {
+  fecharLista();
+  evento("cond_nao_encontrei_clicado");
+  $("#condPainel").innerHTML = `
+    <div class="cond-bloco">
+      <div class="f"><label for="cond_manual">Qual é o nome da sua empresa ou instituição?</label>
+        <input id="cond_manual" placeholder="Digite o nome completo" value="${escapar($("#buscaOrg").value)}">
+        <span class="erro" id="cond_e_manual"></span></div>
+      <div class="nav-passo"><button class="btn" id="cond_manual_ok">Continuar</button></div>
+    </div>`;
+  $("#cond_manual").focus();
+  $("#cond_manual_ok").onclick = () => {
+    const v = limpo($("#cond_manual").value, 80);
+    if (v.length < 3){ $("#cond_e_manual").textContent = "Informe o nome da organização."; return; }
+    usarManual(v);
+  };
+});
+document.addEventListener("click", e => {
+  if (!e.target.closest("#buscaWrap")) fecharLista();
+});
+aoEntrar($("#vinculo"), () => { marcaFunilCond(0); evento("cond_secao_vista"); });
+
+/* =========================================================================
+   CAPTURA DA SIMULAÇÃO, PROPOSTA EM PDF, SPEED-TO-LEAD E QUIZ
+   ========================================================================= */
+
+/* ---- envio unificado de lead: seção de vínculo, simulação e checkout usam este caminho ---- */
+async function enviarLead(payload, tipo){
+  const completo = { ...payload, tipo, atribuicao: atribuicao(), variante: S.variante, url: location.pathname };
+  let entregue = false;
+  if (CONFIG.lead.endpoint){
+    try{
+      const r = await fetch(CONFIG.lead.endpoint, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(completo), keepalive:true});
+      entregue = r.ok;
+    }catch(e){}
+  }
+  // speed-to-lead: webhook separado para você ser avisado na hora
+  if (CONFIG.notificacao.webhook){
+    try{
+      fetch(CONFIG.notificacao.webhook, {method:"POST", headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({...completo, urgencia:"imediata"}), keepalive:true});
+    }catch(e){}
+  }
+  window.__leads = window.__leads || [];
+  window.__leads.push({...completo, entregue});
+  return entregue;
+}
+
+/* ---- proposta imprimível: vira PDF pelo próprio sistema, sem biblioteca externa ---- */
+function montarProposta(){
+  const g = seg();
+  const p = S.plano || g.planos[g.planos.length-1];
+  const c = parcelaConsorcio(S.credito, p);
+  const nFin = Math.min(p.prazo, g.prazoFinMax);
+  const pmtFin = parcelaPrice(S.credito, g.jurosFin, nFin);
+  const hoje = new Date().toLocaleDateString("pt-BR");
+  $("#proposta").innerHTML = `
+    <header>
+      <h1>Simulação de Consórcio Canopus</h1>
+      <p>${g.nome} · gerada em ${hoje} · consultor ${CONFIG.vendedor.nome}${CONFIG.consultor.registro ? " · registro "+CONFIG.consultor.registro : ""}</p>
+    </header>
+    <table>
+      <tr><th>Crédito contratado</th><td>${brl(S.credito)}</td></tr>
+      <tr><th>Prazo</th><td>${p.prazo} meses</td></tr>
+      <tr><th>Taxa de administração</th><td>${p.taxaAdm}%</td></tr>
+      ${g.fundoReserva ? `<tr><th>Fundo de reserva</th><td>${g.fundoReserva}%</td></tr>` : ""}
+      ${g.seguro ? `<tr><th>Seguro prestamista (média)</th><td>${brl2(c.seguroMedio)}/mês</td></tr>` : ""}
+      ${g.taxaAdesao ? `<tr><th>Taxa de adesão</th><td>${brl(c.adesao)}</td></tr>` : ""}
+      <tr><th>Parcela estimada</th><td><b>${brl2(c.parcela)}</b></td></tr>
+      <tr><th>Total do plano</th><td>${brl(c.total)}</td></tr>
+      <tr><th>Financiamento equivalente</th><td>${nFin}x de ${brl2(pmtFin)} · total ${brl(pmtFin*nFin)}</td></tr>
+      <tr><th>Diferença</th><td>${brl(pmtFin*nFin - c.total)} a mais no financiamento</td></tr>
+    </table>
+    <p class="aviso">Simulação ilustrativa, sem valor de proposta comercial. Valores sujeitos ao plano e ao regulamento do grupo vigente. A contemplação ocorre por sorteio ou lance em assembleia, <b>sem data garantida</b>. Crédito e parcelas reajustados por ${g.indice}. Consórcio regido pela Lei 11.795/2008 e fiscalizado pelo Banco Central.</p>
+    <p class="aviso">Canopus Administradora de Consórcios S.A. — CNPJ 68.318.773/0001-54. Contato do consultor: ${CONFIG.vendedor.whatsapp.replace(/^55/,"")}.</p>`;
+}
+function baixarProposta(){
+  montarProposta();
+  evento("proposta_gerada");
+  document.body.classList.add("imprimindo");
+  setTimeout(() => { window.print(); document.body.classList.remove("imprimindo"); }, 120);
+}
+
+/* ---- modal de captura da simulação ---- */
+function abrirCaptura(motivo){
+  const g = seg();
+  const p = S.plano || g.planos[g.planos.length-1];
+  const c = parcelaConsorcio(S.credito, p);
+  const jaTem = S.dados.nome && S.dados.tel;
+  $("#modalCaptura").innerHTML = `
+    <div class="modal-caixa" role="dialog" aria-modal="true" aria-labelledby="capTitulo">
+      <button class="modal-x" id="capFechar" aria-label="Fechar">×</button>
+      <div class="eyebrow">Sua simulação</div>
+      <h3 id="capTitulo">Receba esta simulação no seu WhatsApp</h3>
+      <p class="sub" style="margin:.6rem 0 1rem">${escapar(g.nome)} · ${brl(S.credito)} · ${p.prazo}x de ${brl2(c.parcela)}. Mando o resumo completo com o comparativo e você decide com calma.</p>
+      ${jaTem ? `<div class="resumo"><dl><dt>Nome</dt><dd>${escapar(S.dados.nome)}</dd><dt>WhatsApp</dt><dd>${escapar(S.dados.tel)}</dd></dl></div>` : `
+      <div class="form-grid">
+        <div class="f"><label for="cap_nome">Seu nome</label><input id="cap_nome" autocomplete="name"><span class="erro" id="cap_e_nome"></span></div>
+        <div class="f"><label for="cap_tel">WhatsApp</label><input id="cap_tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000"><span class="erro" id="cap_e_tel"></span></div>
+      </div>
+      <div class="consent" style="margin-top:10px"><input type="checkbox" id="cap_lgpd">
+        <label for="cap_lgpd">Autorizo receber esta simulação e o contato do consultor, conforme a LGPD.</label></div>`}
+      <input class="hp" id="cap_hp" tabindex="-1" aria-hidden="true" autocomplete="off">
+      <span class="erro" id="cap_e_geral"></span>
+      <div class="nav-passo">
+        <button class="btn" id="capEnviar">Receber simulação</button>
+        <button class="btn btn--ghost" id="capBaixar">Baixar em PDF</button>
+      </div>
+    </div>`;
+  $("#modalCaptura").hidden = false;
+  travarRolagem(true);
+  evento("captura_aberta", {motivo});
+  const tel = $("#cap_tel"); if (tel) tel.oninput = e => e.target.value = mascaraTel(e.target.value);
+  $("#capFechar").onclick = fecharCaptura;
+  $("#modalCaptura").onclick = e => { if (e.target.id === "modalCaptura") fecharCaptura(); };
+  $("#capBaixar").onclick = baixarProposta;
+  $("#capEnviar").onclick = async () => {
+    if ($("#cap_hp").value) return;
+    let nome = S.dados.nome, tel2 = S.dados.tel;
+    if ($("#cap_nome")){
+      nome = limpo($("#cap_nome").value, 80); tel2 = limpo($("#cap_tel").value, 20);
+      const dig = tel2.replace(/\D/g,"");
+      let ok = true;
+      $("#cap_e_nome").textContent = nome.split(" ").filter(Boolean).length >= 2 ? "" : "Informe nome e sobrenome.";
+      if (nome.split(" ").filter(Boolean).length < 2) ok = false;
+      $("#cap_e_tel").textContent = (dig.length >= 10 && dig.length <= 11) ? "" : "Informe DDD e número.";
+      if (dig.length < 10 || dig.length > 11) ok = false;
+      if (!$("#cap_lgpd").checked){ $("#cap_e_geral").textContent = "É necessário autorizar para receber."; ok = false; }
+      if (!ok) return;
+    }
+    S.dados.nome = nome; S.dados.tel = tel2; S.dados.lgpd = true;
+    $("#capEnviar").disabled = true; $("#capEnviar").textContent = "Enviando…";
+    const entregue = await enviarLead({
+      origem: "lp-canopus-simulacao",
+      criado_em: new Date().toISOString(),
+      lead: { nome, telefone: tel2.replace(/\D/g,"") },
+      simulacao: { produto: g.nome, segmento: S.seg, credito: S.credito, prazo: p.prazo,
+                   taxa_adm: p.taxaAdm, parcela: Math.round(c.parcela*100)/100, total_plano: Math.round(c.total),
+                   objetivo: S.objetivo || null, retomada: linkRetomada() },
+      marketing: utms(),
+      consentimento: { lgpd: true, em: new Date().toISOString() }
+    }, "simulacao");
+    marcaFunil(6);
+    evento("lead_simulacao_capturado", {entregue});
+    $("#modalCaptura .modal-caixa").innerHTML = `
+      <div class="ok-final">
+        <div class="selo-ok"${entregue?"":' style="border-color:var(--estrela);color:var(--estrela)"'}>${entregue?"✓":"!"}</div>
+        <h3>${entregue ? "Simulação registrada" : "Não consegui enviar sua simulação"}</h3>
+        <p class="sub" style="margin:.6rem 0 1.2rem">${entregue
+          ? `${CONFIG.vendedor.nome} envia o resumo no seu WhatsApp. Você também pode abrir a conversa agora.`
+          : `O envio falhou e seus dados não chegaram até ${CONFIG.vendedor.nome}. Abra a conversa no WhatsApp — a mensagem já vai com a sua simulação — ou baixe o PDF para não perder os números.`}</p>
+        <div class="nav-passo" style="justify-content:center">
+          <a class="btn btn--zap" href="${linkZap(entregue
+            ? "Quero receber o resumo desta simulação."
+            : "Fiz uma simulação na página, mas o envio falhou. Quero retomar por aqui.")}" target="_blank" rel="noopener">Abrir conversa</a>
+          <button class="btn btn--ghost" id="capBaixar2">Baixar em PDF</button>
+          <button class="btn btn--ghost" id="capFechar2">Continuar na página</button>
+        </div>
+      </div>`;
+    $("#capBaixar2").onclick = baixarProposta;
+    $("#capFechar2").onclick = fecharCaptura;
+  };
+}
+function fecharCaptura(){
+  $("#modalCaptura").hidden = true; $("#modalCaptura").innerHTML = "";
+  travarRolagem(false);
+}
+
+/* trava/destrava a rolagem de fundo enquanto um modal está aberto */
+let posicaoTravada = 0;
+function travarRolagem(travar){
+  const html = document.documentElement;
+  if (travar){
+    if (html.classList.contains("rolagem-travada")) return;   // já travado, não regrava a posição
+    posicaoTravada = window.scrollY;
+    html.classList.add("rolagem-travada");
+    document.body.style.top = "-" + posicaoTravada + "px";
+  } else {
+    if (!html.classList.contains("rolagem-travada")) return;
+    html.classList.remove("rolagem-travada");
+    document.body.style.top = "";
+    window.scrollTo({top: posicaoTravada, behavior: "instant"});
+  }
+}
+
+/* ---- intenção de saída no desktop e recuo no mobile ---- */
+function armarSaida(){
+  let disparou = false;
+  const dispara = motivo => {
+    if (disparou || S.dados.nome || $("#modalCaptura").hidden === false) return;
+    if (!S.funil[2]) return;                    // só para quem chegou a simular
+    disparou = true; abrirCaptura(motivo);
+  };
+  document.addEventListener("mouseout", e => { if (e.clientY <= 0) dispara("saida_desktop"); });
+  let ultimo = 0;
+  addEventListener("scroll", () => {
+    const y = scrollY;
+    if (ultimo - y > 420 && y > 800) dispara("recuo_mobile");
+    ultimo = y;
+  }, {passive:true});
+}
+
+/* ---- quiz de entrada para tráfego frio ---- */
+const QUIZ = [
+  { p:"O que você quer conquistar?", ops:[["Imóvel","imovel"],["Carro","auto"],["Moto","moto"],["Para minha empresa","pesados"]], campo:"seg" },
+  { p:"Quando você quer estar com o bem em mãos?", ops:[["O quanto antes","urgente"],["Em até 1 ano","medio"],["Posso planejar","planejado"]], campo:"prazoDesejado" },
+  { p:"Quanto cabe no seu orçamento por mês?", ops:[["Até R$ 800","800"],["R$ 800 a R$ 1.500","1500"],["R$ 1.500 a R$ 3.000","3000"],["Acima de R$ 3.000","5000"]], campo:"orcamento" }
+];
+function abrirQuiz(){
+  let i = 0; const resp = {};
+  const pinta = () => {
+    const q = QUIZ[i];
+    $("#modalCaptura").innerHTML = `
+      <div class="modal-caixa" role="dialog" aria-modal="true">
+        <button class="modal-x" id="qzFechar" aria-label="Fechar">×</button>
+        <div class="eyebrow">Passo ${i+1} de ${QUIZ.length}</div>
+        <h3>${q.p}</h3>
+        <div class="chips" style="margin-top:16px">
+          ${q.ops.map(([t,v],k) => `<button class="chip" data-v="${v}" data-k="${k}">${t}</button>`).join("")}
+        </div>
+        <p class="nota-min" style="text-align:left">Sem cadastro. Serve só para eu te mostrar o cenário certo.</p>
+      </div>`;
+    $("#qzFechar").onclick = () => { fecharCaptura(); evento("quiz_abandonado", {passo:i+1}); };
+    $$("#modalCaptura .chip").forEach(b => b.onclick = () => {
+      resp[q.campo] = b.dataset.v;
+      evento("quiz_respondido", {passo:i+1, valor:b.dataset.v});
+      i++;
+      if (i < QUIZ.length) pinta(); else concluir();
+    });
+  };
+  const concluir = () => {
+    if (resp.seg && CONFIG.segmentos[resp.seg]){ S.seg = resp.seg; S.creditoTocado = false; }
+    S.quiz = resp;
+    // orçamento vira crédito compatível com o plano mais longo do segmento
+    const g = CONFIG.segmentos[S.seg];
+    const plano = g.planos[g.planos.length-1];
+    if (resp.orcamento){
+      const alvo = (+resp.orcamento * plano.prazo) / (1 + plano.taxaAdm/100 + (g.fundoReserva||0)/100);
+      S.credito = Math.min(g.max, Math.max(g.min, Math.round(alvo/g.passo)*g.passo));
+      S.creditoTocado = true;
+    }
+    if (resp.prazoDesejado === "urgente") S.objetivo = null;
+    fecharCaptura();
+    aplicarSegmento(); montarEtapas(); montarDepos();
+    marcaFunil(1); marcaFunil(2);
+    evento("quiz_concluido", resp);
+    $("#simulador").scrollIntoView({behavior:"smooth"});
+  };
+  $("#modalCaptura").hidden = false; travarRolagem(true);
+  evento("quiz_aberto"); pinta();
+}
+
+/* ---- bloco do consultor e assembleias ---- */
+function montarConfianca(){
+  const c = CONFIG.consultor;
+  const temConsultor = c.nome && (c.registro || c.apresentacao || c.foto);
+  $("#blocoConsultor").innerHTML = temConsultor ? `
+    <div class="card consultor">
+      ${c.foto ? `<img src="${escapar(c.foto)}" alt="${escapar(c.nome)}" class="consultor-foto">` : `<div class="consultor-foto sem">${escapar(iniciais(c.nome))}</div>`}
+      <div>
+        <h3>Quem vai te atender</h3>
+        <p class="sub" style="margin:.4rem 0 .6rem"><b>${escapar(c.nome)}</b>${c.registro ? ` · representante autorizado ${escapar(c.registro)}` : ""}</p>
+        ${c.apresentacao ? `<p class="sub" style="margin:0 0 .6rem">${escapar(c.apresentacao)}</p>` : ""}
+        <p class="janela-nota" style="margin:0">Antes de assinar qualquer coisa, confira a autorização da administradora no site do Banco Central.
+          <a href="${escapar(c.linkBacen)}" target="_blank" rel="noopener">Consultar no Bacen</a>.</p>
+      </div>
+    </div>` : "";
+
+  const as = CONFIG.assembleias.filter(a => a.data && a.grupo);
+  $("#blocoAssembleias").innerHTML = as.length ? `
+    <div class="card">
+      <h3>Próximas assembleias</h3>
+      <table class="tabela" style="margin-top:12px">
+        <thead><tr><th>Data</th><th>Grupo</th><th>Bem</th><th>Vagas</th></tr></thead>
+        <tbody>${as.map(a => `<tr><td><b>${escapar(a.data)}</b></td><td>${escapar(a.grupo)}</td><td>${escapar(a.bem||"—")}</td><td>${a.vagas != null ? a.vagas : "—"}</td></tr>`).join("")}</tbody>
+      </table>
+      <p class="janela-nota">Vagas informadas pela administradora. Entrar antes da assembleia significa concorrer já nessa data — não significa contemplação garantida.</p>
+    </div>` : "";
+}
+
+/* observador com degradação: navegadores antigos caem para scroll */
+function aoEntrar(el, cb, limite=.35){
+  if (!el) return;
+  if (typeof IntersectionObserver === "function"){
+    const io = new IntersectionObserver((ents, obs) => {
+      ents.forEach(e => { if (e.isIntersecting){ cb(); obs.disconnect(); } });
+    }, {threshold:limite});
+    io.observe(el);
+    return;
+  }
+  const checa = () => {
+    const r = el.getBoundingClientRect();
+    if (r.top < innerHeight * (1 - limite) && r.bottom > 0){ cb(); removeEventListener("scroll", checa); }
+  };
+  addEventListener("scroll", checa, {passive:true}); checa();
+}
+
+/* ---- consentimento, cookies e atribuição ---- */
+const CK = {
+  ler(n){ try{ return (document.cookie.match("(^|;)\\s*"+n+"=([^;]*)")||[])[2] || null; }catch(e){ return null; } },
+  gravar(n,v,dias=90){ try{ document.cookie = `${n}=${encodeURIComponent(v)};max-age=${dias*86400};path=/;SameSite=Lax`; }catch(e){} },
+  mem:{}
+};
+function guardar(n,v,dias){ CK.mem[n]=v; CK.gravar(n,v,dias); }
+function recuperar(n){ const c = CK.ler(n); return c ? decodeURIComponent(c) : (CK.mem[n] || null); }
+
+/* ---- atribuição: primeiro e último toque ---- */
+function registrarAtribuicao(){
+  const u = utms();
+  const temUtm = Object.keys(u).length > 0;
+  const ref = document.referrer ? (()=>{ try{ return new URL(document.referrer).hostname; }catch(e){ return null; } })() : null;
+  const toque = JSON.stringify({...u, referrer: ref, em: new Date().toISOString()});
+  if (temUtm || ref){
+    if (!recuperar("cnp_first")) guardar("cnp_first", toque, 180);
+    guardar("cnp_last", toque, 180);
+  }
+}
+function atribuicao(){
+  const p = s => { try{ return s ? JSON.parse(s) : null; }catch(e){ return null; } };
+  return { primeiro: p(recuperar("cnp_first")), ultimo: p(recuperar("cnp_last")) || {...utms()} };
+}
+
+/* ---- consentimento de cookies: pixels só carregam depois do aceite ---- */
+function precisaConsentimento(){
+  return !!(CONFIG.tags.gtmId || CONFIG.tags.gtagId || CONFIG.tags.metaPixel);
+}
+function consentido(){ return recuperar("cnp_consent") === "1"; }
+function montarBannerCookies(){
+  if (!precisaConsentimento() || consentido() || recuperar("cnp_consent") === "0") { if (consentido()) carregarTags(); return; }
+  const b = document.createElement("div");
+  b.className = "cookie-bar";
+  b.innerHTML = `
+    <p>Usamos cookies de medição para entender como a página é usada e melhorar as campanhas. Você escolhe.
+      ${CONFIG.privacidade.url ? `<a href="${CONFIG.privacidade.url}" target="_blank" rel="noopener">Política de privacidade</a>.` : ""}</p>
+    <div class="cookie-acoes">
+      <button class="btn btn--sm btn--ghost" id="ckRecusar">Só o essencial</button>
+      <button class="btn btn--sm" id="ckAceitar">Aceitar</button>
+    </div>`;
+  document.body.appendChild(b);
+  $("#ckAceitar").onclick = () => { guardar("cnp_consent","1",180); b.remove(); carregarTags(); evento("consentimento_aceito"); };
+  $("#ckRecusar").onclick = () => { guardar("cnp_consent","0",180); b.remove(); evento("consentimento_recusado"); };
+}
+
+/* ---- carregamento das tags (GTM, GA4, Meta) ---- */
+let tagsCarregadas = false;
+function carregarTags(){
+  if (tagsCarregadas) return; tagsCarregadas = true;
+  const t = CONFIG.tags;
+  if (t.gtmId){
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    var f=d.getElementsByTagName(s)[0],j=d.createElement(s);j.async=true;
+    j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer',t.gtmId);
+  }
+  if (t.gtagId){
+    const s = document.createElement("script"); s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + t.gtagId;
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function(){ dataLayer.push(arguments); };
+    gtag("js", new Date()); gtag("config", t.gtagId);
+  }
+  if (t.metaPixel){
+    !function(f,b,e,v,n,t2,s2){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t2=b.createElement(e);t2.async=!0;
+    t2.src=v;s2=b.getElementsByTagName(e)[0];s2.parentNode.insertBefore(t2,s2)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq("init", t.metaPixel); fbq("track", "PageView");
+  }
+  // reenvia os eventos acumulados antes do aceite
+  (window.__fila || []).forEach(e => {
+    if (typeof fbq === "function") fbq("trackCustom", e.event, e);
+    if (typeof gtag === "function") gtag("event", e.event, e);
+  });
+}
+
+/* ---- teste A/B ---- */
+function definirVariante(){
+  if (!CONFIG.abTest.ativo) return "A";
+  const p = new URLSearchParams(location.search).get("ab");
+  if (p && CONFIG.abTest.variantes[p.toUpperCase()]) return p.toUpperCase();
+  let v = recuperar("cnp_ab");
+  if (!v || !CONFIG.abTest.variantes[v]){
+    const chaves = Object.keys(CONFIG.abTest.variantes);
+    v = chaves[Math.floor(Math.random()*chaves.length)];
+    guardar("cnp_ab", v, 30);
+  }
+  return v;
+}
+function aplicarVariante(){
+  const v = CONFIG.abTest.variantes[S.variante];
+  if (!v) return;
+  if (v.cta) $("#btnSimular").textContent = v.cta;
+  if (v.headline && !S.tituloFixo){
+    $("#titulo").innerHTML = `<span class="h1-linha">${v.headline[0]}</span><span class="h1-linha"><em>${v.headline[1]}</em></span><span class="h1-linha">${v.headline[2]}</span>`;
+    S.tituloFixo = true;
+  }
+}
+
+/* ---- retomada de sessão: estado compacto na URL, sem dado pessoal ---- */
+function linkRetomada(){
+  const st = [S.seg, S.credito, S.plano ? S.plano.prazo : 0, S.objetivo || ""].join("|");
+  const cod = btoa(unescape(encodeURIComponent(st))).replace(/=+$/,"");
+  const u = new URL(location.href);
+  u.searchParams.set("r", cod);
+  return u.toString();
+}
+function aplicarRetomada(){
+  const cod = new URLSearchParams(location.search).get("r");
+  if (!cod) return false;
+  try{
+    const [sg, cr, pz, ob] = decodeURIComponent(escape(atob(cod))).split("|");
+    if (CONFIG.segmentos[sg]) S.seg = sg;
+    const n = +cr; if (n > 0){ S.credito = n; S.creditoTocado = true; }
+    if (+pz) S.plano = seg().planos.find(p => p.prazo === +pz) || null;
+    if (ob) S.objetivo = ob;
+    evento("sessao_retomada");
+    return true;
+  }catch(e){ return false; }
+}
+
+$("#segs").addEventListener("click", e => {
+  const b = e.target.closest(".seg"); if (!b) return;
+  S.seg = b.dataset.seg; S.plano = null; S.creditoTocado = false;
+  evento("segmento_escolhido");
+  aplicarSegmento(); montarEtapas(); montarDepos();
+});
+$("#credito").addEventListener("input", e => {
+  const n = e.target.value.replace(/\D/g,"");
+  e.target.value = n ? (+n).toLocaleString("pt-BR") : "";
+});
+$("#credito").addEventListener("blur", lerCredito);
+$("#credito").addEventListener("keydown", e => { if (e.key === "Enter") { lerCredito(); $("#btnSimular").click(); } });
+$("#range").addEventListener("input", e => {
+  S.credito = +e.target.value; S.creditoTocado = true;
+  $("#credito").value = S.credito.toLocaleString("pt-BR");
+  marcaFunil(1); render();
+});
+$("#pctLance").addEventListener("input", lanceSim);
+$("#btnSimular").addEventListener("click", () => {
+  lerCredito(); marcaFunil(1); marcaFunil(2);
+  evento("simulacao_concluida");
+  $("#simulador").scrollIntoView({behavior:"smooth", block:"start"});
+});
+$("#painel").addEventListener("focusin", () => { marcaFunil(1); evento("simulacao_iniciada"); }, {once:true});
+
+/* rolagem até a simulação também conta como conclusão de simulação */
+aoEntrar($("#planos"), () => { marcaFunil(2); evento("simulacao_visualizada"); }, .4);
+
+/* ============================ BOOT ============================ */
+S.variante = definirVariante();
+registrarAtribuicao();
+const retomou = aplicarRetomada();
+const estagio = perfilar();
+aplicarVariante();
+$("#zapTopo").href = linkZap("");
+$("#dockCta").addEventListener("click", () => evento("cta_dock"));
+
+/* captura da simulação */
+$("#btnReceber").addEventListener("click", () => abrirCaptura("botao_simulador"));
+$("#btnPdf").addEventListener("click", baixarProposta);
+$("#btnLink").addEventListener("click", async () => {
+  const l = linkRetomada();
+  try{ await navigator.clipboard.writeText(l); $("#btnLink").textContent = "Link copiado ✓"; }
+  catch(e){ prompt("Copie o link para retomar depois:", l); }
+  evento("link_retomada_copiado");
+  setTimeout(() => $("#btnLink").textContent = "Copiar link para retomar depois", 2500);
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#modalCaptura").hidden) fecharCaptura(); });
+
+/* o rodapé já nasce com o link relativo no HTML (degradação); o CONFIG só reescreve
+   quando a política mora em outro endereço */
+if (CONFIG.privacidade.url && $("#linkPrivacidade")) $("#linkPrivacidade").href = CONFIG.privacidade.url;
+
+montarObjetivos(); montarObjecoes(); montarDepos(); carregarDepoimentos(); montarConfianca();
+aplicarSegmento(); montarEtapas();
+montarBannerCookies();
+armarSaida();
+
+/* quiz para tráfego frio: entra sozinho só quando não há sinal de intenção */
+if (new URLSearchParams(location.search).get("quiz") === "1" ||
+   (estagio === "frio" && !retomou && !Object.keys(utms()).length && !document.referrer)) {
+  // nunca por cima de quem já está simulando ou preenchendo a contratação
+  setTimeout(() => { if (!S.funil[1] && S.passo === 1 && $("#modalCaptura").hidden) abrirQuiz(); }, 6000);
+}
+
+evento("pagina_vista", {estagio, retomou});
+</script>
+</body>
+</html>
