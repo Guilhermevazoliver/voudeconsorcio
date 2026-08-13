@@ -1648,7 +1648,19 @@ async function carregarBase(){
     }));
     VINC.carregando = false;
     $("#buscaCampo").dataset.carregando = "0";
+    aplicarOrgDaUrl();
   }
+}
+
+/* ?org=<id> — usado pelas páginas de vínculo para já chegar com a organização
+   escolhida. Id desconhecido é ignorado: a página continua funcionando normal. */
+function aplicarOrgDaUrl(){
+  const id = new URLSearchParams(location.search).get("org");
+  if (!id || VINC.org) return;
+  const org = (VINC.base || []).find(o => o.id === id);
+  if (!org) return;
+  selecionarOrg(org);
+  marcaFunilCond(1);
 }
 
 /* busca local pontuada: nome > sigla/alias > início de palavra > trecho */
@@ -2431,6 +2443,10 @@ $("#btnLink").addEventListener("click", async () => {
   setTimeout(() => $("#btnLink").textContent = "Copiar link para retomar depois", 2500);
 });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#modalCaptura").hidden) fecharCaptura(); });
+
+/* chegando de uma página de vínculo (?org=), a base é carregada de saída em vez de
+   esperar o foco no campo de busca */
+if (new URLSearchParams(location.search).get("org")) carregarBase();
 
 /* o rodapé já nasce com o link relativo no HTML (degradação); o CONFIG só reescreve
    quando a política mora em outro endereço */
