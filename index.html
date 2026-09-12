@@ -213,6 +213,7 @@ input[type=range]{width:100%;margin-top:14px;accent-color:var(--estrela);height:
 .tabela th{font-family:var(--dado);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:#6B7288;font-weight:500}
 .tabela td b{font-family:var(--dado)}
 .ressalva{font-size:.82rem;color:#5B6178;border-left:3px solid #D8D3C4;padding-left:14px;margin-top:18px}
+.rolar-x{overflow-x:auto;-webkit-overflow-scrolling:touch}
 
 /* ---------- condição por vínculo ---------- */
 .vinculo-card{
@@ -431,6 +432,9 @@ body.imprimindo #proposta{display:block}
   .sec{padding:56px 0}
   .barra-item{grid-template-columns:1fr;gap:6px}
   .segs{grid-template-columns:repeat(3,1fr)}
+  .rolar-x .tabela{min-width:520px}   /* rola dentro do container em vez de esmagar */
+  .grade-planos{grid-template-columns:1fr}
+  .seg{font-size:.68rem}
 }
 </style>
 <script type="application/ld+json">
@@ -609,10 +613,12 @@ body.imprimindo #proposta{display:block}
 
     <div class="barras" id="barras"></div>
 
+    <div class="rolar-x">
     <table class="tabela" id="tabelaComp">
       <thead><tr><th>Critério</th><th>Consórcio Canopus</th><th>Financiamento</th><th>Juntar sozinho</th></tr></thead>
       <tbody></tbody>
     </table>
+    </div>
 
     <p class="ressalva" id="ressalva"></p>
   </div>
