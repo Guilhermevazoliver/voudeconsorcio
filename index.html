@@ -837,7 +837,11 @@ const CONFIG = {
   },
 
   // Destino do lead. Vazio = mantém em memória e apenas dispara os eventos de analytics.
-  lead: { endpoint: "", origem: "lp-canopus-vinculo" },
+  lead: {
+    endpoint: "https://xnavhkburafdjtuxaslo.supabase.co/functions/v1/receber-lead",
+    apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhuYXZoa2J1cmFmZGp0dXhhc2xvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyNTUzMzAsImV4cCI6MjEwNDgzMTMzMH0.1U-JMR1ratkm4ZGDy56A19Z_MeNUzsx3h61R2z-gPxM",   // anon key do Supabase — pública por design (RLS protege o banco)
+    origem: "lp-canopus-vinculo"
+  },
 
   // Premissas do comparativo — visíveis ao usuário, editáveis por você.
   rendimentoPoupanca: 0.0085,  // a.m. líquido estimado para o cenário "juntar sozinho"
@@ -2056,7 +2060,9 @@ async function enviarLead(payload, tipo){
   let entregue = false;
   if (CONFIG.lead.endpoint){
     try{
-      const r = await fetch(CONFIG.lead.endpoint, {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify(completo), keepalive:true});
+      const cab = {"Content-Type":"application/json"};
+      if (CONFIG.lead.apikey) { cab["apikey"] = CONFIG.lead.apikey; cab["Authorization"] = "Bearer " + CONFIG.lead.apikey; }
+      const r = await fetch(CONFIG.lead.endpoint, {method:"POST", headers:cab, body:JSON.stringify(completo), keepalive:true});
       entregue = r.ok;
     }catch(e){}
   }
