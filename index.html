@@ -802,7 +802,7 @@ const CONFIG = {
   // CONFERIR: "empresa" é o controlador dos dados que assina a política. Deduzi
   // "Prolife Engenharia" do seu domínio de e-mail — se o controlador for outra razão
   // social (ou seu CPF como representante autônomo), corrija aqui e no arquivo da política.
-  privacidade: { url: "politica-privacidade.html", empresa: "Prolife Engenharia" },
+  privacidade: { url: "politica-privacidade.html", empresa: "Guilherme Vaz Oliver (representante autorizado)" },
 
   // Assembleias: só aparece na página se você preencher com dado REAL.
   assembleias: [],
@@ -1348,7 +1348,7 @@ async function carregarDepoimentos(){
 
 /* prova social no momento certo: quem simulou imóvel vê primeiro quem comprou imóvel */
 function ordenarDepos(){
-  const objSeg = { primeiro:"imovel", construir:"imovel", investir:"imovel", trocar:"auto", empresa:"pesados" };
+  const objSeg = { primeiro:"imovel", construir:"imovel", investir:"imovel", trocar:"auto", empresa:"caminhao" };
   const alvo = objSeg[S.objetivo] || S.seg;
   return [...DEPOIMENTOS].sort((a,b) => (b.segmento === alvo) - (a.segmento === alvo));
 }
