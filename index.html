@@ -153,6 +153,7 @@ input[type=range]{width:100%;margin-top:14px;accent-color:var(--estrela);height:
 .planos{display:flex;flex-direction:column;gap:26px;margin-top:26px}
 .grupo-plano{display:flex;flex-direction:column;gap:12px}
 .nota-cat{font-size:.82rem;color:var(--texto-fraco);margin-top:14px;line-height:1.5}
+.destaque-menor{display:flex;align-items:center;gap:18px;flex-wrap:wrap;background:linear-gradient(90deg,rgba(242,180,65,.14),rgba(95,211,196,.07));border:1px solid rgba(242,180,65,.35);border-radius:18px;padding:18px 24px;margin:22px 0}.destaque-menor .dm-fogo{font-size:2rem;line-height:1}.destaque-menor .dm-txt{display:flex;flex-direction:column;gap:3px;flex:1 1 18rem}.destaque-menor .dm-tag{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--estrela)}.destaque-menor .dm-val{font-size:1.1rem;color:var(--marfim)}.destaque-menor .dm-val b{font-size:1.6rem;color:var(--marfim)}.destaque-menor .dm-ctx{font-size:.82rem;color:var(--texto-fraco)}.destaque-menor .dm-btn{background:var(--estrela);color:var(--noite);border:0;border-radius:999px;padding:13px 24px;font-weight:700;cursor:pointer;white-space:nowrap}
 .grupo-titulo{font-size:1rem;margin:0;color:var(--marfim);font-weight:600}
 .grupo-titulo small{color:var(--texto-fraco);font-weight:400;font-size:.82rem}
 .grade-planos{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
@@ -519,6 +520,8 @@ body.imprimindo #proposta{display:block}
     </div>
   </div>
 </section>
+
+<div class="wrap"><div class="destaque-menor" id="destaqueMenor" hidden></div></div>
 
 <!-- ================= SIMULADOR ================= -->
 <section class="sec" id="simulador">
@@ -911,6 +914,35 @@ function carregarCanopus(){
   }
 }
 
+/* menor mensalidade real de TODA a tabela (todos os segmentos) — recalculado do dado, dinâmico */
+function menorMensalidadeGlobal(){
+  let m = null;
+  for (const [sg, s] of Object.entries(CONFIG.segmentos)){
+    for (const cred of s.creditos) for (const o of s.opcoesDe(cred)){
+      if (typeof o.parcela === "number" && o.parcela > 0 && (!m || o.parcela < m.parcela))
+        m = { seg: sg, nomeSeg: s.nome, cred, parcela: o.parcela, catNome: o.catNome, prazo: o.prazo };
+    }
+  }
+  return m;
+}
+function renderDestaqueMenor(){
+  const el = $("#destaqueMenor"); if (!el) return;
+  const m = menorMensalidadeGlobal(); if (!m){ el.hidden = true; return; }
+  el.innerHTML =
+    `<span class="dm-fogo">\u{1F525}</span>`+
+    `<div class="dm-txt"><span class="dm-tag">Menor mensalidade da tabela</span>`+
+    `<span class="dm-val">a partir de <b>${brl2(m.parcela)}</b><small>/mês</small></span>`+
+    `<span class="dm-ctx">${m.nomeSeg} · crédito ${brl(m.cred)} · ${m.catNome} · ${m.prazo}x</span></div>`+
+    `<button class="dm-btn" id="dmIr" type="button">Ver essa oferta</button>`;
+  el.hidden = false;
+  const b = $("#dmIr"); if (b) b.onclick = () => irParaMenor(m);
+}
+function irParaMenor(m){
+  S.seg = m.seg; S.credito = m.cred; S.creditoTocado = true; S.plano = null;
+  aplicarSegmento();
+  evento("destaque_menor_clicado", { segmento: m.seg, credito: m.cred, prazo: m.prazo });
+  const alvo = $("#simulador"); if (alvo) alvo.scrollIntoView({ behavior: "smooth", block: "start" });
+}
 /* parcelaConsorcio deixou de calcular: agora só devolve o que a Canopus publica para a
    opção escolhida. Mantém a assinatura antiga para não quebrar os pontos de uso.
    `plano` é uma opção da tabela (tem .prazo e .parcela). */
@@ -2539,6 +2571,7 @@ if (CONFIG.privacidade.url && $("#linkPrivacidade")) $("#linkPrivacidade").href 
 
 montarObjetivos(); montarObjecoes(); montarDepos(); carregarDepoimentos(); montarConfianca();
 aplicarSegmento(); montarEtapas();
+renderDestaqueMenor();
 montarBannerCookies();
 armarSaida();
 
