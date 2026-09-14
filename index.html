@@ -152,6 +152,7 @@ input[type=range]{width:100%;margin-top:14px;accent-color:var(--estrela);height:
 /* ---------- planos ---------- */
 .planos{display:flex;flex-direction:column;gap:26px;margin-top:26px}
 .grupo-plano{display:flex;flex-direction:column;gap:12px}
+.nota-cat{font-size:.82rem;color:var(--texto-fraco);margin-top:14px;line-height:1.5}
 .grupo-titulo{font-size:1rem;margin:0;color:var(--marfim);font-weight:600}
 .grupo-titulo small{color:var(--texto-fraco);font-weight:400;font-size:.82rem}
 .grade-planos{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
@@ -793,7 +794,7 @@ const CONFIG = {
   },
 
   // Tags de marketing. Só carregam DEPOIS do consentimento de cookies.
-  tags: { gtmId: "", gtagId: "", metaPixel: "", conversaoGoogle: "" },
+  tags: { gtmId: "", gtagId: "", metaPixel: "2858020161064310", conversaoGoogle: "" },
 
   // Speed-to-lead: dispara o lead no seu fluxo em segundos.
   notificacao: { webhook: "", avisarWhatsapp: true },
@@ -869,6 +870,8 @@ const brl = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",maxim
 const brl2 = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",minimumFractionDigits:2,maximumFractionDigits:2});
 const seg = () => CONFIG.segmentos[S.seg];
 
+// eventos que representam conversão de lead → também disparam o evento padrão das plataformas
+const EVENTOS_LEAD = new Set(["contratacao_concluida","cond_lead_capturado","lead_simulacao_capturado"]);
 function evento(nome, extra={}){
   const dados = {event:nome, segmento:S.seg, credito:S.credito, variante:S.variante, ...extra};
   window.dataLayer = window.dataLayer || [];
@@ -877,6 +880,11 @@ function evento(nome, extra={}){
   if (typeof fbq === "function") fbq("trackCustom", nome, extra);
   else window.__fila.push(dados);                    // guarda até o consentimento
   if (typeof gtag === "function") gtag("event", nome, extra);
+  // conversão de lead → evento PADRÃO pro Meta/Google otimizarem a campanha (sem PII)
+  if (EVENTOS_LEAD.has(nome)) {
+    if (typeof fbq === "function") fbq("track", "Lead");
+    if (typeof gtag === "function") gtag("event", "generate_lead");
+  }
 }
 function marcaFunil(i){
   if (S.funil[i]) return;
@@ -1038,6 +1046,21 @@ function opcoesAtuais(){
 }
 function idOpcao(o){ return `${o.catChave}|${o.modChave}|${o.prazo}`; }
 
+// nota honesta: se uma categoria reduzida existe no segmento mas não neste crédito,
+// informa a partir de qual crédito ela passa a ser vendável (dado da tabela, nunca inventado)
+function notaCategoriasIndisponiveis(){
+  const s = seg(); if (!s || !s.creditos) return "";
+  const atuais = new Set(opcoesAtuais().map(o => o.catChave));
+  const notas = [];
+  for (const chave of ["r70","r50"]){
+    if (atuais.has(chave)) continue;
+    for (const cr of s.creditos){
+      const op = s.opcoesDe(cr).find(o => o.catChave === chave);
+      if (op){ notas.push(`${op.catNome} disponível a partir de ${brl(cr)}`); break; }
+    }
+  }
+  return notas.length ? `<p class="nota-cat">${notas.join(" · ")}.</p>` : "";
+}
 function render(){
   const cont = $("#planos");
   const ops = opcoesAtuais();
@@ -1066,7 +1089,7 @@ function render(){
           </button>`;
         }).join("")}
       </div>
-    </div>`).join("");
+    </div>`).join("") + notaCategoriasIndisponiveis();
   cont.querySelectorAll(".plano").forEach(b => b.onclick = () => escolherPlano(b.dataset.op));
 
   // parcela de referência no dock e nos gráficos: a integral de menor parcela (prazo maior)
@@ -2403,6 +2426,10 @@ function carregarTags(){
   (window.__fila || []).forEach(e => {
     if (typeof fbq === "function") fbq("trackCustom", e.event, e);
     if (typeof gtag === "function") gtag("event", e.event, e);
+    if (EVENTOS_LEAD.has(e.event)) {
+      if (typeof fbq === "function") fbq("track", "Lead");
+      if (typeof gtag === "function") gtag("event", "generate_lead");
+    }
   });
 }
 
