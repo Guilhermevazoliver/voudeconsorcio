@@ -477,7 +477,7 @@ body.imprimindo #proposta{display:block}
           Escolha o crédito, veja a parcela real e o custo total agora — sem preencher formulário.
         </p>
         <div class="selos">
-          <span class="selo"><b>Grupo Canopus</b> · +50 anos de mercado</span>
+          <span class="selo"><b>Grupo Canopus</b> · +50 anos · 26 em consórcio</span>
           <span class="selo">Administradora autorizada e fiscalizada pelo <b>Banco Central</b></span>
           <span class="selo">Lei <b>11.795/2008</b></span>
           <span class="selo">Crédito usável em <b>todo o Brasil</b></span>
@@ -650,7 +650,7 @@ body.imprimindo #proposta{display:block}
     <div class="grid2" style="margin-top:16px">
       <div class="card">
         <h3>Lance embutido: dar lance sem tirar do bolso</h3>
-        <p class="sub" style="margin-top:.6rem">Parte do próprio crédito vira o lance. Você recebe menos crédito líquido, mas antecipa a contemplação sem dinheiro novo. Nos planos de imóvel o embutido chega a metade do crédito; em veículos costuma ir até 30%. Confirme o percentual no regulamento do seu grupo.</p>
+        <p class="sub" style="margin-top:.6rem">Parte do próprio crédito vira o lance. Você recebe menos crédito líquido, mas antecipa a contemplação sem dinheiro novo. O percentual de embutido permitido varia por grupo e consta no regulamento do seu grupo. Use o controle abaixo para simular o efeito nos seus números.</p>
         <div class="f" style="margin-top:12px">
           <label for="pctLance">Percentual de lance embutido: <b id="pctLanceTxt" class="dado-forte">25%</b></label>
           <input type="range" id="pctLance" min="0" max="50" step="5" value="25">
@@ -1202,7 +1202,7 @@ function comparativo(plano){
     <tr><td>Total desembolsado</td><td><b>${brl(c.total)}</b></td><td><b>${brl(totFin)}</b></td><td><b>${brl(totJuntar)}</b></td></tr>
     <tr><td>Diferença vs. consórcio</td><td>—</td><td><b style="color:#B7473D">+ ${brl(economia)}</b></td><td>Bem custará <b>${brl(alvo)}</b> lá na frente</td></tr>`;
 
-  $("#ressalva").innerHTML = `<b>Como esta conta foi feita:</b> consórcio = ${plano.prazo} parcelas de ${brl2(c.parcela)}, exatamente como a Canopus publica na tabela vigente (parcela já com taxa de administração, fundo de reserva e seguro embutidos). Total ${brl(c.total)}.
+  $("#ressalva").innerHTML = `<b>Como esta conta foi feita:</b> consórcio = ${plano.prazo} parcelas de ${brl2(c.parcela)}, exatamente como a Canopus publica na tabela vigente (parcela já com taxa de administração e os encargos previstos no contrato). Total ${brl(c.total)}.
     Financiamento = Tabela Price a ${(g.jurosFin*100).toFixed(2)}% a.m. em ${nFin} meses, sem IOF, tarifas e seguros obrigatórios — o custo real de um financiamento tende a ser <b>maior</b> que o mostrado.
     Nenhum dos três cenários considera a correção anual do crédito (${g.indice}), que reajusta parcelas no consórcio e valoriza o bem nos outros caminhos.
     Ajuste as premissas com o seu consultor antes de decidir.`;
@@ -1233,7 +1233,7 @@ const OBJETIVOS = [
     <ul>
       <li>Contrate o <b>maior prazo</b> para a parcela caber com folga e concorra por sorteio desde a primeira assembleia.</li>
       <li>Use <b>FGTS</b> como lance — dinheiro que já é seu e rende pouco onde está.</li>
-      <li>Combine <b>lance embutido</b> (até metade do crédito nos planos de imóvel) com FGTS para encurtar a espera sem tirar do bolso.</li>
+      <li>Combine <b>lance embutido</b> (no limite que o regulamento do seu grupo permitir) com FGTS para encurtar a espera sem tirar do bolso.</li>
       <li>Se ainda paga aluguel, some aluguel + parcela e veja quanto tempo você aguenta antes da contemplação. Esse é o número que decide o prazo.</li>
     </ul>` },
   { id:"trocar", txt:"Trocar de carro", seg:"auto", html:`
@@ -1317,7 +1317,7 @@ const OBJECOES = [
   { t:"Consórcio é seguro? E se a empresa quebrar?", h:`
      <h3>Sistema regulado, dinheiro do grupo separado</h3>
      <p>Consórcio é regido pela <b>Lei 11.795/2008</b> e fiscalizado pelo <b>Banco Central</b>. Os recursos pertencem ao grupo, não ao patrimônio da administradora, que atua como gestora e presta contas.
-     A Canopus faz parte de um grupo com décadas de mercado, com app próprio para acompanhar assembleias, boletos, extratos e ofertas de lance.
+     A Canopus atua em consórcio há mais de 26 anos e integra o Grupo Canopus, com mais de 50 anos de mercado e matriz em Cuiabá. Tem app próprio para acompanhar assembleias, boletos, extratos e ofertas de lance.
      Você pode conferir a autorização da administradora no site do Banco Central antes de assinar. Recomendo que confira.</p>` }
 ];
 function montarObjecoes(){
