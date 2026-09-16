@@ -344,6 +344,7 @@ body.imprimindo #proposta{display:block}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .f{display:flex;flex-direction:column;gap:.35rem}
 .f label{font-size:.8rem;color:var(--texto-fraco)}
+.f label .opc{opacity:.7;font-style:italic}
 .f input,.f select{
   background:#0B1231;border:1px solid var(--linha);border-radius:10px;padding:.8rem .9rem;
 }
@@ -874,7 +875,7 @@ const brl2 = v => v.toLocaleString("pt-BR",{style:"currency",currency:"BRL",mini
 const seg = () => CONFIG.segmentos[S.seg];
 
 // eventos que representam conversão de lead → também disparam o evento padrão das plataformas
-const EVENTOS_LEAD = new Set(["contratacao_concluida","cond_lead_capturado","lead_simulacao_capturado"]);
+const EVENTOS_LEAD = new Set(["contratacao_concluida","cond_lead_capturado","lead_simulacao_capturado","lead_identificacao_capturado"]);
 function evento(nome, extra={}){
   const dados = {event:nome, segmento:S.seg, credito:S.credito, variante:S.variante, ...extra};
   window.dataLayer = window.dataLayer || [];
@@ -1452,7 +1453,7 @@ function montarDepos(){
 function linkZap(msg){
   const g = seg();
   const base = `Olá, ${CONFIG.vendedor.nome}. Vim da página do Consórcio Canopus.\n`+
-    `Segmento: ${g.nome}\nCrédito: ${brl(S.credito)}\n`+
+    `Segmento: ${g.nome}\n`+ (S.credito ? `Crédito: ${brl(S.credito)}\n` : "")+
     (S.plano ? `Plano: ${S.plano.prazo}x · ${S.plano.catNome} · ${S.plano.modNome} · parcela ${brl2(parcelaConsorcio(S.credito,S.plano).parcela)}\n` : "")+
     (msg ? `\n${msg}` : "");
   return `https://wa.me/${CONFIG.vendedor.whatsapp}?text=${encodeURIComponent(base)}`;
@@ -1518,28 +1519,37 @@ function montarEtapas(){
     el.innerHTML = `
       <div class="form-grid">
         <div class="f"><label for="i_nome">Nome completo</label><input id="i_nome" autocomplete="name" value="${S.dados.nome||""}"><span class="erro" id="e_nome"></span></div>
-        <div class="f"><label for="i_cpf">CPF</label><input id="i_cpf" inputmode="numeric" autocomplete="off" value="${S.dados.cpf||""}"><span class="erro" id="e_cpf"></span></div>
+        <div class="f"><label for="i_cpf">CPF <span class="opc">(opcional)</span></label><input id="i_cpf" inputmode="numeric" autocomplete="off" value="${S.dados.cpf||""}"><span class="erro" id="e_cpf"></span></div>
         <div class="f"><label for="i_tel">Celular com WhatsApp</label><input id="i_tel" inputmode="tel" autocomplete="tel" value="${S.dados.tel||""}"><span class="erro" id="e_tel"></span></div>
-        <div class="f"><label for="i_mail">E-mail</label><input id="i_mail" type="email" autocomplete="email" value="${S.dados.email||""}"><span class="erro" id="e_mail"></span></div>
+        <div class="f"><label for="i_mail">E-mail <span class="opc">(opcional)</span></label><input id="i_mail" type="email" autocomplete="email" value="${S.dados.email||""}"><span class="erro" id="e_mail"></span></div>
         <div class="f full consent"><input type="checkbox" id="i_lgpd" ${S.dados.lgpd?"checked":""}>
           <label for="i_lgpd">Autorizo o contato do consultor e o tratamento dos meus dados para análise desta proposta, conforme a LGPD. Posso revogar a qualquer momento.</label>
           <span class="erro" id="e_lgpd"></span></div>
       </div>
+      <p class="sub" style="margin:.2rem 0 0;font-size:.82rem">Só o <b>nome</b> e o <b>WhatsApp</b> são necessários para o ${CONFIG.vendedor.nome} te atender. CPF e e-mail entram depois, só na contratação.</p>
       <div class="nav-passo"><button class="btn" id="p2a">Continuar</button><button class="btn btn--ghost" id="p2v">Voltar</button></div>`;
     $("#i_cpf").oninput = e => e.target.value = mascaraCPF(e.target.value);
     $("#i_tel").oninput = e => e.target.value = mascaraTel(e.target.value);
     $("#p2v").onclick = () => { S.passo=1; montarEtapas(); };
-    $("#p2a").onclick = () => {
+    $("#p2a").onclick = async () => {
       const d = { nome:$("#i_nome").value.trim(), cpf:$("#i_cpf").value, tel:$("#i_tel").value, email:$("#i_mail").value.trim(), lgpd:$("#i_lgpd").checked };
       let ok = true;
-      $("#e_nome").textContent = d.nome.split(" ").length < 2 ? "Informe nome e sobrenome." : ""; if(d.nome.split(" ").length<2) ok=false;
-      $("#e_cpf").textContent = validaCPF(d.cpf) ? "" : "CPF inválido."; if(!validaCPF(d.cpf)) ok=false;
+      $("#e_nome").textContent = d.nome.split(" ").filter(Boolean).length < 2 ? "Informe nome e sobrenome." : ""; if(d.nome.split(" ").filter(Boolean).length<2) ok=false;
+      // CPF e e-mail são opcionais: só validam quando preenchidos. Reduz a fricção da captura
+      // (o backend só exige nome + telefone + consentimento); o CPF entra na contratação real.
+      $("#e_cpf").textContent = (!d.cpf || validaCPF(d.cpf)) ? "" : "CPF inválido."; if(d.cpf && !validaCPF(d.cpf)) ok=false;
       $("#e_tel").textContent = d.tel.replace(/\D/g,"").length >= 10 ? "" : "Informe DDD e número."; if(d.tel.replace(/\D/g,"").length<10) ok=false;
-      $("#e_mail").textContent = /.+@.+\..+/.test(d.email) ? "" : "E-mail inválido."; if(!/.+@.+\..+/.test(d.email)) ok=false;
+      $("#e_mail").textContent = (!d.email || /.+@.+\..+/.test(d.email)) ? "" : "E-mail inválido."; if(d.email && !/.+@.+\..+/.test(d.email)) ok=false;
       $("#e_lgpd").textContent = d.lgpd ? "" : "É necessário aceitar o tratamento de dados."; if(!d.lgpd) ok=false;
       if (!ok) return;
       S.dados = {...S.dados, ...d};
-      evento("identificacao_concluida");
+      // captura o lead JÁ na identificação (nome+telefone+consentimento) — não espera o fim do
+      // checkout, então quem abandona a contratação ainda vira lead. O backend faz upsert por
+      // (telefone,tipo,dia), então o "Concluir adesão" depois só completa o mesmo registro.
+      $("#p2a").disabled = true; $("#p2a").textContent = "Salvando…";
+      S.entregue = await enviarLead(payloadCheckout(), "checkout");
+      evento("identificacao_concluida", {entregue:S.entregue});
+      evento("lead_identificacao_capturado", {entregue:S.entregue});
       S.passo = 3; montarEtapas();
     };
   }
@@ -2532,6 +2542,7 @@ $("#pctLance").addEventListener("input", lanceSim);
 $("#btnSimular").addEventListener("click", () => {
   lerCredito(); marcaFunil(1); marcaFunil(2);
   evento("simulacao_concluida");
+  $("#zapTopo").href = linkZap("");   // leva segmento+crédito+plano atuais no link do topo
   $("#simulador").scrollIntoView({behavior:"smooth", block:"start"});
 });
 $("#painel").addEventListener("focusin", () => { marcaFunil(1); evento("simulacao_iniciada"); }, {once:true});
