@@ -1,0 +1,240 @@
+{
+  "_schema": "offers_canopus v1 — campos: categoria, credito, plano, parcela (1ª parcela), prazo, taxa, ultima_verificacao, url_fonte, status",
+  "fonte": "Consórcio Canopus — Loja Online (loja.consorciocanopus.com.br), acessada pelo formulário SIMULE AQUI do site oficial",
+  "ultima_verificacao": "17/09/2026 07:24",
+  "ultima_verificacao_iso": "2026-09-17T07:24:00-03:00",
+  "metodo": "Listagem por categoria ordenada por menor valor do bem; cada carta aberta na página de produto e o bloco PLANOS transcrito literalmente. Nenhum valor estimado.",
+  "nao_informado": "NÃO INFORMADO NO SITE",
+  "avisos": [
+    "A parcela exibida é a 1ª parcela, conforme o próprio site. Parcelas são reajustadas anualmente (IPCA/INCC) ou pela tabela do fabricante, conforme o contrato.",
+    "Taxa de administração, seguro prestamista, percentual de redução da parcela e regra após a contemplação não constam nas páginas de oferta.",
+    "Contemplação por sorteio ou lance, sem data garantida."
+  ],
+  "categorias": [
+    {
+      "id": "moto",
+      "nome": "Motos",
+      "observacao": "A loja publica apenas motos BMW por modelo. Não há carta genérica de moto no site.",
+      "participantes": 3000,
+      "ofertas": [
+        {
+          "id": "moto-1",
+          "bem": "BMW G 310 R",
+          "credito": 38990,
+          "plano": "Plano de N meses / 3000 participantes",
+          "prazos": [
+            {"prazo": 96, "parcela": 530.17},
+            {"prazo": 86, "parcela": 582.37},
+            {"prazo": 76, "parcela": 648.40},
+            {"prazo": 66, "parcela": 728.26},
+            {"prazo": 56, "parcela": 844.20},
+            {"prazo": 46, "parcela": 1001.84},
+            {"prazo": 36, "parcela": 1258.61}
+          ],
+          "taxa": "NÃO INFORMADO NO SITE",
+          "url_fonte": "https://loja.consorciocanopus.com.br/consorcio-motos/consorcio-g-310-r-6299",
+          "status": "verificado"
+        },
+        {
+          "id": "moto-2",
+          "bem": "BMW G 310 GS",
+          "credito": 42990,
+          "plano": "Plano de N meses / 3000 participantes",
+          "prazos": [
+            {"prazo": 96, "parcela": 584.56},
+            {"prazo": 86, "parcela": 642.11},
+            {"prazo": 76, "parcela": 714.92},
+            {"prazo": 66, "parcela": 802.97},
+            {"prazo": 56, "parcela": 930.81},
+            {"prazo": 46, "parcela": 1104.63},
+            {"prazo": 36, "parcela": 1387.74}
+          ],
+          "taxa": "NÃO INFORMADO NO SITE",
+          "url_fonte": "https://loja.consorciocanopus.com.br/consorcio-motos/consorcio-g-310-gs-6631",
+          "status": "verificado"
+        },
+        {
+          "id": "moto-3",
+          "bem": "BMW R 1300 GSA Triple Black ASA",
+          "credito": 156990,
+          "plano": "Plano de N meses / 3000 participantes",
+          "prazos": [
+            {"prazo": 116, "parcela": 1767.49},
+            {"prazo": 106, "parcela": 1903.22},
+            {"prazo": 96, "parcela": 2067.68},
+            {"prazo": 86, "parcela": 2280.37},
+            {"prazo": 76, "parcela": 2549.11},
+            {"prazo": 66, "parcela": 2887.04},
+            {"prazo": 56, "parcela": 3360.81},
+            {"prazo": 46, "parcela": 4041.01},
+            {"prazo": 36, "parcela": 5076.77}
+          ],
+          "taxa": "NÃO INFORMADO NO SITE",
+          "url_fonte": "https://loja.consorciocanopus.com.br/consorcio-motos/consorcio-bmw-r-1300-gsa-triple-black-asa-7575",
+          "status": "verificado"
+        }
+      ]
+    },
+    {
+      "id": "carro",
+      "nome": "Carros",
+      "observacao": "Cada carta aparece em dois planos com nomes próprios no site. Página 2 da listagem começa em R$ 45.000.",
+      "participantes": 3000,
+      "ofertas": [
+        {
+          "id": "carro-1",
+          "bem": "Carta de crédito para automóvel",
+          "credito": 30000,
+          "plano": "AUTOMÓVEL PLANO RENOVAÇÃO 50 - PARCELAS REDUZIDAS",
+          "prazos": [
+            {"prazo": 96, "parcela": 235.89},
+            {"prazo": 86, "parcela": 258.00},
+            {"prazo": 76, "parcela": 285.99},
+            {"prazo": 66, "parcela": 317.79},
+            {"prazo": 56, "parcela": 366.53},
+            {"prazo": 46, "parcela": 429.89},
+            {"prazo": 36, "parcela": 537.02}
+          ],
+          "plano_alternativo": {
+            "plano": "AUTOMÓVEL - CRÉDITO COM CORREÇÃO ANUAL - (IPCA)",
+            "descricao_site": "Planeje a compra do seu carro ou motocicleta novos ou seminovos/usados, de qualquer marca e modelo, sem surpresas pois o crédito é corrigido anualmente pela IPCA.",
+            "prazos": [
+              {"prazo": 96, "parcela": 392.13},
+              {"prazo": 86, "parcela": 432.42},
+              {"prazo": 76, "parcela": 483.36},
+              {"prazo": 66, "parcela": 545.07},
+              {"prazo": 56, "parcela": 634.40},
+              {"prazo": 46, "parcela": 755.96},
+              {"prazo": 36, "parcela": 953.66}
+            ],
+            "url_fonte": "https://loja.consorciocanopus.com.br/consorcio-automoveis/consorcio-automovel-credito-com-correcao-anual-ipca-5093"
+          },
+          "taxa": "NÃO INFORMADO NO SITE",
+          "url_fonte": "https://loja.consorciocanopus.com.br/consorcio-automoveis/consorcio-automovel-plano-renovacao-50-parcelas-reduzidas-7410",
+          "status": "verificado"
+        },
+        {
+          "id": "carro-2",
+          "bem": "Carta de crédito para automóvel",
+          "credito": 35000,
+          "plano": "AUTOMÓVEL PLANO RENOVAÇÃO 50 - PARCELAS REDUZIDAS",
+          "prazos": [
+            {"prazo": 96, "parcela": 275.21},
+            {"prazo": 86, "parcela": 301.00},
+            {"prazo": 76, "parcela": 333.66},
+            {"prazo": 66, "parcela": 370.76},
+            {"prazo": 56, "parcela": 427.63},
+            {"prazo": 46, "parcela": 501.54},
+            {"prazo": 36, "parcela": 626.53}
+          ],
+          "plano_alternativo": {
+            "plano": "AUTOMÓVEL - CRÉDITO COM CORREÇÃO ANUAL - (IPCA)",
+            "prazos": [
+              {"prazo": 96, "parcela": 457.49},
+              {"prazo": 86, "parcela": 504.49},
+              {"prazo": 76, "parcela": 563.92},
+              {"prazo": 66, "parcela": 635.92},
+              {"prazo": 56, "parcela": 740.14},
+              {"prazo": 46, "parcela": 881.96},
+              {"prazo": 36, "parcela": 1112.61}
+            ],
+            "url_fonte": "https://loja.consorciocanopus.com.br/consorcio-automoveis/consorcio-automovel-credito-com-correcao-anual-ipca-5853"
+          },
+          "taxa": "NÃO INFORMADO NO SITE",
+          "url_fonte": "https://loja.consorciocanopus.com.br/consorcio-automoveis/consorcio-automovel-plano-renovacao-50-parcelas-reduzidas-7411",
+          "status": "verificado"
+        },
+        {
+          "id": "carro-3",
+          "bem": "Carta de crédito para automóvel",
+          "credito": 40000,
+          "plano": "AUTOMÓVEL PLANO RENOVAÇÃO 50 - PARCELAS REDUZIDAS",
+          "prazos": [
+            {"prazo": 96, "parcela": 314.52},
+            {"prazo": 86, "parcela": 344.00},
+            {"prazo": 76, "parcela": 381.32},
+            {"prazo": 66, "parcela": 423.71},
+            {"prazo": 56, "parcela": 488.71},
+            {"prazo": 46, "parcela": 573.19},
+            {"prazo": 36, "parcela": 716.03}
+          ],
+          "plano_alternativo": {
+            "plano": "AUTOMÓVEL - CRÉDITO COM CORREÇÃO ANUAL - (IPCA)",
+            "prazos": [
+              {"prazo": 96, "parcela": 522.84},
+              {"prazo": 86, "parcela": 576.56},
+              {"prazo": 76, "parcela": 644.48},
+              {"prazo": 66, "parcela": 726.75},
+              {"prazo": 56, "parcela": 845.87},
+              {"prazo": 46, "parcela": 1007.95},
+              {"prazo": 36, "parcela": 1271.55}
+            ],
+            "url_fonte": "https://loja.consorciocanopus.com.br/consorcio-automoveis/consorcio-automovel-credito-com-correcao-anual-ipca-6271"
+          },
+          "taxa": "NÃO INFORMADO NO SITE",
+          "url_fonte": "https://loja.consorciocanopus.com.br/consorcio-automoveis/consorcio-automovel-plano-renovacao-50-parcelas-reduzidas-7412",
+          "status": "verificado"
+        }
+      ]
+    },
+    {
+      "id": "imovel",
+      "nome": "Imóveis",
+      "observacao": "As três menores cartas aparecem apenas no plano Renovação 50. Reajuste anual pelo INCC.",
+      "participantes": 4000,
+      "ofertas": [
+        {
+          "id": "imovel-1",
+          "bem": "Carta de crédito para imóvel",
+          "credito": 120000,
+          "plano": "IMÓVEL PLANO RENOVAÇÃO 50 - PARCELAS REDUZIDAS",
+          "prazos": [
+            {"prazo": 142, "parcela": 681.86},
+            {"prazo": 122, "parcela": 774.05},
+            {"prazo": 102, "parcela": 890.50},
+            {"prazo": 82, "parcela": 1064.06},
+            {"prazo": 62, "parcela": 1350.19},
+            {"prazo": 42, "parcela": 1909.56}
+          ],
+          "taxa": "NÃO INFORMADO NO SITE",
+          "url_fonte": "https://loja.consorciocanopus.com.br/consorcio-imoveis/consorcio-imovel-plano-renovacao-50-parcelas-reduzidas-7453",
+          "status": "verificado"
+        },
+        {
+          "id": "imovel-2",
+          "bem": "Carta de crédito para imóvel",
+          "credito": 130000,
+          "plano": "IMÓVEL PLANO RENOVAÇÃO 50 - PARCELAS REDUZIDAS",
+          "prazos": [
+            {"prazo": 142, "parcela": 738.69},
+            {"prazo": 122, "parcela": 838.55},
+            {"prazo": 102, "parcela": 964.70},
+            {"prazo": 82, "parcela": 1152.74},
+            {"prazo": 62, "parcela": 1462.71},
+            {"prazo": 42, "parcela": 2068.69}
+          ],
+          "taxa": "NÃO INFORMADO NO SITE",
+          "url_fonte": "https://loja.consorciocanopus.com.br/consorcio-imoveis/consorcio-imovel-plano-renovacao-50-parcelas-reduzidas-7454",
+          "status": "verificado"
+        },
+        {
+          "id": "imovel-3",
+          "bem": "Carta de crédito para imóvel",
+          "credito": 140000,
+          "plano": "IMÓVEL PLANO RENOVAÇÃO 50 - PARCELAS REDUZIDAS",
+          "prazos": [
+            {"prazo": 142, "parcela": 795.51},
+            {"prazo": 122, "parcela": 903.06},
+            {"prazo": 102, "parcela": 1038.91},
+            {"prazo": 82, "parcela": 1241.41},
+            {"prazo": 62, "parcela": 1575.22},
+            {"prazo": 42, "parcela": 2227.82}
+          ],
+          "taxa": "NÃO INFORMADO NO SITE",
+          "url_fonte": "https://loja.consorciocanopus.com.br/consorcio-imoveis/consorcio-imovel-plano-renovacao-50-parcelas-reduzidas-7455",
+          "status": "verificado"
+        }
+      ]
+    }
+  ]
+}
