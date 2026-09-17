@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Consórcio Canopus — Não confie só em mim, confira</title>
+<meta name="description" content="Eu vendo Canopus, mas não quero que você confie só em mim. Confira os dados no Banco Central e no Reclame Aqui e receba uma simulação de imóvel.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+:root{--noite:#080F26;--noite2:#0E1836;--ouro:#F2B441;--agua:#5FD3C4;--luz:#F4F6FA;--linha:#22304F;--txt:#EAF0FA;--txt2:#AEBAD3;--good:#5FD3C4;--red:#E2685C;
+--disp:'Bricolage Grotesque',system-ui,sans-serif;--body:'Instrument Sans',system-ui,sans-serif;--mono:'IBM Plex Mono',monospace}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--luz);color:var(--noite);font-family:var(--body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+.wrap{max-width:980px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--disp);line-height:1.06;margin:0;text-wrap:balance}
+a{color:#0E8F82}
+.top{background:var(--noite);color:var(--txt)}
+.top .wrap{display:flex;align-items:center;gap:12px;height:60px}
+.logo{font-family:var(--disp);font-weight:800;letter-spacing:-.02em;display:flex;align-items:center;gap:9px;font-size:1.1rem}
+.logo .st{color:var(--ouro);font-size:1.3rem}
+.top .zap{margin-left:auto;font-family:var(--mono);font-size:.8rem;background:#1EBE5D;color:#fff;text-decoration:none;padding:8px 14px;border-radius:9px;font-weight:600}
+/* hero — dark, consultant voice */
+.hero{background:var(--noite);color:var(--txt);padding:44px 0 40px}
+.hero .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ouro);margin-bottom:14px}
+.hero h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-.03em}
+.hero h1 em{font-style:normal;color:var(--ouro)}
+.hero p.lead{color:var(--txt2);max-width:46ch;font-size:1.06rem;margin:16px 0 22px}
+.sources{display:grid;gap:10px}
+.srow{display:flex;align-items:center;gap:12px;background:var(--noite2);border:1px solid var(--linha);border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--txt)}
+.srow .ic{width:34px;height:34px;border-radius:8px;background:#12224a;display:grid;place-items:center;color:var(--ouro);font-family:var(--disp);font-weight:800;font-size:.9rem}
+.srow .tx{display:flex;flex-direction:column}
+.srow .tx b{font-family:var(--disp);font-size:.98rem}.srow .tx span{font-size:.78rem;color:var(--txt2)}
+.srow .go{margin-left:auto;color:var(--agua);font-family:var(--mono);font-size:.8rem}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--ouro);color:var(--noite);font-family:var(--disp);font-weight:800;
+text-decoration:none;padding:14px 26px;border-radius:12px;font-size:1.05rem;border:none;cursor:pointer}
+.btn.block{width:100%;justify-content:center}
+.cta-row{margin-top:22px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.cta-row .obs{font-size:.82rem;color:var(--txt2)}
+/* light sections */
+section.sec{padding:44px 0;border-top:1px solid #E1E7F2}
+.k{font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#0E8F82;margin-bottom:10px}
+h2.t{font-size:clamp(1.5rem,3.5vw,2rem);font-weight:800;letter-spacing:-.02em;max-width:24ch}
+.p{color:#41506B;max-width:60ch;margin-top:12px}
+/* reclame aqui panel */
+.rapanel{background:#fff;border:1px solid #E1E7F2;border-radius:16px;padding:22px;margin-top:22px;box-shadow:0 10px 30px rgba(8,15,38,.06);max-width:560px}
+.rapanel h3{font-size:1.1rem;font-weight:800;display:flex;align-items:center;gap:8px}
+.rapanel .lst{display:grid;gap:2px;margin-top:12px}
+.rapanel .li{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px dashed #E1E7F2;font-size:.94rem;color:#41506B}
+.rapanel .li b{color:var(--noite);font-family:var(--mono)}
+.rapanel .li:last-child{border-bottom:none}
+.rapanel .li .ok{color:#1C8F5A;font-weight:700}
+.rapanel .src{font-size:.78rem;color:#7A87A0;margin-top:10px;font-style:italic}
+.cmp2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;max-width:620px}
+.cmp2 .b{background:#fff;border:1px solid #E1E7F2;border-radius:14px;padding:16px}
+.cmp2 .b.win{border-color:var(--ouro);box-shadow:0 0 0 3px rgba(242,180,65,.14)}
+.cmp2 .b .nm{font-family:var(--disp);font-weight:800}
+.cmp2 .b .idx{font-family:var(--disp);font-weight:800;font-size:2rem;margin-top:6px;line-height:1}
+.cmp2 .b.win .idx{color:#0E8F82}
+.cmp2 .b .sm{font-size:.78rem;color:#7A87A0}
+.hint{font-size:.8rem;color:#7A87A0;margin-top:10px;font-style:italic}
+/* form */
+.form-card{background:var(--noite);color:var(--txt);border-radius:18px;padding:26px;max-width:520px;margin:0 auto;box-shadow:0 20px 60px rgba(8,15,38,.25)}
+.form-card h2{font-size:1.5rem;font-weight:800;letter-spacing:-.02em}
+.form-card .sub{color:var(--txt2);font-size:.92rem;margin:8px 0 18px}
+.fg{display:grid;gap:5px;margin-bottom:14px}
+.fg label{font-size:.8rem;font-weight:600;color:var(--txt2)}
+.fg input,.fg select{font-family:var(--body);font-size:1rem;padding:12px 14px;border:1.5px solid var(--linha);border-radius:10px;background:var(--noite2);color:var(--txt)}
+.fg input:focus,.fg select:focus{outline:none;border-color:var(--ouro)}
+.fg .err{color:var(--red);font-size:.78rem;min-height:.9em}
+.consent{display:flex;gap:9px;align-items:flex-start;font-size:.8rem;color:var(--txt2);margin-bottom:16px}
+.consent input{margin-top:3px;width:17px;height:17px;accent-color:var(--ouro)}
+.ok-final{text-align:center;padding:14px 0}
+.ok-final .ic{width:52px;height:52px;border-radius:50%;background:var(--good);color:var(--noite);display:grid;place-items:center;font-size:1.6rem;margin:0 auto 12px;font-weight:800}
+.trust{font-size:.76rem;color:var(--txt2);text-align:center;margin-top:12px}
+.faq{margin-top:20px}
+details{border-bottom:1px solid #E1E7F2}
+summary{cursor:pointer;padding:13px 0;font-weight:600;list-style:none}
+summary::-webkit-details-marker{display:none}summary::before{content:"+ ";color:var(--ouro);font-family:var(--mono)}
+details[open] summary::before{content:"– "}
+details .a{padding:0 0 14px;color:#41506B;font-size:.9rem}
+footer{padding:34px 0 60px;color:#7A87A0;font-size:.82rem;border-top:1px solid #E1E7F2}
+.cookie{position:fixed;left:14px;right:14px;bottom:14px;background:var(--noite);color:var(--txt);border-radius:14px;padding:14px 16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;font-size:.84rem;z-index:50;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.cookie .b{margin-left:auto;display:flex;gap:8px}
+.cookie button{font-family:var(--mono);font-size:.78rem;border-radius:8px;padding:7px 12px;cursor:pointer;border:1px solid var(--linha);background:transparent;color:var(--txt)}
+.cookie button.ac{background:var(--ouro);color:var(--noite);border-color:var(--ouro);font-weight:600}
+@media(max-width:640px){.hero .grid{grid-template-columns:1fr}.cmp2{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="logo"><span class="st">✦</span> Consórcio Canopus</div>
+  <a class="zap" id="zapTop" href="#" target="_blank" rel="noopener">WhatsApp</a>
+</div></header>
+
+<div class="hero"><div class="wrap"><div class="grid">
+  <div>
+    <div class="eyebrow">Consultor autorizado · consórcio de imóvel</div>
+    <h1>Eu vendo Canopus. Mas não quero que você <em>confie só em mim</em>.</h1>
+    <p class="lead">Quero que você abra as fontes, confira os dados e compare antes de decidir. Consórcio é uma decisão de longo prazo — informação importa mais que promessa.</p>
+    <div class="cta-row">
+      <a class="btn" href="#simular">Ver os dados e simular →</a>
+      <span class="obs">Sem compromisso.</span>
+    </div>
+  </div>
+  <div class="sources">
+    <a class="srow" href="https://www3.bcb.gov.br/ranking/consorcio.do" target="_blank" rel="noopener"><span class="ic">BC</span><span class="tx"><b>Banco Central</b><span>Dados e estatísticas oficiais</span></span><span class="go">abrir ↗</span></a>
+    <a class="srow" href="https://www.reclameaqui.com.br/empresa/consorcio-canopus/" target="_blank" rel="noopener"><span class="ic">RA</span><span class="tx"><b>Reclame Aqui</b><span>Reputação e avaliações</span></span><span class="go">abrir ↗</span></a>
+    <a class="srow" href="https://www.consorciocanopus.com.br/quem-somos/" target="_blank" rel="noopener"><span class="ic">✦</span><span class="tx"><b>Site oficial</b><span>CNPJ, unidades e regulamento</span></span><span class="go">abrir ↗</span></a>
+  </div>
+</div></div></div>
+
+<section class="sec"><div class="wrap">
+  <div class="k">O que os consumidores dizem</div>
+  <h2 class="t">Credibilidade também se vê no atendimento.</h2>
+  <p class="p">Dados públicos do Reclame Aqui, com data. Você confere na fonte.</p>
+  <div class="rapanel">
+    <h3><span style="color:var(--ouro)">★</span> Canopus no Reclame Aqui</h3>
+    <div class="lst">
+      <div class="li"><span>Empresa Verificada</span><b class="ok">✓ Sim</b></div>
+      <div class="li"><span>Reputação</span><b class="ok">Boa</b></div>
+      <div class="li"><span>Nota do período</span><b>7,1/10</b></div>
+      <div class="li"><span>Reclamações respondidas</span><b>100%</b></div>
+      <div class="li"><span>Reclamações resolvidas</span><b>67,2%</b></div>
+      <div class="li"><span>Voltariam a fazer negócio</span><b>62,5%</b></div>
+      <div class="li"><span>Tempo médio de resposta</span><b>1 dia e 1 hora</b></div>
+    </div>
+    <div class="src">Fonte: Reclame Aqui — últimos 6 meses (01/03/2026 a 31/08/2026). <a href="https://www.reclameaqui.com.br/empresa/consorcio-canopus/" target="_blank" rel="noopener">Confira você mesmo →</a></div>
+  </div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <div class="k">Banco Central</div>
+  <h2 class="t">Compare o índice oficial de reclamações.</h2>
+  <p class="p">O índice do BC divide reclamações procedentes pelo número de consorciados — dá pra comparar empresas de tamanhos diferentes. Menor é melhor.</p>
+  <div class="cmp2">
+    <div class="b win"><div class="nm">✦ Canopus</div><div class="idx">54,82</div><div class="sm">6 procedentes · 109.439 consorciados</div></div>
+    <div class="b"><div class="nm">Embracon</div><div class="idx">276,30</div><div class="sm">104 procedentes · 376.401 consorciados</div></div>
+  </div>
+  <p class="hint">Fonte: Banco Central do Brasil — Ranking de Administradoras de Consórcio, 1º sem/2026.</p>
+</div></section>
+
+<section class="sec" id="simular"><div class="wrap">
+  <div class="form-card">
+    <div id="formArea">
+      <h2>Receba sua simulação</h2>
+      <p class="sub">Deixe seu contato — eu te chamo no WhatsApp, te mostro os dados e monto os cenários da sua carta de imóvel.</p>
+      <div class="fg"><label for="nome">Nome completo</label><input id="nome" autocomplete="name" placeholder="Seu nome e sobrenome"><span class="err" id="e_nome"></span></div>
+      <div class="fg"><label for="tel">WhatsApp</label><input id="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000"><span class="err" id="e_tel"></span></div>
+      <div class="fg"><label for="obj">Objetivo</label><select id="obj">
+        <option value="">Selecione…</option><option>Imóvel próprio</option><option>Investimento</option>
+        <option>Construção</option><option>Reforma</option><option>Quitar financiamento</option><option>Outro</option></select></div>
+      <div class="fg"><label for="cred">Valor de crédito pretendido</label><select id="cred">
+        <option value="">Selecione…</option><option>R$ 100 mil</option><option>R$ 200 mil</option><option>R$ 300 mil</option>
+        <option>R$ 500 mil</option><option>R$ 750 mil</option><option>R$ 1 milhão</option><option>Outro</option></select></div>
+      <label class="consent"><input type="checkbox" id="lgpd"><span>Autorizo o contato do consultor e o tratamento dos meus dados para esta simulação, conforme a LGPD.</span></label>
+      <button class="btn block" id="enviar">Falar com um especialista →</button>
+      <div class="trust">🔒 Contemplação por sorteio ou lance, conforme o grupo. Sem promessa de prazo.</div>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <div class="k">Dúvidas rápidas</div>
+  <div class="faq">
+    <details><summary>Consórcio tem juros?</summary><div class="a">Não há juros de financiamento. Você paga taxa de administração pela gestão do grupo — o custo total costuma ser menor que o de um financiamento.</div></details>
+    <details><summary>Quanto tempo para ser contemplado?</summary><div class="a">Não há data garantida. A contemplação ocorre por sorteio ou lance nas assembleias mensais, conforme o regulamento. Quem promete prazo, desconfie.</div></details>
+    <details><summary>Posso comprar imóvel usado ou de particular?</summary><div class="a">Geralmente sim — imóvel novo, usado, terreno ou construção, conforme o produto e a análise da administradora e a documentação exigida.</div></details>
+    <details><summary>A Canopus é autorizada pelo Banco Central?</summary><div class="a">Sim, autorizada e fiscalizada pelo BC — por isso aparece no ranking oficial. Confira no site do Banco Central.</div></details>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  Fontes: <a href="https://www3.bcb.gov.br/ranking/consorcio.do" target="_blank" rel="noopener">Banco Central</a> (1º sem/2026) · <a href="https://www.reclameaqui.com.br/empresa/consorcio-canopus/" target="_blank" rel="noopener">Reclame Aqui</a> (01/03–31/08/2026) · <a href="https://www.consorciocanopus.com.br/" target="_blank" rel="noopener">Site oficial</a>.<br>
+  Consórcio regido pela Lei 11.795/2008 e fiscalizado pelo Banco Central. Simulação sem valor de proposta. Contemplação por sorteio ou lance, sem data garantida. Canopus Administradora de Consórcios S.A. — CNPJ 68.318.773/0001-54.
+</div></footer>
+
+<div class="cookie" id="cookie" hidden>
+  <span>Usamos medição para melhorar a página. Você escolhe.</span>
+  <div class="b"><button id="ckNo">Só o essencial</button><button class="ac" id="ckYes">Aceitar</button></div>
+</div>
+
+<script>
+var ENDPOINT="https://xnavhkburafdjtuxaslo.supabase.co/functions/v1/receber-lead";
+var ANON="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhuYXZoa2J1cmFmZGp0dXhhc2xvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODkyNTUzMzAsImV4cCI6MjEwNDgzMTMzMH0.1U-JMR1ratkm4ZGDy56A19Z_MeNUzsx3h61R2z-gPxM";
+var ZAP="5531972380299", VARIANTE="B-nao-confie", PIXEL="2858020161064310";
+function $(s){return document.querySelector(s)}
+function utms(){var p=new URLSearchParams(location.search),o={};["utm_source","utm_medium","utm_campaign","utm_content","utm_term"].forEach(function(k){if(p.get(k))o[k]=p.get(k)});return o}
+function linkZap(msg){return "https://wa.me/"+ZAP+"?text="+encodeURIComponent("Olá! Vi os dados da Canopus e gostaria de conhecer as opções de carta de crédito para imóvel."+(msg?"\n"+msg:""))}
+$("#zapTop").href=linkZap("");
+function mascaraTel(v){return v.replace(/\D/g,"").slice(0,11).replace(/(\d{2})(\d)/,"($1) $2").replace(/(\d{5})(\d)/,"$1-$2")}
+$("#tel").addEventListener("input",function(e){e.target.value=mascaraTel(e.target.value)});
+function carregarPixel(){if(window.__px)return;window.__px=1;
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init',PIXEL);fbq('track','PageView');}
+try{var c=localStorage.getItem('ck-canopus');if(c==='1'){carregarPixel()}else if(c!=='0'){$("#cookie").hidden=false}}catch(e){$("#cookie").hidden=false}
+$("#ckYes").onclick=function(){try{localStorage.setItem('ck-canopus','1')}catch(e){}carregarPixel();$("#cookie").hidden=true};
+$("#ckNo").onclick=function(){try{localStorage.setItem('ck-canopus','0')}catch(e){}$("#cookie").hidden=true};
+$("#enviar").addEventListener("click",async function(){
+  var nome=$("#nome").value.trim(),tel=$("#tel").value,dig=tel.replace(/\D/g,""),ok=true;
+  $("#e_nome").textContent=nome.split(" ").filter(Boolean).length>=2?"":"Informe nome e sobrenome.";if(nome.split(" ").filter(Boolean).length<2)ok=false;
+  $("#e_tel").textContent=(dig.length>=10&&dig.length<=11)?"":"Informe DDD e número.";if(dig.length<10||dig.length>11)ok=false;
+  if(!$("#lgpd").checked){alert("É necessário autorizar o contato para receber a simulação.");ok=false}
+  if(!ok)return;
+  var btn=$("#enviar");btn.disabled=true;btn.textContent="Enviando…";
+  var payload={origem:"lp-canopus-imovel-b",criado_em:new Date().toISOString(),
+    lead:{nome:nome,telefone:dig},tipo:"simulacao",
+    simulacao:{objetivo:$("#obj").value||null,credito_pretendido:$("#cred").value||null,variante:VARIANTE},
+    marketing:utms(),variante:VARIANTE,url:location.pathname,
+    consentimento:{lgpd:true,em:new Date().toISOString()}};
+  var entregue=false;
+  try{var r=await fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","apikey":ANON,"Authorization":"Bearer "+ANON},body:JSON.stringify(payload),keepalive:true});entregue=r.ok}catch(e){}
+  if(window.fbq)fbq('track','Lead',{content_name:'consorcio-imovel',variante:VARIANTE});
+  $("#formArea").innerHTML='<div class="ok-final"><div class="ic">✓</div><h2>'+(entregue?"Recebemos seu contato!":"Vamos continuar pelo WhatsApp")+'</h2>'+
+    '<p class="sub" style="margin:10px auto 18px">'+(entregue?"Um especialista Canopus vai te chamar no WhatsApp com a simulação. Se preferir, adiante a conversa agora.":"Não conseguimos registrar aqui, mas é só abrir o WhatsApp — sua simulação vai junto.")+'</p>'+
+    '<a class="btn block" target="_blank" rel="noopener" href="'+linkZap("Meu nome é "+nome+". Objetivo: "+($("#obj").value||"imóvel")+". Crédito pretendido: "+($("#cred").value||"a definir")+".")+'">Abrir conversa no WhatsApp →</a></div>';
+});
+</script>
+</body>
+</html>
